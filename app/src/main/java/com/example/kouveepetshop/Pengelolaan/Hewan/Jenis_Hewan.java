@@ -98,7 +98,7 @@ public class Jenis_Hewan extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams()
             {
-                Map<String, String>  request = new HashMap<String, String>();
+                Map<String, String>  request = new HashMap<>();
                 request.put("keterangan", jenis);
                 request.put("created_by", "Yosafat9204");
                 return request;
