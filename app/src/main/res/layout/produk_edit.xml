@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/menu_background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/baloo"
+        android:text="Edit Produk"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="30dp" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="164dp"
+        android:layout_height="176dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="92dp"
+        app:srcCompat="@mipmap/ic_produk" />
+
+    <EditText
+        android:id="@+id/produk_edit_nama"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:fontFamily="@font/baloo"
+        android:hint="Nama"
+        android:inputType="textPersonName"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="#FFFFFF"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textStyle="bold" />
+
+
+    <LinearLayout
+        android:id = "@+id/produk_edit_spinner_layout"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/produk_edit_nama"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:gravity = "center"
+        android:orientation = "vertical">
+        <Spinner
+            android:id = "@+id/produk_edit_spinner"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/produk_edit_harga"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/produk_edit_spinner_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:fontFamily="@font/baloo"
+        android:hint="Harga"
+        android:inputType="number"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="#FFFFFF"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/produk_edit_satuan"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/produk_edit_harga"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:fontFamily="@font/baloo"
+        android:hint="Satuan"
+        android:inputType="text"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="#FFFFFF"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/produk_edit_jmlh"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/produk_edit_satuan"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:fontFamily="@font/baloo"
+        android:hint="Jumlah"
+        android:inputType="number"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="#FFFFFF"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/produk_edit_jmlh_min"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/produk_edit_jmlh"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:ems="10"
+        android:fontFamily="@font/baloo"
+        android:hint="Jumlah Minimal"
+        android:inputType="number"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="#FFFFFF"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/produk_edit_edit"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/produk_edit_jmlh_min"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="25dp"
+        android:background="#0000FF"
+        android:fontFamily="@font/baloo"
+        android:text="Edit"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/produk_edit_delete"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/produk_edit_jmlh_min"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="40dp"
+        android:background="#FF0000"
+        android:fontFamily="@font/baloo"
+        android:text="Hapus"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

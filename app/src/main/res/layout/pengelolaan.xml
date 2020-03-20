@@ -1,0 +1,284 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/menu_background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/baloo"
+        android:text="Pengelolaan Data"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="30dp" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="656dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/menu_background">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/menu_kategori_produk"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_below="@+id/menu_transaksi_layanan"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="40dp"
+                app:srcCompat="@mipmap/ic_menu_kategori_produk" />
+
+            <ImageView
+                android:id="@+id/menu_member"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_below="@+id/menu_kategori_produk"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="40dp"
+                app:srcCompat="@mipmap/ic_menu_member" />
+
+            <TextView
+                android:id="@+id/textView9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_kategori_produk"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="34dp"
+                android:fontFamily="@font/baloo"
+                android:text="Kategori Produk"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_member"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="71dp"
+                android:fontFamily="@font/baloo"
+                android:text="Member"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_supplier"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="166dp"
+                android:fontFamily="@font/baloo"
+                android:text="Supplier"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_hewan"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="78dp"
+                android:layout_marginTop="-10dp"
+                android:fontFamily="@font/baloo"
+                android:text="Hewan"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_ukuran_hewan"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="43dp"
+                android:layout_marginTop="-10dp"
+                android:fontFamily="@font/baloo"
+                android:text="Ukuran Hewan"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_jenis_layanan"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="46dp"
+                android:layout_marginTop="-10dp"
+                android:fontFamily="@font/baloo"
+                android:text="Jenis Layanan"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_produk"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="77dp"
+                android:layout_marginTop="-10dp"
+                android:fontFamily="@font/baloo"
+                android:text="Produk"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_transaksi_produk"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="-10dp"
+                android:fontFamily="@font/baloo"
+                android:text="Transaksi Produk"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_jenis_hewan"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="52dp"
+                android:fontFamily="@font/baloo"
+                android:text="Jenis Hewan"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_layanan"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="71dp"
+                android:fontFamily="@font/baloo"
+                android:text="Layanan"
+                android:textSize="20dp" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/menu_transaksi_layanan"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="-10dp"
+                android:layout_marginEnd="24dp"
+                android:fontFamily="@font/baloo"
+                android:text="Transaksi Layanan"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:id="@+id/menu_hewan"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="10dp"
+                app:srcCompat="@mipmap/ic_menu_hewan" />
+
+            <ImageView
+                android:id="@+id/menu_ukuran_hewan"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_below="@+id/menu_hewan"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                app:srcCompat="@mipmap/ic_menu_ukuran_hewan" />
+
+            <ImageView
+                android:id="@+id/menu_jenis_layanan"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_below="@+id/menu_ukuran_hewan"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                app:srcCompat="@mipmap/ic_menu_jenis_layanan" />
+
+            <ImageView
+                android:id="@+id/menu_produk"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_below="@+id/menu_jenis_layanan"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                app:srcCompat="@mipmap/ic_menu_produk" />
+
+            <ImageView
+                android:id="@+id/menu_transaksi_produk"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_below="@+id/menu_produk"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="30dp"
+                app:srcCompat="@mipmap/ic_menu_transaksi_produk" />
+
+            <ImageView
+                android:id="@+id/menu_supplier"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_below="@+id/menu_transaksi_produk"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="136dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="135dp"
+                app:srcCompat="@mipmap/ic_menu_supplier" />
+
+            <ImageView
+                android:id="@+id/menu_jenis_hewan"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="40dp"
+                app:srcCompat="@mipmap/ic_menu_jenis_hewan" />
+
+            <ImageView
+                android:id="@+id/menu_layanan"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_below="@+id/menu_jenis_hewan"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="40dp"
+                app:srcCompat="@mipmap/ic_menu_layanan" />
+
+            <ImageView
+                android:id="@+id/menu_transaksi_layanan"
+                android:layout_width="140dp"
+                android:layout_height="140dp"
+                android:layout_below="@+id/menu_layanan"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="40dp"
+                app:srcCompat="@mipmap/ic_menu_transaksi_layanan" />
+
+        </RelativeLayout>
+    </ScrollView>
+</RelativeLayout>
