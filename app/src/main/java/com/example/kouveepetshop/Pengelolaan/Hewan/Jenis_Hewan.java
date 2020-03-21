@@ -2,6 +2,8 @@ package com.example.kouveepetshop.Pengelolaan.Hewan;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -34,13 +36,13 @@ import java.util.Map;
 
 public class Jenis_Hewan extends AppCompatActivity {
 
-    private RecyclerView.Adapter mAdapter;
+    private Jenis_Hewan_Adapter mAdapter;
     private ArrayList<KeteranganDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
     private RecyclerView.LayoutManager mManager;
     private RecyclerView mRecyclerView;
-    private EditText jenis_hewan;
+    private EditText jenis_hewan, cari;
     private Button tambah;
 
     @Override
@@ -68,6 +70,19 @@ public class Jenis_Hewan extends AppCompatActivity {
                 mItems.clear();
                 ambilData();
                 layout.setRefreshing(false);
+            }
+        });
+
+        cari.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mAdapter.getFilter().filter(s);
             }
         });
     }
@@ -117,6 +132,7 @@ public class Jenis_Hewan extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         jenis_hewan = findViewById(R.id.jenis_hewan_tambah);
         tambah = findViewById(R.id.jenis_hewan_add);
+        cari = findViewById(R.id.jenis_hewan_search);
     }
 
     private void ambilData(){

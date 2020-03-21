@@ -1,12 +1,20 @@
 package com.example.kouveepetshop.Pengelolaan.Supplier;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SearchView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,14 +35,15 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Supplier extends AppCompatActivity {
+public class Supplier extends AppCompatActivity{
     private String nama, no_telp, alamat, kota;
-    private TextView nama_text, no_telp_text, alamat_text, kote_text;
+    private EditText cari;
     private ImageView tambah;
+    private SearchView searchView;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mManager;
-    private RecyclerView.Adapter mAdapter;
+    private Supplier_Adapter mAdapter;
     private ArrayList<SupplierDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
@@ -59,12 +68,26 @@ public class Supplier extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 mItems.clear();
+                cari.setText("");
                 GetData();
                 layout.setRefreshing(false);
             }
         });
 
         GetData();
+
+        cari.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mAdapter.getFilter().filter(s);
+            }
+        });
     }
 
     private void GetData(){
@@ -117,6 +140,7 @@ public class Supplier extends AppCompatActivity {
         mAdapter = new Supplier_Adapter(this, mItems);
         mRecyclerView.setAdapter(mAdapter);
         tambah = findViewById(R.id.supplier_add);
+        cari = findViewById(R.id.supplier_search);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -12,23 +14,25 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
+import com.example.kouveepetshop.Pengelolaan.Produk.ProdukDAO;
 import com.example.kouveepetshop.R;
 
 import java.util.ArrayList;
 
-public class Jenis_Hewan_Adapter extends RecyclerView.Adapter<Jenis_Hewan_Adapter.ViewProcessHolder> {
+public class Jenis_Hewan_Adapter extends RecyclerView.Adapter<Jenis_Hewan_Adapter.ViewProcessHolder> implements Filterable {
     Context context;
-    private ArrayList<KeteranganDAO> item;
+    private ArrayList<KeteranganDAO> item, itemFilterd;
     private Context mContext;
 
     public Jenis_Hewan_Adapter(Context context, ArrayList<KeteranganDAO> item) {
         this.context = context;
         this.item = item;
+        this.itemFilterd = item;
         mContext = context;
     }
 
     @Override
-    public Jenis_Hewan_Adapter.ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list, parent, false);
         ViewProcessHolder processHolder = new ViewProcessHolder(view);
         return processHolder;
@@ -36,7 +40,7 @@ public class Jenis_Hewan_Adapter extends RecyclerView.Adapter<Jenis_Hewan_Adapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
-        final KeteranganDAO data = item.get(position);
+        final KeteranganDAO data = itemFilterd.get(position);
         holder.id = data.id;
         holder.keterangan.setText(data.keterangan);
         holder.itemList.setOnClickListener(new View.OnClickListener() {
@@ -52,7 +56,39 @@ public class Jenis_Hewan_Adapter extends RecyclerView.Adapter<Jenis_Hewan_Adapte
 
     @Override
     public int getItemCount() {
-        return item.size();
+        return itemFilterd.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    itemFilterd = item;
+                } else {
+                    ArrayList<KeteranganDAO> filteredList = new ArrayList<>();
+                    for (KeteranganDAO row : item) {
+                        if (row.getKeterangan().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    itemFilterd = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = itemFilterd;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                itemFilterd = (ArrayList<KeteranganDAO>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class ViewProcessHolder extends RecyclerView.ViewHolder {

@@ -3,10 +3,13 @@ package com.example.kouveepetshop.Pengelolaan.Produk;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -31,8 +34,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Produk extends AppCompatActivity {
-
-    private RecyclerView.Adapter mAdapter;
+    private EditText cari;
+    private Produk_Adapter mAdapter;
     private ArrayList<ProdukDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
@@ -57,17 +60,30 @@ public class Produk extends AppCompatActivity {
             }
         });
 
-        //Recycle View kalau dipaksa tarik kebawah sampai pol bakal ngerefresh viewnya
         layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mItems.clear();
+                cari.setText("");
                 loadjson();
                 layout.setRefreshing(false);
             }
         });
 
         loadjson();
+
+        cari.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mAdapter.getFilter().filter(s);
+            }
+        });
     }
 
     private void init(){
@@ -79,6 +95,7 @@ public class Produk extends AppCompatActivity {
         mAdapter = new Produk_Adapter(this, mItems);
         mRecyclerView.setAdapter(mAdapter);
         tambah = findViewById(R.id.produk_add);
+        cari = findViewById(R.id.produk_search);
     }
 
     private void loadjson(){

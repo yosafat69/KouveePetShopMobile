@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,26 +17,28 @@ import com.example.kouveepetshop.R;
 
 import java.util.ArrayList;
 
-public class Supplier_Adapter extends RecyclerView.Adapter<Supplier_Adapter.ViewProcessHolder> {
+public class Supplier_Adapter extends RecyclerView.Adapter<Supplier_Adapter.ViewProcessHolder> implements Filterable {
     Context context;
     private ArrayList<SupplierDAO> item;
+    private ArrayList<SupplierDAO> itemFilterd;
     private Context mContext;
 
     public Supplier_Adapter(Context context, ArrayList<SupplierDAO> item) {
         this.context = context;
         this.item = item;
+        this.itemFilterd = item;
         mContext = context;
     }
 
     @Override
-    public Supplier_Adapter.ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_supplier, parent, false);
         return new ViewProcessHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
-        final SupplierDAO data = item.get(position);
+        final SupplierDAO data = itemFilterd.get(position);
         holder.id = data.id;
         holder.nama.setText(data.nama);
         holder.no_telp.setText(data.no_telp);
@@ -57,7 +61,7 @@ public class Supplier_Adapter extends RecyclerView.Adapter<Supplier_Adapter.View
 
     @Override
     public int getItemCount() {
-        return item.size();
+        return itemFilterd.size();
     }
 
     public class ViewProcessHolder extends RecyclerView.ViewHolder {
@@ -76,6 +80,38 @@ public class Supplier_Adapter extends RecyclerView.Adapter<Supplier_Adapter.View
             kota = itemView.findViewById(R.id.supplier_kota);
             itemList = itemView.findViewById(R.id.list_supplier_id);
         }
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    itemFilterd = item;
+                } else {
+                    ArrayList<SupplierDAO> filteredList = new ArrayList<>();
+                    for (SupplierDAO row : item) {
+                        if (row.getNama().toLowerCase().contains(charString.toLowerCase()) || row.getNo_telp().contains(charSequence)) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    itemFilterd = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = itemFilterd;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                itemFilterd = (ArrayList<SupplierDAO>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 }
 

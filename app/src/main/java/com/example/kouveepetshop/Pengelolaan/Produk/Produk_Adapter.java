@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,26 +18,27 @@ import com.example.kouveepetshop.R;
 
 import java.util.ArrayList;
 
-public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProcessHolder> {
+public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProcessHolder> implements Filterable {
     Context context;
-    private ArrayList<ProdukDAO> item;
+    private ArrayList<ProdukDAO> item, itemFilterd;
     private Context mContext;
 
     public Produk_Adapter(Context context, ArrayList<ProdukDAO> item) {
         this.context = context;
         this.item = item;
+        this.itemFilterd = item;
         mContext = context;
     }
 
     @Override
-    public Produk_Adapter.ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_produk, parent, false);
         return new ViewProcessHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
-        final ProdukDAO data = item.get(position);
+        final ProdukDAO data = itemFilterd.get(position);
         holder.id = data.id;
         holder.nama.setText(data.nama);
         holder.kategoti.setText(data.kategori);
@@ -44,8 +47,6 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
         holder.jmlh.setText(Integer.toString(data.jmlh));
         holder.jmlh_min.setText(Integer.toString(data.jmlh_min));
 
-        //Kalau recycle view-nya di click, dia bakal ke halaman Produk_Edit.
-        // Terus ngirim data yang di click ke Produk_Edit supaya bisa langsung ditampilin di EditText Produk_Edit
         holder.itemList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,7 +65,39 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
 
     @Override
     public int getItemCount() {
-        return item.size();
+        return itemFilterd.size();
+    }
+
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    itemFilterd = item;
+                } else {
+                    ArrayList<ProdukDAO> filteredList = new ArrayList<>();
+                    for (ProdukDAO row : item) {
+                        if (row.getNama().toLowerCase().contains(charString.toLowerCase()) || row.getKategori().contains(charSequence)) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    itemFilterd = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = itemFilterd;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                itemFilterd = (ArrayList<ProdukDAO>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class ViewProcessHolder extends RecyclerView.ViewHolder {
