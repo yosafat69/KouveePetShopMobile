@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -16,13 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.Pengelolaan.Produk.ProdukDAO;
 import com.example.kouveepetshop.R;
+import com.example.kouveepetshop.SharedPrefManager;
 
 import java.util.ArrayList;
 
 public class Jenis_Hewan_Adapter extends RecyclerView.Adapter<Jenis_Hewan_Adapter.ViewProcessHolder> implements Filterable {
-    Context context;
+    private Context context;
     private ArrayList<KeteranganDAO> item, itemFilterd;
     private Context mContext;
+    private SharedPrefManager sharedPrefManager;
 
     public Jenis_Hewan_Adapter(Context context, ArrayList<KeteranganDAO> item) {
         this.context = context;
@@ -43,13 +46,19 @@ public class Jenis_Hewan_Adapter extends RecyclerView.Adapter<Jenis_Hewan_Adapte
         final KeteranganDAO data = itemFilterd.get(position);
         holder.id = data.id;
         holder.keterangan.setText(data.keterangan);
+
         holder.itemList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, Jenis_Hewan_Edit.class);
-                intent.putExtra("id", data.getId());
-                intent.putExtra("keterangan", data.getKeterangan());
-                mContext.startActivity(intent);
+                if (sharedPrefManager.getSpRole().equals("Owner")) {
+                    Intent intent = new Intent(mContext, Jenis_Hewan_Edit.class);
+                    intent.putExtra("id", data.getId());
+                    intent.putExtra("keterangan", data.getKeterangan());
+                    mContext.startActivity(intent);
+                }
+                else {
+                    Toast.makeText(context, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -100,9 +109,11 @@ public class Jenis_Hewan_Adapter extends RecyclerView.Adapter<Jenis_Hewan_Adapte
         public ViewProcessHolder(@NonNull final View itemView) {
             super(itemView);
 
+
             context = itemView.getContext();
             keterangan = itemView.findViewById(R.id.keterangan);
             itemList = itemView.findViewById(R.id.list_id);
+            sharedPrefManager = new SharedPrefManager(context);
         }
     }
 }

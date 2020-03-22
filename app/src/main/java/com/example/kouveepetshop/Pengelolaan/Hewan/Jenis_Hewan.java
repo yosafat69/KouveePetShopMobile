@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,6 +26,7 @@ import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.R;
+import com.example.kouveepetshop.SharedPrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +46,7 @@ public class Jenis_Hewan extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private EditText jenis_hewan, cari;
     private Button tambah;
+    private SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,12 +58,22 @@ public class Jenis_Hewan extends AppCompatActivity {
 
         ambilData();
 
+        if (!sharedPrefManager.getSpRole().equals("Owner")) {
+            jenis_hewan.setEnabled(false);
+        }
+
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addProduk();
-                ambilData();
-                mAdapter.notifyDataSetChanged();
+                if (sharedPrefManager.getSpRole().equals("Owner")) {
+                    addProduk();
+                    ambilData();
+                    mAdapter.notifyDataSetChanged();
+                }
+
+                else {
+                    Toast.makeText(Jenis_Hewan.this, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -133,6 +146,7 @@ public class Jenis_Hewan extends AppCompatActivity {
         jenis_hewan = findViewById(R.id.jenis_hewan_tambah);
         tambah = findViewById(R.id.jenis_hewan_add);
         cari = findViewById(R.id.jenis_hewan_search);
+        sharedPrefManager = new SharedPrefManager(this);
     }
 
     private void ambilData(){

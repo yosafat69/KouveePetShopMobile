@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.kouveepetshop.Pengelolaan.Hewan.Hewan;
 import com.example.kouveepetshop.Pengelolaan.Hewan.Jenis_Hewan;
@@ -15,13 +16,18 @@ import com.example.kouveepetshop.Pengelolaan.Produk.Kategori_Produk;
 import com.example.kouveepetshop.Pengelolaan.Produk.Produk;
 import com.example.kouveepetshop.Pengelolaan.Supplier.Supplier;
 import com.example.kouveepetshop.R;
+import com.example.kouveepetshop.SharedPrefManager;
 
 public class Pengelolaan extends AppCompatActivity {
+
+    private SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pengelolaan);
+
+        sharedPrefManager = new SharedPrefManager(this);
 
         ImageView hewan = findViewById(R.id.menu_hewan);
         hewan.setOnClickListener(new View.OnClickListener() {
@@ -63,8 +69,13 @@ public class Pengelolaan extends AppCompatActivity {
         produk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Pengelolaan.this, Produk.class);
-                startActivity(i);
+                if (sharedPrefManager.getSpRole().equals("Owner")) {
+                    Intent i = new Intent(Pengelolaan.this, Produk.class);
+                    startActivity(i);
+                }
+                else {
+                    Toast.makeText(Pengelolaan.this, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -81,8 +92,13 @@ public class Pengelolaan extends AppCompatActivity {
         supplier.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Pengelolaan.this, Supplier.class);
-                startActivity(i);
+                if (sharedPrefManager.getSpRole().equals("Owner")) {
+                    Intent i = new Intent(Pengelolaan.this, Supplier.class);
+                    startActivity(i);
+                }
+                else {
+                    Toast.makeText(Pengelolaan.this, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
