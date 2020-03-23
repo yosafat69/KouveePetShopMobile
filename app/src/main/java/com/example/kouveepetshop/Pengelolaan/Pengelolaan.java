@@ -101,5 +101,14 @@ public class Pengelolaan extends AppCompatActivity {
                 }
             }
         });
+
+        ImageView Jenis_Layanan = findViewById(R.id.menu_jenis_layanan);
+        Jenis_Layanan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Pengelolaan.this, com.example.kouveepetshop.Pengelolaan.Layanan.Jenis_Layanan.class);
+                startActivity(i);
+            }
+        });
     }
 }

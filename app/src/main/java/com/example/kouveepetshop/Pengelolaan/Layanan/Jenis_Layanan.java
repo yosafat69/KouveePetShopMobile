@@ -1,14 +1,11 @@
-package com.example.kouveepetshop.Pengelolaan.Hewan;
+package com.example.kouveepetshop.Pengelolaan.Layanan;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,7 +23,6 @@ import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.R;
-import com.example.kouveepetshop.SharedPrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,43 +32,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Ukuran_Hewan extends AppCompatActivity {
 
-    private Ukuran_Hewan_Adapter mAdapter;
+public class Jenis_Layanan extends AppCompatActivity {
+
+    private RecyclerView.Adapter mAdapter;
     private ArrayList<KeteranganDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
     private RecyclerView.LayoutManager mManager;
     private RecyclerView mRecyclerView;
-    private EditText ukuran_hewan, cari;
+    private EditText jenis_layanan;
     private Button tambah;
-    private SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ukuran_hewan);
+        setContentView(R.layout.jenis__layanan);
         final PullRefreshLayout layout = findViewById(R.id.swipeRefreshLayout);
 
         init();
 
         ambilData();
-        if (!sharedPrefManager.getSpRole().equals("Owner")) {
-            ukuran_hewan.setEnabled(false);
-        }
 
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sharedPrefManager.getSpRole().equals("Owner")) {
-                    addUkuran();
-                    ambilData();
-                    mAdapter.notifyDataSetChanged();
-                }
-
-                else {
-                    Toast.makeText(Ukuran_Hewan.this, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
-                }
+                addjenislayanan();
+                ambilData();
+                mAdapter.notifyDataSetChanged();
             }
         });
 
@@ -84,19 +71,6 @@ public class Ukuran_Hewan extends AppCompatActivity {
                 layout.setRefreshing(false);
             }
         });
-
-        cari.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                mAdapter.getFilter().filter(s);
-            }
-        });
     }
 
 
@@ -105,7 +79,7 @@ public class Ukuran_Hewan extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Ukuranhewan";
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -117,10 +91,10 @@ public class Ukuran_Hewan extends AppCompatActivity {
 
                     for (int i = massage.length()-1; i > -1 ; i--){
                         JSONObject massageDetail = massage.getJSONObject(i);
-                        KeteranganDAO hewan = new KeteranganDAO();
-                        hewan.setId(massageDetail.getInt("id"));
-                        hewan.setKeterangan(massageDetail.getString("nama"));
-                        mItems.add(hewan);
+                        KeteranganDAO layanan = new KeteranganDAO();
+                        layanan.setId(massageDetail.getInt("id"));
+                        layanan.setKeterangan(massageDetail.getString("nama"));
+                        mItems.add(layanan);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -139,11 +113,11 @@ public class Ukuran_Hewan extends AppCompatActivity {
         Rest_API.getInstance(this).addToRequestQueue(arrayRequest);
     }
 
-    private void addUkuran(){
-        final String ukuran = ukuran_hewan.getText().toString();
+    private void addjenislayanan(){
+        final String layanan = jenis_layanan.getText().toString();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Ukuranhewan";
+        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -161,12 +135,14 @@ public class Ukuran_Hewan extends AppCompatActivity {
                         Log.d("Error.Response", error.toString());
                     }
                 }
-        ) {
+        )
+
+        {
             @Override
             protected Map<String, String> getParams()
             {
                 Map<String, String>  request = new HashMap<String, String>();
-                request.put("nama", ukuran);
+                request.put("nama", layanan);
                 request.put("created_by", "Yosafat9204");
                 return request;
             }
@@ -177,16 +153,13 @@ public class Ukuran_Hewan extends AppCompatActivity {
     private void init()
     {
         pd = new ProgressDialog(this);
-        mRecyclerView = findViewById(R.id.recycle_ukuran_hewan);
+        mRecyclerView = findViewById(R.id.recycle_jenis_layanan);
         mItems = new ArrayList<>();
         mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mManager);
-        mAdapter = new Ukuran_Hewan_Adapter(this,mItems);
+        mAdapter = new Jenis_Layanan_Adapter(this,mItems);
         mRecyclerView.setAdapter(mAdapter);
-        ukuran_hewan = findViewById(R.id.ukuran_hewan_tambah);
-        tambah = findViewById(R.id.ukuran_hewan_add);
-        cari = findViewById(R.id.jenis_hewan_search);
-        sharedPrefManager = new SharedPrefManager(this);
+        jenis_layanan = findViewById(R.id.jenis_layanan_tambah);
+        tambah = findViewById(R.id.jenis_layanan_add);
     }
 }
-

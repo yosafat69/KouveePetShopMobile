@@ -74,6 +74,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static String getIp(){
-        return "192.168.43.202";
+        return "192.168.1.9";
     }
 }
