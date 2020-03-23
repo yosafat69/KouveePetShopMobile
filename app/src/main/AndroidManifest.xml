@@ -44,6 +44,10 @@
 
         <activity android:name=".Pengelolaan.Layanan.Layanan"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".Pengelolaan.Layanan.Layanan_Tambah"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".Pengelolaan.Layanan.Layanan_Edit"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".Pengelolaan.Layanan.Jenis_Layanan"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".Pengelolaan.Layanan.Jenis_layanan_Edit"
