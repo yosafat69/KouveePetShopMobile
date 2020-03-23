@@ -2,10 +2,13 @@ package com.example.kouveepetshop.Pengelolaan.Layanan;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,8 +24,10 @@ import com.android.volley.toolbox.Volley;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.MainActivity;
+import com.example.kouveepetshop.Pengelolaan.Hewan.Jenis_Hewan;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.R;
+import com.example.kouveepetshop.SharedPrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,14 +40,15 @@ import java.util.Map;
 
 public class Jenis_Layanan extends AppCompatActivity {
 
-    private RecyclerView.Adapter mAdapter;
+    private Jenis_Layanan_Adapter mAdapter;
     private ArrayList<KeteranganDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
     private RecyclerView.LayoutManager mManager;
     private RecyclerView mRecyclerView;
-    private EditText jenis_layanan;
+    private EditText jenis_layanan, cari;
     private Button tambah;
+    private SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,12 +60,22 @@ public class Jenis_Layanan extends AppCompatActivity {
 
         ambilData();
 
+        if (!sharedPrefManager.getSpRole().equals("Owner")) {
+            jenis_layanan.setEnabled(false);
+        }
+
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addjenislayanan();
-                ambilData();
-                mAdapter.notifyDataSetChanged();
+                if (sharedPrefManager.getSpRole().equals("Owner")) {
+                    addjenislayanan();
+                    ambilData();
+                    mAdapter.notifyDataSetChanged();
+                }
+
+                else {
+                    Toast.makeText(Jenis_Layanan.this, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -69,6 +85,19 @@ public class Jenis_Layanan extends AppCompatActivity {
                 mItems.clear();
                 ambilData();
                 layout.setRefreshing(false);
+            }
+        });
+
+        cari.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mAdapter.getFilter().filter(s);
             }
         });
     }
@@ -161,5 +190,7 @@ public class Jenis_Layanan extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         jenis_layanan = findViewById(R.id.jenis_layanan_tambah);
         tambah = findViewById(R.id.jenis_layanan_add);
+        cari = findViewById(R.id.jenis_layanan_search);
+        sharedPrefManager = new SharedPrefManager(this);
     }
 }

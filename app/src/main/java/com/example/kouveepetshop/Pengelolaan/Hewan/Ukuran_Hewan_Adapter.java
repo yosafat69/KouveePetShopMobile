@@ -21,7 +21,7 @@ import com.example.kouveepetshop.SharedPrefManager;
 import java.util.ArrayList;
 
 public class Ukuran_Hewan_Adapter extends RecyclerView.Adapter<Ukuran_Hewan_Adapter.ViewProcessHolder> {
-    Context context;
+    private Context context;
     private ArrayList<KeteranganDAO> item, itemFilterd;
     private Context mContext;
     private SharedPrefManager sharedPrefManager;
@@ -42,7 +42,7 @@ public class Ukuran_Hewan_Adapter extends RecyclerView.Adapter<Ukuran_Hewan_Adap
 
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
-        final KeteranganDAO data = item.get(position);
+        final KeteranganDAO data = itemFilterd.get(position);
         holder.id = data.id;
         holder.keterangan.setText(data.keterangan);
         holder.itemList.setOnClickListener(new View.OnClickListener() {

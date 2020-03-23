@@ -5,26 +5,32 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kouveepetshop.Pengelolaan.Hewan.Jenis_Hewan_Edit;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.R;
+import com.example.kouveepetshop.SharedPrefManager;
 
 import java.util.ArrayList;
 
 public class Jenis_Layanan_Adapter extends RecyclerView.Adapter<Jenis_Layanan_Adapter.ViewProcessHolder>
 {
     Context context;
-    private ArrayList<KeteranganDAO> item;
+    private ArrayList<KeteranganDAO> item,itemFilterd;
     private Context mContext;
+    private SharedPrefManager sharedPrefManager;
 
     public Jenis_Layanan_Adapter(Context context, ArrayList<KeteranganDAO> item) {
         this.context = context;
         this.item = item;
+        this.itemFilterd = item;
         mContext = context;
     }
 
@@ -37,23 +43,59 @@ public class Jenis_Layanan_Adapter extends RecyclerView.Adapter<Jenis_Layanan_Ad
 
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
-        final KeteranganDAO data = item.get(position);
+        final KeteranganDAO data = itemFilterd.get(position);
         holder.id = data.id;
         holder.keterangan.setText(data.keterangan);
         holder.itemList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, Jenis_layanan_Edit.class);
-                intent.putExtra("id", data.getId());
-                intent.putExtra("keterangan", data.getKeterangan());
-                mContext.startActivity(intent);
+                if (sharedPrefManager.getSpRole().equals("Owner")) {
+                    Intent intent = new Intent(mContext, Jenis_layanan_Edit.class);
+                    intent.putExtra("id", data.getId());
+                    intent.putExtra("keterangan", data.getKeterangan());
+                    mContext.startActivity(intent);
+                }
+                else {
+                    Toast.makeText(context, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return item.size();
+        return itemFilterd.size();
+    }
+
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence charSequence) {
+                String charString = charSequence.toString();
+                if (charString.isEmpty()) {
+                    itemFilterd = item;
+                } else {
+                    ArrayList<KeteranganDAO> filteredList = new ArrayList<>();
+                    for (KeteranganDAO row : item) {
+                        if (row.getKeterangan().toLowerCase().contains(charString.toLowerCase())) {
+                            filteredList.add(row);
+                        }
+                    }
+
+                    itemFilterd = filteredList;
+                }
+
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = itemFilterd;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
+                itemFilterd = (ArrayList<KeteranganDAO>) filterResults.values;
+                notifyDataSetChanged();
+            }
+        };
     }
 
     public class ViewProcessHolder extends RecyclerView.ViewHolder {
@@ -68,6 +110,7 @@ public class Jenis_Layanan_Adapter extends RecyclerView.Adapter<Jenis_Layanan_Ad
             context = itemView.getContext();
             keterangan = itemView.findViewById(R.id.keterangan);
             itemList = itemView.findViewById(R.id.list_id);
+            sharedPrefManager = new SharedPrefManager(context);
         }
     }
 }

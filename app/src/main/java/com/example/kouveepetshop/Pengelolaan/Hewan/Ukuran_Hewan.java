@@ -185,7 +185,7 @@ public class Ukuran_Hewan extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         ukuran_hewan = findViewById(R.id.ukuran_hewan_tambah);
         tambah = findViewById(R.id.ukuran_hewan_add);
-        cari = findViewById(R.id.jenis_hewan_search);
+        cari = findViewById(R.id.ukuran_hewan_search);
         sharedPrefManager = new SharedPrefManager(this);
     }
 }
