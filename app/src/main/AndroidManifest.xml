@@ -13,6 +13,7 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".Login"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -28,6 +29,8 @@
         <activity android:name=".Pengelolaan.Pengelolaan"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
+        <activity android:name=".Pengelolaan.Hewan.Ukuran_Hewan_Edit"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity android:name=".Pengelolaan.Hewan.Hewan"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
@@ -40,6 +43,14 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity android:name=".Pengelolaan.Layanan.Layanan"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".Pengelolaan.Layanan.Layanan_Tambah"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".Pengelolaan.Layanan.Layanan_Edit"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".Pengelolaan.Layanan.Jenis_Layanan"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity android:name=".Pengelolaan.Layanan.Jenis_layanan_Edit"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <activity android:name=".Pengelolaan.Produk.Produk"

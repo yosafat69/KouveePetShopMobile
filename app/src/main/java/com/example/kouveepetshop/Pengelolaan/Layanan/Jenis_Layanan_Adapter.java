@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -14,19 +13,21 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.example.kouveepetshop.Pengelolaan.Hewan.Jenis_Hewan_Edit;
+import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
 
 import java.util.ArrayList;
 
-public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewProcessHolder> {
+public class Jenis_Layanan_Adapter extends RecyclerView.Adapter<Jenis_Layanan_Adapter.ViewProcessHolder>
+{
     Context context;
-    private ArrayList<LayananDAO> item, itemFilterd;
+    private ArrayList<KeteranganDAO> item,itemFilterd;
     private Context mContext;
     private SharedPrefManager sharedPrefManager;
 
-    public Layanan_Adapter(Context context, ArrayList<LayananDAO> item) {
+    public Jenis_Layanan_Adapter(Context context, ArrayList<KeteranganDAO> item) {
         this.context = context;
         this.item = item;
         this.itemFilterd = item;
@@ -34,29 +35,25 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
     }
 
     @Override
-    public Layanan_Adapter.ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_layanan, parent, false);
-        return new ViewProcessHolder(view);
+    public Jenis_Layanan_Adapter.ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list, parent, false);
+        ViewProcessHolder processHolder = new ViewProcessHolder(view);
+        return processHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
-        final LayananDAO data = itemFilterd.get(position);
+        final KeteranganDAO data = itemFilterd.get(position);
         holder.id = data.id;
-        holder.nama.setText(data.keterangan);
-        holder.ukuran.setText(data.ukuran);
-        holder.harga.setText(Integer.toString(data.harga));
+        holder.keterangan.setText(data.keterangan);
         holder.itemList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (sharedPrefManager.getSpRole().equals("Owner")) {
-                    Intent intent = new Intent(mContext, Layanan_Edit.class);
+                    Intent intent = new Intent(mContext, Jenis_layanan_Edit.class);
                     intent.putExtra("id", data.getId());
-                    intent.putExtra("nama", data.getKeterangan());
-                    intent.putExtra("harga", data.getHarga());
-                    intent.putExtra("ukuran", data.getUkuran());
-
-                    mContext.startActivity (intent);
+                    intent.putExtra("keterangan", data.getKeterangan());
+                    mContext.startActivity(intent);
                 }
                 else {
                     Toast.makeText(context, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
@@ -70,8 +67,6 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
         return itemFilterd.size();
     }
 
-
-
     public Filter getFilter() {
         return new Filter() {
             @Override
@@ -80,9 +75,9 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
                 if (charString.isEmpty()) {
                     itemFilterd = item;
                 } else {
-                    ArrayList<LayananDAO> filteredList = new ArrayList<>();
-                    for (LayananDAO row : item) {
-                        if (row.getKeterangan().toLowerCase().contains(charString.toLowerCase()) || row.getUkuran().contains(charSequence)) {
+                    ArrayList<KeteranganDAO> filteredList = new ArrayList<>();
+                    for (KeteranganDAO row : item) {
+                        if (row.getKeterangan().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
@@ -97,7 +92,7 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                itemFilterd = (ArrayList<LayananDAO>) filterResults.values;
+                itemFilterd = (ArrayList<KeteranganDAO>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -106,23 +101,16 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
     public class ViewProcessHolder extends RecyclerView.ViewHolder {
 
         Integer id;
-        TextView nama, ukuran, harga;
+        TextView keterangan;
         CardView itemList;
-        ImageView gambar;
 
         public ViewProcessHolder(@NonNull final View itemView) {
             super(itemView);
 
             context = itemView.getContext();
-            nama = itemView.findViewById(R.id.layanan_nama);
-            ukuran = itemView.findViewById(R.id.layanan_ukuran);
-            harga = itemView.findViewById(R.id.layanan_harga);
-            itemList = itemView.findViewById(R.id.list_layanan_id);
-            gambar = itemView.findViewById(R.id.layanan_gambar);
+            keterangan = itemView.findViewById(R.id.keterangan);
+            itemList = itemView.findViewById(R.id.list_id);
             sharedPrefManager = new SharedPrefManager(context);
         }
     }
 }
-
-
-
