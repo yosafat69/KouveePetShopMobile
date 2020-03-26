@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -15,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.kouveepetshop.R;
+import com.example.kouveepetshop.SharedPrefManager;
 
 import java.util.ArrayList;
 
@@ -22,6 +24,7 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
     Context context;
     private ArrayList<LayananDAO> item, itemFilterd;
     private Context mContext;
+    private SharedPrefManager sharedPrefManager;
 
     public Layanan_Adapter(Context context, ArrayList<LayananDAO> item) {
         this.context = context;
@@ -46,13 +49,18 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
         holder.itemList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, Layanan_Edit.class);
-                intent.putExtra("id", data.getId());
-                intent.putExtra("nama", data.getKeterangan());
-                intent.putExtra("harga", data.getHarga());
-                intent.putExtra("ukuran", data.getUkuran());
+                if (sharedPrefManager.getSpRole().equals("Owner")) {
+                    Intent intent = new Intent(mContext, Layanan_Edit.class);
+                    intent.putExtra("id", data.getId());
+                    intent.putExtra("nama", data.getKeterangan());
+                    intent.putExtra("harga", data.getHarga());
+                    intent.putExtra("ukuran", data.getUkuran());
 
-                mContext.startActivity (intent);
+                    mContext.startActivity (intent);
+                }
+                else {
+                    Toast.makeText(context, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -111,6 +119,7 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
             harga = itemView.findViewById(R.id.layanan_harga);
             itemList = itemView.findViewById(R.id.list_layanan_id);
             gambar = itemView.findViewById(R.id.layanan_gambar);
+            sharedPrefManager = new SharedPrefManager(context);
         }
     }
 }

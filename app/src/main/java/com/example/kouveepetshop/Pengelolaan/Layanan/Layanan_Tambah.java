@@ -23,6 +23,7 @@ import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.R;
+import com.example.kouveepetshop.SharedPrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,7 +47,6 @@ public class Layanan_Tambah extends AppCompatActivity {
     private Spinner nama_spinner,ukuran_spinner;
     private ArrayList<KeteranganDAO> nama_layanan;
     private ArrayList<KeteranganDAO> ukuran_layanan;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

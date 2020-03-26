@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -29,6 +30,7 @@ import com.example.kouveepetshop.Pengelolaan.Produk.Produk;
 import com.example.kouveepetshop.Pengelolaan.Produk.Produk_Adapter;
 import com.example.kouveepetshop.Pengelolaan.Produk.Produk_Tambah;
 import com.example.kouveepetshop.R;
+import com.example.kouveepetshop.SharedPrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -46,6 +48,7 @@ public class Layanan extends AppCompatActivity {
     RecyclerView.LayoutManager mManager;
     ImageView tambah;
     private EditText cari;
+    private SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +61,15 @@ public class Layanan extends AppCompatActivity {
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Layanan.this, Layanan_Tambah.class);
-                startActivityForResult(i,1);
+                if (sharedPrefManager.getSpRole().equals("Owner")) {
+                    Intent i = new Intent(Layanan.this, Layanan_Tambah.class);
+                    startActivityForResult(i,1);
+                }
+
+                else {
+                    Toast.makeText(Layanan.this, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -99,6 +109,7 @@ public class Layanan extends AppCompatActivity {
         mRecyclerView.setAdapter(mAdapter);
         tambah = findViewById(R.id.layanan_add);
         cari = findViewById(R.id.layanan_search);
+        sharedPrefManager = new SharedPrefManager(this);
     }
 
     private void loadjson(){
