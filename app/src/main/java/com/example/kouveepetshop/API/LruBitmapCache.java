@@ -1,7 +1,9 @@
 package com.example.kouveepetshop.API;
 
 
+import android.content.Context;
 import android.graphics.Bitmap;
+import android.util.DisplayMetrics;
 import android.util.LruCache;
 
 import com.android.volley.toolbox.ImageLoader.ImageCache;
@@ -17,6 +19,21 @@ public class LruBitmapCache extends LruCache<String, Bitmap> implements
 
     public LruBitmapCache() {
         this(getDefaultLruCacheSize());
+    }
+
+    public LruBitmapCache(Context ctx) {
+        this(getCacheSize(ctx));
+    }
+
+    public static int getCacheSize(Context ctx) {
+        final DisplayMetrics displayMetrics = ctx.getResources().
+                getDisplayMetrics();
+        final int screenWidth = displayMetrics.widthPixels;
+        final int screenHeight = displayMetrics.heightPixels;
+        // 4 bytes per pixel
+        final int screenBytes = screenWidth * screenHeight * 4;
+
+        return screenBytes * 3;
     }
 
     public LruBitmapCache(int sizeInKiloBytes) {

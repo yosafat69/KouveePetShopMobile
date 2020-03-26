@@ -122,6 +122,7 @@ public class Produk extends AppCompatActivity {
                         produk.setSatuan(massageDetail.getString("satuan"));
                         produk.setJmlh(massageDetail.getInt("jmlh"));
                         produk.setJmlh_min(massageDetail.getInt("jmlh_min"));
+                        produk.setLink_gambar(massageDetail.getString("link_gambar"));
                         mItems.add(produk);
                     }
                 } catch (JSONException e) {

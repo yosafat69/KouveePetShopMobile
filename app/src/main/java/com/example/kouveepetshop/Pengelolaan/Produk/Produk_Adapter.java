@@ -2,6 +2,7 @@ package com.example.kouveepetshop.Pengelolaan.Produk;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,9 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -22,6 +25,7 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
     Context context;
     private ArrayList<ProdukDAO> item, itemFilterd;
     private Context mContext;
+    private String ip = MainActivity.getIp();
 
     public Produk_Adapter(Context context, ArrayList<ProdukDAO> item) {
         this.context = context;
@@ -38,6 +42,7 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
 
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
+        String link = "http://"+ip+"/rest_api-kouvee-pet-shop-master/";
         final ProdukDAO data = itemFilterd.get(position);
         holder.id = data.id;
         holder.nama.setText(data.nama);
@@ -46,6 +51,9 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
         holder.satuan.setText(data.satuan);
         holder.jmlh.setText(Integer.toString(data.jmlh));
         holder.jmlh_min.setText(Integer.toString(data.jmlh_min));
+
+        final String link_gambar = link + data.link_gambar;
+        Picasso.get().load(link_gambar).into(holder.gambar);
 
         holder.itemList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,6 +66,7 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
                 intent.putExtra("satuan", data.getSatuan());
                 intent.putExtra("jmlh", data.getJmlh());
                 intent.putExtra("jmlh_min", data.getJmlh_min());
+                intent.putExtra("link_gambar", link_gambar);
                 mContext.startActivity (intent);
             }
         });

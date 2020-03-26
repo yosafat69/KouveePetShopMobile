@@ -20,7 +20,7 @@
         android:textSize="30dp" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/produk_edit_gambar"
         android:layout_width="164dp"
         android:layout_height="176dp"
         android:layout_alignParentTop="true"
@@ -32,7 +32,7 @@
         android:id="@+id/produk_edit_nama"
         android:layout_width="300dp"
         android:layout_height="45dp"
-        android:layout_below="@+id/imageView"
+        android:layout_below="@+id/produk_edit_gambar"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:ems="10"
