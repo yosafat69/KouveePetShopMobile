@@ -233,6 +233,7 @@ public class Layanan_Edit extends AppCompatActivity {
                 break;
             }
         }
+        id_nama = keterangan.getId();
         for (int i = 0 ; i < ukuran_layanan.size(); i++) {
             keterangan = ukuran_layanan.get(i);
             if(keterangan.getKeterangan().equals(ukuran)){
@@ -240,7 +241,7 @@ public class Layanan_Edit extends AppCompatActivity {
             }
         }
         id_ukuran= keterangan.getId();
-        id_nama = keterangan.getId();
+
         harga = Integer.parseInt(harga_text.getText().toString());
 
     }

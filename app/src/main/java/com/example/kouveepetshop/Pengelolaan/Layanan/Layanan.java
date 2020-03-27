@@ -130,6 +130,7 @@ public class Layanan extends AppCompatActivity {
                     for (int i=0; i < massage.length(); i++){
                         JSONObject massageDetail = massage.getJSONObject(i);
                         LayananDAO layanan = new LayananDAO();
+                        layanan.setId(massageDetail.getInt("id"));
                         layanan.setKeterangan(massageDetail.getString("id_layanan"));
                         layanan.setUkuran(massageDetail.getString("id_ukuran_hewan"));
                         layanan.setHarga(massageDetail.getInt("harga"));
