@@ -15,8 +15,10 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -25,6 +27,7 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
     private ArrayList<LayananDAO> item, itemFilterd;
     private Context mContext;
     private SharedPrefManager sharedPrefManager;
+    private String ip = MainActivity.getIp();
 
     public Layanan_Adapter(Context context, ArrayList<LayananDAO> item) {
         this.context = context;
@@ -41,11 +44,16 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
 
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
+        String link = "http://"+ip+"/rest_api-kouvee-pet-shop-master/";
         final LayananDAO data = itemFilterd.get(position);
         holder.id = data.id;
         holder.nama.setText(data.keterangan);
         holder.ukuran.setText(data.ukuran);
         holder.harga.setText(Integer.toString(data.harga));
+
+        final String url_gambar = link + data.gambar;
+        Picasso.get().load(url_gambar).into(holder.gambar);
+
         holder.itemList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,7 +63,7 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
                     intent.putExtra("nama", data.getKeterangan());
                     intent.putExtra("harga", data.getHarga());
                     intent.putExtra("ukuran", data.getUkuran());
-
+                    intent.putExtra("url_gambar", url_gambar);
                     mContext.startActivity (intent);
                 }
                 else {

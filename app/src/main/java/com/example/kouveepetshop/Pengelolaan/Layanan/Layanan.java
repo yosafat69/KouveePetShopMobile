@@ -134,6 +134,7 @@ public class Layanan extends AppCompatActivity {
                         layanan.setKeterangan(massageDetail.getString("id_layanan"));
                         layanan.setUkuran(massageDetail.getString("id_ukuran_hewan"));
                         layanan.setHarga(massageDetail.getInt("harga"));
+                        layanan.setGambar(massageDetail.getString("url_gambar"));
                         mItems.add(layanan);
                     }
                     pd.cancel();
