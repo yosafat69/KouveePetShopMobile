@@ -113,7 +113,7 @@ public class Layanan extends AppCompatActivity {
     }
 
     private void loadjson(){
-
+        mItems.clear();
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
@@ -127,7 +127,7 @@ public class Layanan extends AppCompatActivity {
                 try {
                     JSONArray massage = response.getJSONArray("message");
 
-                    for (int i=0; i < massage.length(); i++){
+                    for (int i = massage.length()-1; i > -1 ; i--){
                         JSONObject massageDetail = massage.getJSONObject(i);
                         LayananDAO layanan = new LayananDAO();
                         layanan.setId(massageDetail.getInt("id"));
