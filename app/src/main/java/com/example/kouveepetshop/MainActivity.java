@@ -42,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+        Toast.makeText(this, sharedPrefManager.getSpUsername() + " " + sharedPrefManager.getSpRole(), Toast.LENGTH_LONG).show();
     }
 
     private void init() {

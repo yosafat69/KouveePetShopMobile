@@ -28,6 +28,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cottacush.android.currencyedittext.CurrencyEditText;
 import com.example.kouveepetshop.API.AppHelper;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.API.VolleyMultipartRequest;
@@ -44,15 +45,18 @@ import org.json.JSONObject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Produk_Edit extends AppCompatActivity {
     private String nama, satuan, kategori;
-    private Integer harga, jmlh, jmlh_min, id, id_jenis;
+    private Integer jmlh, jmlh_min, id, id_jenis;
+    private double harga;
 
-    private EditText nama_text, satuan_text, harga_text, jmlh_text, jmlh_min_text;
+    private EditText nama_text, satuan_text, jmlh_text, jmlh_min_text;
+    private CurrencyEditText harga_text;
     private Spinner kategori_spinner;
 
     private ImageView gambar;
@@ -162,14 +166,16 @@ public class Produk_Edit extends AppCompatActivity {
     private void setText(){
         if (getIntent().hasExtra("nama")) {
             id = getIntent().getIntExtra("id", -1);
-            Log.d("ID", String.valueOf(id));
             nama_text.setText(getIntent().getStringExtra("nama"));
-            harga_text.setText(String.valueOf(getIntent().getIntExtra("harga", 0)));
+
+            DecimalFormat precision = new DecimalFormat("0");
+
+            harga_text.setText(precision.format(getIntent().getDoubleExtra("harga", 0)));
+
             satuan_text.setText(getIntent().getStringExtra("satuan"));
             jmlh_text.setText(String.valueOf(getIntent().getIntExtra("jmlh", 0)));
             jmlh_min_text.setText(String.valueOf(getIntent().getIntExtra("jmlh_min", 0)));
             Picasso.get().load(getIntent().getStringExtra("link_gambar")).into(gambar);
-            Log.d("volley", getIntent().getStringExtra("link_gambar"));
         }
     }
 
@@ -192,7 +198,11 @@ public class Produk_Edit extends AppCompatActivity {
 
         edit = findViewById(R.id.produk_edit_edit);
         delete = findViewById(R.id.produk_edit_delete);
+
         gambar = findViewById(R.id.produk_edit_gambar);
+        gambar.setTag("0");
+
+        harga_text.setCurrencySymbol("Rp", true);
     }
 
     private void getValue(){
@@ -208,7 +218,7 @@ public class Produk_Edit extends AppCompatActivity {
             }
         }
         id_jenis = keterangan.getId();
-        harga = Integer.parseInt(harga_text.getText().toString());
+        harga = harga_text.getNumericValue();
         satuan = satuan_text.getText().toString();
         jmlh = Integer.parseInt(jmlh_text.getText().toString());
         jmlh_min = Integer.parseInt(jmlh_min_text.getText().toString());
@@ -264,8 +274,11 @@ public class Produk_Edit extends AppCompatActivity {
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> request = new HashMap<>();
-                request.put("link_gambar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), gambar.getDrawable()), "image/jpeg"));
-                return request;
+                if (!getIntent().getStringExtra("link_gambar").equals("resource\\/default_produk.png")) {
+                    request.put("link_gambar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), gambar.getDrawable()), "image/jpeg"));
+                    return request;
+                }
+                return null;
             }
         };
         VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(postRequest);
@@ -310,6 +323,7 @@ public class Produk_Edit extends AppCompatActivity {
         decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(bytes.toByteArray()));
 
         //menampilkan gambar yang dipilih dari camera/gallery ke ImageView
+        gambar.setTag("Updated");
         gambar.setImageBitmap(decoded);
     }
 

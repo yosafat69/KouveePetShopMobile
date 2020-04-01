@@ -19,7 +19,10 @@ import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProcessHolder> implements Filterable {
     Context context;
@@ -43,14 +46,18 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
         String link = "http://"+ip+"/rest_api-kouvee-pet-shop-master/";
+
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
+
         final ProdukDAO data = itemFilterd.get(position);
         holder.id = data.id;
         holder.nama.setText(data.nama);
         holder.kategoti.setText(data.kategori);
-        holder.harga.setText(Integer.toString(data.harga));
+        holder.harga.setText(formatRupiah.format(data.harga));
         holder.satuan.setText(data.satuan);
-        holder.jmlh.setText(Integer.toString(data.jmlh));
-        holder.jmlh_min.setText(Integer.toString(data.jmlh_min));
+        holder.jmlh.setText(String.format("%,d",data.jmlh));
+        holder.jmlh_min.setText(String.format("%,d",data.jmlh_min));
 
         final String link_gambar = link + data.link_gambar;
         Picasso.get().load(link_gambar).into(holder.gambar);

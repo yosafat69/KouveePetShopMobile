@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,12 +20,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
+import com.cottacush.android.currencyedittext.CurrencyEditText;
 import com.example.kouveepetshop.API.AppHelper;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.API.VolleyMultipartRequest;
@@ -49,7 +46,8 @@ import java.util.Map;
 
 public class Produk_Tambah extends AppCompatActivity {
     private String nama, satuan;
-    private Integer harga, jumlah, jumlah_minimal, id_jenis;
+    private Integer jumlah, jumlah_minimal, id_jenis;
+    private double harga;
     private final String id_pegawai = "Yosafat9204";
     private ArrayList<String> mItems = new ArrayList<>();
     private ArrayAdapter<String> adapter;
@@ -62,6 +60,9 @@ public class Produk_Tambah extends AppCompatActivity {
     private int PICK_IMAGE_REQUEST = 1;
     private Bitmap bitmap, decoded;
     private int bitmap_size = 60;
+    private CurrencyEditText harga_text;
+    private EditText jumlah_text, jumlah_minimal_text;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,7 @@ public class Produk_Tambah extends AppCompatActivity {
         gambar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 showFileChooser();
             }
         });
@@ -140,8 +142,13 @@ public class Produk_Tambah extends AppCompatActivity {
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> request = new HashMap<>();
-                request.put("link_gambar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), gambar.getDrawable()), "image/jpeg"));
-                return request;
+                Log.d("TAG", (String) gambar.getTag());
+                if (gambar.getTag().equals("Updated")) {
+                    request.put("link_gambar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), gambar.getDrawable()), "image/jpeg"));
+                    Log.d("TAG", "Masuk");
+                    return request;
+                }
+                return null;
             }
         };
         VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(postRequest);
@@ -201,14 +208,18 @@ public class Produk_Tambah extends AppCompatActivity {
         kategori_spinner.setAdapter(adapter);
 
         gambar = findViewById(R.id.produk_tambah_gambar);
+        gambar.setTag("0");
+
+        harga_text = findViewById(R.id.produk_tambah_harga);
+        jumlah_text = findViewById(R.id.produk_tambah_jmlh);
+        jumlah_minimal_text = findViewById(R.id.produk_tambah_jmlh_min);
     }
+
+
 
     private void getValue(){
         EditText nama_text = findViewById(R.id.produk_tambah_nama);
-        EditText harga_text = findViewById(R.id.produk_tambah_harga);
         EditText satuan_text = findViewById(R.id.produk_tambah_satuan);
-        EditText jumlah_text = findViewById(R.id.produk_tambah_jmlh);
-        EditText jumlah_minimal_text = findViewById(R.id.produk_tambah_jmlh_min);
 
         nama = nama_text.getText().toString();
         String jenis = kategori_spinner.getSelectedItem().toString();
@@ -221,7 +232,7 @@ public class Produk_Tambah extends AppCompatActivity {
             }
         }
         id_jenis = keterangan.getId();
-        harga = Integer.parseInt(harga_text.getText().toString());
+        harga = harga_text.getNumericValue();
         satuan = satuan_text.getText().toString();
         jumlah = Integer.parseInt(jumlah_text.getText().toString());
         jumlah_minimal = Integer.parseInt(jumlah_minimal_text.getText().toString());
@@ -241,6 +252,7 @@ public class Produk_Tambah extends AppCompatActivity {
         decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(bytes.toByteArray()));
 
         //menampilkan gambar yang dipilih dari camera/gallery ke ImageView
+        gambar.setTag("Updated");
         gambar.setImageBitmap(decoded);
     }
 

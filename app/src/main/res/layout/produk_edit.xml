@@ -64,7 +64,7 @@
             android:layout_height = "match_parent"/>
     </LinearLayout>
 
-    <EditText
+    <com.cottacush.android.currencyedittext.CurrencyEditText
         android:id="@+id/produk_edit_harga"
         android:layout_width="300dp"
         android:layout_height="45dp"
@@ -82,7 +82,9 @@
         android:textColorHighlight="#FFFFFF"
         android:textColorHint="#FFFFFF"
         android:textColorLink="#FFFFFF"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        app:useCurrencySymbolAsHint="true"
+        app:currencySymbol="Rp"/>
 
     <EditText
         android:id="@+id/produk_edit_satuan"

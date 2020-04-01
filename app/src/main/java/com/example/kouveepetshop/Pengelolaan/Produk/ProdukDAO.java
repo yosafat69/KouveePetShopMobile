@@ -1,7 +1,8 @@
 package com.example.kouveepetshop.Pengelolaan.Produk;
 
 public class ProdukDAO {
-    public Integer id, jmlh_min, jmlh, harga;
+    public Integer id, jmlh_min, jmlh;
+    public double harga;
     public String nama, kategori ,satuan, link_gambar;
 
     public String getNama() {
@@ -20,11 +21,11 @@ public class ProdukDAO {
         this.id = id;
     }
 
-    public Integer getHarga() {
+    public double getHarga() {
         return harga;
     }
 
-    public void setHarga(Integer harga) {
+    public void setHarga(double harga) {
         this.harga = harga;
     }
 
