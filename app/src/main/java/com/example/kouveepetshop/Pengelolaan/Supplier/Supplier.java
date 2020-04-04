@@ -145,7 +145,9 @@ public class Supplier extends AppCompatActivity{
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        GetData();
-        mAdapter.notifyDataSetChanged();
+        if (resultCode == RESULT_OK) {
+            GetData();
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

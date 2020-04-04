@@ -2,6 +2,7 @@ package com.example.kouveepetshop.Pengelolaan.Supplier;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -17,6 +18,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.R;
+import com.example.kouveepetshop.SharedPrefManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,21 +29,28 @@ public class Supplier_Tambah extends AppCompatActivity {
     private String nama, no_telp, alamat, kota;
     private String ip = MainActivity.getIp();
     private Button tambah;
+    private SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.supplier_add);
 
+        sharedPrefManager = new SharedPrefManager(this);
         init();
 
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addSupplier();
-                Intent returnIntent = new Intent();
-                setResult(RESULT_OK,returnIntent);
-                finish();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent returnIntent = new Intent();
+                        setResult(RESULT_OK,returnIntent);
+                        finish();
+                    }
+                }, 500);
             }
         });
     }
@@ -72,12 +81,12 @@ public class Supplier_Tambah extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams()
             {
-                Map<String, String>  request = new HashMap<String, String>();
+                Map<String, String>  request = new HashMap<>();
                 request.put("nama", nama);
                 request.put("no_telp",  String.valueOf(no_telp));
                 request.put("alamat", String.valueOf(alamat));
                 request.put("kota", String.valueOf(kota));
-                request.put("created_by", "Yosafat9204");
+                request.put("created_by", sharedPrefManager.getSpUsername());
                 return request;
             }
         };

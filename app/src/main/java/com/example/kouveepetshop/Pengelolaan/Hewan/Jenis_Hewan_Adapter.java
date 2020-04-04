@@ -1,5 +1,6 @@
 package com.example.kouveepetshop.Pengelolaan.Hewan;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -54,7 +55,7 @@ public class Jenis_Hewan_Adapter extends RecyclerView.Adapter<Jenis_Hewan_Adapte
                     Intent intent = new Intent(mContext, Jenis_Hewan_Edit.class);
                     intent.putExtra("id", data.getId());
                     intent.putExtra("keterangan", data.getKeterangan());
-                    mContext.startActivity(intent);
+                    ((Activity) mContext).startActivityForResult (intent, 1);
                 }
                 else {
                     Toast.makeText(context, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();

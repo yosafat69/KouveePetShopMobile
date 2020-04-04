@@ -1,7 +1,9 @@
 package com.example.kouveepetshop.Pengelolaan.Hewan;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -66,9 +68,14 @@ public class Jenis_Hewan extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (sharedPrefManager.getSpRole().equals("Owner")) {
-                    addProduk();
-                    ambilData();
-                    mAdapter.notifyDataSetChanged();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            addProduk();
+                            ambilData();
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }, 500);
                 }
 
                 else {
@@ -102,7 +109,9 @@ public class Jenis_Hewan extends AppCompatActivity {
 
     private void addProduk(){
         final String jenis = jenis_hewan.getText().toString();
-
+        pd.setMessage("Mengambil Data");
+        pd.setCancelable(false);
+        pd.show();
         RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/JenisHewan";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -112,6 +121,7 @@ public class Jenis_Hewan extends AppCompatActivity {
                     public void onResponse(String response) {
                         // response
                         Log.d("Response", response);
+                        pd.cancel();
                     }
                 },
                 new Response.ErrorListener()
@@ -120,6 +130,7 @@ public class Jenis_Hewan extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         // error
                         Log.d("Error.Response", error.toString());
+                        pd.cancel();
                     }
                 }
         ) {
@@ -128,7 +139,7 @@ public class Jenis_Hewan extends AppCompatActivity {
             {
                 Map<String, String>  request = new HashMap<>();
                 request.put("keterangan", jenis);
-                request.put("created_by", "Yosafat9204");
+                request.put("created_by", sharedPrefManager.getSpUsername());
                 return request;
             }
         };
@@ -186,5 +197,13 @@ public class Jenis_Hewan extends AppCompatActivity {
             }
         });
         Rest_API.getInstance(this).addToRequestQueue(arrayRequest);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            ambilData();
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

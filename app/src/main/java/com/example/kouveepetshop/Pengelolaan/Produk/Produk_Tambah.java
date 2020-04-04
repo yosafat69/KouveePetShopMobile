@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
@@ -31,6 +32,7 @@ import com.example.kouveepetshop.API.VolleySingleton;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.R;
+import com.example.kouveepetshop.SharedPrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,7 +50,6 @@ public class Produk_Tambah extends AppCompatActivity {
     private String nama, satuan;
     private Integer jumlah, jumlah_minimal, id_jenis;
     private double harga;
-    private final String id_pegawai = "Yosafat9204";
     private ArrayList<String> mItems = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private ProgressDialog pd;
@@ -58,10 +59,9 @@ public class Produk_Tambah extends AppCompatActivity {
     private ArrayList<KeteranganDAO> kategori_produk;
     private ImageView gambar;
     private int PICK_IMAGE_REQUEST = 1;
-    private Bitmap bitmap, decoded;
-    private int bitmap_size = 60;
     private CurrencyEditText harga_text;
     private EditText jumlah_text, jumlah_minimal_text;
+    private SharedPrefManager sharedPrefManager;
 
 
     @Override
@@ -77,16 +77,20 @@ public class Produk_Tambah extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addProduk();
-                Intent returnIntent = new Intent();
-                setResult(RESULT_OK,returnIntent);
-                finish();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent returnIntent = new Intent();
+                        setResult(RESULT_OK,returnIntent);
+                        finish();
+                    }
+                }, 1000);
             }
         });
 
         gambar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 showFileChooser();
             }
         });
@@ -105,7 +109,7 @@ public class Produk_Tambah extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(resultResponse);
                     if (jsonObject.getString("error").equals("false")) {
-                        Toast.makeText(Produk_Tambah.this, "Refresh Halaman", Toast.LENGTH_SHORT).show();
+                        Log.i("Produk","Berhasil");
                     }
                     else {
                         Toast.makeText(Produk_Tambah.this, "Error", Toast.LENGTH_SHORT).show();
@@ -128,14 +132,14 @@ public class Produk_Tambah extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams()
             {
-                Map<String, String>  request = new HashMap<String, String>();
+                Map<String, String>  request = new HashMap<>();
                 request.put("nama", nama);
                 request.put("id_kategori_produk",  String.valueOf(id_jenis));
                 request.put("harga", String.valueOf(harga));
                 request.put("satuan", String.valueOf(satuan));
                 request.put("jmlh", String.valueOf(jumlah));
                 request.put("jmlh_min", String.valueOf(jumlah_minimal));
-                request.put("created_by", "Yosafat9204");
+                request.put("created_by", sharedPrefManager.getSpUsername());
                 return request;
             }
 
@@ -202,7 +206,7 @@ public class Produk_Tambah extends AppCompatActivity {
 
         tambah = findViewById(R.id.produk_tambah_add);
 
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,mItems);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,mItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         kategori_spinner = findViewById(R.id.produk_add_spinner);
         kategori_spinner.setAdapter(adapter);
@@ -213,6 +217,7 @@ public class Produk_Tambah extends AppCompatActivity {
         harga_text = findViewById(R.id.produk_tambah_harga);
         jumlah_text = findViewById(R.id.produk_tambah_jmlh);
         jumlah_minimal_text = findViewById(R.id.produk_tambah_jmlh_min);
+        sharedPrefManager = new SharedPrefManager(this);
     }
 
 
@@ -248,8 +253,9 @@ public class Produk_Tambah extends AppCompatActivity {
     private void setToImageView(Bitmap bmp) {
         //compress image
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        int bitmap_size = 60;
         bmp.compress(Bitmap.CompressFormat.JPEG, bitmap_size, bytes);
-        decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(bytes.toByteArray()));
+        Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(bytes.toByteArray()));
 
         //menampilkan gambar yang dipilih dari camera/gallery ke ImageView
         gambar.setTag("Updated");
@@ -264,7 +270,7 @@ public class Produk_Tambah extends AppCompatActivity {
             Uri filePath = data.getData();
             try {
                 //mengambil fambar dari Gallery
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 // 512 adalah resolusi tertinggi setelah image di resize, bisa di ganti.
                 setToImageView(getResizedBitmap(bitmap, 512));
             } catch (IOException e) {

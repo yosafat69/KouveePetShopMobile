@@ -145,7 +145,9 @@ public class Produk extends AppCompatActivity {
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        loadjson();
-        mAdapter.notifyDataSetChanged();
+        if (resultCode == RESULT_OK) {
+            loadjson();
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

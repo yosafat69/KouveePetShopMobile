@@ -1,8 +1,8 @@
 package com.example.kouveepetshop.Pengelolaan.Produk;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +19,6 @@ import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.R;
 import com.squareup.picasso.Picasso;
 
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -74,7 +73,7 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
                 intent.putExtra("jmlh", data.getJmlh());
                 intent.putExtra("jmlh_min", data.getJmlh_min());
                 intent.putExtra("link_gambar", link_gambar);
-                mContext.startActivity (intent);
+                ((Activity) mContext).startActivityForResult (intent, 1);
             }
         });
     }
@@ -119,7 +118,7 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
     public class ViewProcessHolder extends RecyclerView.ViewHolder {
 
         Integer id;
-        TextView kategoti, jmlh_min, jmlh, nama, satuan, link_gambar, harga;
+        TextView kategoti, jmlh_min, jmlh, nama, satuan, harga;
         CardView itemList;
         ImageView gambar;
 

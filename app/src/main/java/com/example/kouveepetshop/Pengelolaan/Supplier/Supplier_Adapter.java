@@ -1,5 +1,6 @@
 package com.example.kouveepetshop.Pengelolaan.Supplier;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -54,7 +55,7 @@ public class Supplier_Adapter extends RecyclerView.Adapter<Supplier_Adapter.View
                 intent.putExtra("alamat", data.getAlamat());
                 intent.putExtra("no_telp", data.getNo_telp());
                 intent.putExtra("kota", data.getKota());
-                mContext.startActivity (intent);
+                ((Activity) mContext).startActivityForResult (intent, 1);
             }
         });
     }

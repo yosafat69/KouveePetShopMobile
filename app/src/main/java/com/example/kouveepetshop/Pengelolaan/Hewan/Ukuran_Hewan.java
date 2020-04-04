@@ -1,7 +1,9 @@
 package com.example.kouveepetshop.Pengelolaan.Hewan;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -65,9 +67,14 @@ public class Ukuran_Hewan extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (sharedPrefManager.getSpRole().equals("Owner")) {
-                    addUkuran();
-                    ambilData();
-                    mAdapter.notifyDataSetChanged();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            addUkuran();
+                            ambilData();
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    }, 500);
                 }
 
                 else {
@@ -165,9 +172,9 @@ public class Ukuran_Hewan extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams()
             {
-                Map<String, String>  request = new HashMap<String, String>();
+                Map<String, String>  request = new HashMap<>();
                 request.put("nama", ukuran);
-                request.put("created_by", "Yosafat9204");
+                request.put("created_by", sharedPrefManager.getSpUsername());
                 return request;
             }
         };
@@ -177,6 +184,7 @@ public class Ukuran_Hewan extends AppCompatActivity {
     private void init()
     {
         pd = new ProgressDialog(this);
+        sharedPrefManager = new SharedPrefManager(this);
         mRecyclerView = findViewById(R.id.recycle_ukuran_hewan);
         mItems = new ArrayList<>();
         mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -187,6 +195,14 @@ public class Ukuran_Hewan extends AppCompatActivity {
         tambah = findViewById(R.id.ukuran_hewan_add);
         cari = findViewById(R.id.ukuran_hewan_search);
         sharedPrefManager = new SharedPrefManager(this);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            ambilData();
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }
 

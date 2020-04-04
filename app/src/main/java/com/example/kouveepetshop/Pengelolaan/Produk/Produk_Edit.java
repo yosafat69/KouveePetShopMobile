@@ -6,15 +6,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
-import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -49,9 +48,10 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Produk_Edit extends AppCompatActivity {
-    private String nama, satuan, kategori;
+    private String nama, satuan;
     private Integer jmlh, jmlh_min, id, id_jenis;
     private double harga;
 
@@ -70,8 +70,6 @@ public class Produk_Edit extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
 
     private int PICK_IMAGE_REQUEST = 1;
-    private int bitmap_size = 60; // range 1 - 100
-    private Bitmap bitmap, decoded;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,9 +85,14 @@ public class Produk_Edit extends AppCompatActivity {
             public void onClick(View v) {
                 editProduk();
 
-                Intent returnIntent = new Intent();
-                setResult(RESULT_OK,returnIntent);
-                finish();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent returnIntent = new Intent();
+                        setResult(RESULT_OK,returnIntent);
+                        finish();
+                    }
+                }, 1000);
             }
         });
 
@@ -98,9 +101,14 @@ public class Produk_Edit extends AppCompatActivity {
             public void onClick(View v) {
                 deleteProduk();
 
-                Intent returnIntent = new Intent();
-                setResult(RESULT_OK,returnIntent);
-                finish();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        Intent returnIntent = new Intent();
+                        setResult(RESULT_OK,returnIntent);
+                        finish();
+                    }
+                }, 1000);
             }
         });
 
@@ -184,7 +192,7 @@ public class Produk_Edit extends AppCompatActivity {
 
         kategori_produk = new ArrayList<>();
         mItems = new ArrayList<>();
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,mItems);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,mItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         kategori_spinner = findViewById(R.id.produk_edit_spinner);
         kategori_spinner.setAdapter(adapter);
@@ -237,7 +245,7 @@ public class Produk_Edit extends AppCompatActivity {
                         try {
                             JSONObject jsonObject = new JSONObject(resultResponse);
                             if (jsonObject.getString("error").equals("false")) {
-                                Toast.makeText(Produk_Edit.this, "Refresh Halaman", Toast.LENGTH_SHORT).show();
+                                Log.i("Berhasil", jsonObject.getString("message"));
                             }
                             else {
                                 Toast.makeText(Produk_Edit.this, "Error", Toast.LENGTH_SHORT).show();
@@ -260,7 +268,7 @@ public class Produk_Edit extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams()
             {
-                Map<String, String>  request = new HashMap<String, String>();
+                Map<String, String>  request = new HashMap<>();
                 request.put("nama", nama);
                 request.put("id_kategori_produk",  String.valueOf(id_jenis));
                 request.put("harga", String.valueOf(harga));
@@ -274,7 +282,7 @@ public class Produk_Edit extends AppCompatActivity {
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> request = new HashMap<>();
-                if (!getIntent().getStringExtra("link_gambar").equals("resource\\/default_produk.png")) {
+                if (!Objects.equals(getIntent().getStringExtra("link_gambar"), "resource\\/default_produk.png")) {
                     request.put("link_gambar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), gambar.getDrawable()), "image/jpeg"));
                     return request;
                 }
@@ -292,7 +300,6 @@ public class Produk_Edit extends AppCompatActivity {
                 {
                     @Override
                     public void onResponse(String response) {
-                        Toast.makeText(Produk_Edit.this, "Refresh Halaman", Toast.LENGTH_SHORT).show();
                         Log.d("Response", response);
                     }
                 },
@@ -308,7 +315,7 @@ public class Produk_Edit extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams()
             {
-                Map<String, String>  request = new HashMap<String, String>();
+                Map<String, String>  request = new HashMap<>();
                 request.put("updated_by", "Yosafat9204");
                 return request;
             }
@@ -319,8 +326,10 @@ public class Produk_Edit extends AppCompatActivity {
     private void setToImageView(Bitmap bmp) {
         //compress image
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        // range 1 - 100
+        int bitmap_size = 60;
         bmp.compress(Bitmap.CompressFormat.JPEG, bitmap_size, bytes);
-        decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(bytes.toByteArray()));
+        Bitmap decoded = BitmapFactory.decodeStream(new ByteArrayInputStream(bytes.toByteArray()));
 
         //menampilkan gambar yang dipilih dari camera/gallery ke ImageView
         gambar.setTag("Updated");
@@ -350,7 +359,7 @@ public class Produk_Edit extends AppCompatActivity {
             Uri filePath = data.getData();
             try {
                 //mengambil fambar dari Gallery
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
                 // 512 adalah resolusi tertinggi setelah image di resize, bisa di ganti.
                 setToImageView(getResizedBitmap(bitmap, 512));
             } catch (IOException e) {
