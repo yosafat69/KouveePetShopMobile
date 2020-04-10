@@ -71,6 +71,8 @@ public class Produk_Edit extends AppCompatActivity {
 
     private int PICK_IMAGE_REQUEST = 1;
 
+    private boolean doubleClickDelete = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,32 +85,48 @@ public class Produk_Edit extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editProduk();
+                if (validasi()) {
+                    editProduk();
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent returnIntent = new Intent();
-                        setResult(RESULT_OK,returnIntent);
-                        finish();
-                    }
-                }, 1000);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 1000);
+                }
             }
         });
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteProduk();
+                if (doubleClickDelete) {
+                    deleteProduk();
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent returnIntent = new Intent();
-                        setResult(RESULT_OK,returnIntent);
-                        finish();
-                    }
-                }, 1000);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 1000);
+                }
+                else {
+                    doubleClickDelete = true;
+                    Toast.makeText(Produk_Edit.this, "Tekan Lagi Untuk Delete", Toast.LENGTH_SHORT).show();
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            doubleClickDelete = false;
+                        }
+                    }, 2000);
+                }
             }
         });
 
@@ -282,11 +300,8 @@ public class Produk_Edit extends AppCompatActivity {
             @Override
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> request = new HashMap<>();
-                if (!Objects.equals(getIntent().getStringExtra("link_gambar"), "resource\\/default_produk.png")) {
-                    request.put("link_gambar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), gambar.getDrawable()), "image/jpeg"));
-                    return request;
-                }
-                return null;
+                request.put("link_gambar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), gambar.getDrawable()), "image/jpeg"));
+                return request;
             }
         };
         VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(postRequest);
@@ -373,5 +388,44 @@ public class Produk_Edit extends AppCompatActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    private boolean validasi() {
+        int cek = 0;
+
+        if (nama_text.getText().toString().equals("")){
+            nama_text.setError("Nama Tidak Boleh Kosong");
+            cek = 1;
+        }
+        else if (nama_text.getText().toString().length() < 3){
+            nama_text.setError("Panjang Nama Minimal 3 Karakter");
+            cek = 1;
+        }
+
+        if (harga_text.getNumericValue() == 0){
+            harga_text.setError("Harga Tidak Boleh Kosong");
+            cek = 1;
+        }
+
+        if (satuan_text.getText().toString().equals("")){
+            satuan_text.setError("Satuan Tidak Boleh Kosong");
+            cek = 1;
+        }
+        else if (satuan_text.getText().toString().length() < 3){
+            satuan_text.setError("Panjang Satuan Minimal 3 Karakter");
+            cek = 1;
+        }
+
+        if (jmlh_text.getText().toString().equals("")){
+            jmlh_text.setError("Jumlah Tidak Boleh Kosong");
+            cek = 1;
+        }
+
+        if (jmlh_min_text.getText().toString().equals("")){
+            jmlh_min_text.setError("Jumlah Minimal Tidak Boleh Kosong");
+            cek = 1;
+        }
+
+        return cek == 0;
     }
 }

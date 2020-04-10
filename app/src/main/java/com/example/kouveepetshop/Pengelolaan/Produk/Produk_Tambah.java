@@ -60,7 +60,7 @@ public class Produk_Tambah extends AppCompatActivity {
     private ImageView gambar;
     private int PICK_IMAGE_REQUEST = 1;
     private CurrencyEditText harga_text;
-    private EditText jumlah_text, jumlah_minimal_text;
+    private EditText jumlah_text, jumlah_minimal_text, nama_text, satuan_text;
     private SharedPrefManager sharedPrefManager;
 
 
@@ -76,15 +76,17 @@ public class Produk_Tambah extends AppCompatActivity {
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addProduk();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent returnIntent = new Intent();
-                        setResult(RESULT_OK,returnIntent);
-                        finish();
-                    }
-                }, 1000);
+                if (validasi()) {
+                    addProduk();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 1000);
+                }
             }
         });
 
@@ -214,6 +216,8 @@ public class Produk_Tambah extends AppCompatActivity {
         gambar = findViewById(R.id.produk_tambah_gambar);
         gambar.setTag("0");
 
+        nama_text = findViewById(R.id.produk_tambah_nama);
+        satuan_text = findViewById(R.id.produk_tambah_satuan);
         harga_text = findViewById(R.id.produk_tambah_harga);
         jumlah_text = findViewById(R.id.produk_tambah_jmlh);
         jumlah_minimal_text = findViewById(R.id.produk_tambah_jmlh_min);
@@ -223,9 +227,6 @@ public class Produk_Tambah extends AppCompatActivity {
 
 
     private void getValue(){
-        EditText nama_text = findViewById(R.id.produk_tambah_nama);
-        EditText satuan_text = findViewById(R.id.produk_tambah_satuan);
-
         nama = nama_text.getText().toString();
         String jenis = kategori_spinner.getSelectedItem().toString();
         KeteranganDAO keterangan = new KeteranganDAO();
@@ -292,5 +293,44 @@ public class Produk_Tambah extends AppCompatActivity {
             width = (int) (height * bitmapRatio);
         }
         return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    private boolean validasi() {
+        int cek = 0;
+
+        if (nama_text.getText().toString().equals("")){
+            nama_text.setError("Nama Tidak Boleh Kosong");
+            cek = 1;
+        }
+        else if (nama_text.getText().toString().length() < 3){
+            nama_text.setError("Panjang Nama Minimal 3 Karakter");
+            cek = 1;
+        }
+
+        if (harga_text.getNumericValue() == 0){
+            harga_text.setError("Harga Tidak Boleh Kosong");
+            cek = 1;
+        }
+
+        if (satuan_text.getText().toString().equals("")){
+            satuan_text.setError("Satuan Tidak Boleh Kosong");
+            cek = 1;
+        }
+        else if (satuan_text.getText().toString().length() < 3){
+            satuan_text.setError("Panjang Satuan Minimal 3 Karakter");
+            cek = 1;
+        }
+
+        if (jumlah_text.getText().toString().equals("")){
+            jumlah_text.setError("Jumlah Tidak Boleh Kosong");
+            cek = 1;
+        }
+
+        if (jumlah_minimal_text.getText().toString().equals("")){
+            jumlah_minimal_text.setError("Jumlah Minimal Tidak Boleh Kosong");
+            cek = 1;
+        }
+
+        return cek == 0;
     }
 }

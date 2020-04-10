@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -34,6 +35,8 @@ public class Jenis_Hewan_Edit extends AppCompatActivity {
     private String ip = MainActivity.getIp();
     private SharedPrefManager sharedPrefManager;
 
+    private boolean doubleClickDelete = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,32 +49,48 @@ public class Jenis_Hewan_Edit extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editJenisHewan();
+                if (validasi()) {
+                    editJenisHewan();
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent returnIntent = new Intent();
-                        setResult(RESULT_OK,returnIntent);
-                        finish();
-                    }
-                }, 500);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 500);
+                }
             }
         });
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteJenisHewan();
+                if (doubleClickDelete) {
+                    deleteJenisHewan();
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent returnIntent = new Intent();
-                        setResult(RESULT_OK,returnIntent);
-                        finish();
-                    }
-                }, 500);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 500);
+                }
+                else {
+                    doubleClickDelete = true;
+                    Toast.makeText(Jenis_Hewan_Edit.this, "Tekan Lagi Untuk Delete", Toast.LENGTH_SHORT).show();
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            doubleClickDelete = false;
+                        }
+                    }, 2000);
+                }
             }
         });
     }
@@ -165,4 +184,23 @@ public class Jenis_Hewan_Edit extends AppCompatActivity {
         sharedPrefManager = new SharedPrefManager(this);
     }
 
+    private boolean validasi() {
+        int cek = 0;
+
+        if (jenis_hewan_text.getText().toString().equals("")) {
+            jenis_hewan_text.setError("Jenis Hewan Tidak Boleh Kosong");
+            cek = 1;
+        }
+        else if (jenis_hewan_text.getText().toString().length() < 3) {
+            jenis_hewan_text.setError("Panjang Jenis Hewan Minimal 3 Karakter");
+            cek = 1;
+        }
+
+        else if (!jenis_hewan_text.getText().toString().matches("[a-zA-Z ]+")) {
+            jenis_hewan_text.setError("Format Jenis Hewan Salah");
+            cek = 1;
+        }
+
+        return cek == 0;
+    }
 }

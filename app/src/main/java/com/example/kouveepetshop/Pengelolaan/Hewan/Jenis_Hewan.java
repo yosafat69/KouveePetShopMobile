@@ -68,14 +68,16 @@ public class Jenis_Hewan extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (sharedPrefManager.getSpRole().equals("Owner")) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            addProduk();
-                            ambilData();
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    }, 500);
+                    if (validasi()) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                addProduk();
+                                ambilData();
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        }, 500);
+                    }
                 }
 
                 else {
@@ -205,5 +207,25 @@ public class Jenis_Hewan extends AppCompatActivity {
             ambilData();
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    private boolean validasi() {
+        int cek = 0;
+
+        if (jenis_hewan.getText().toString().equals("")) {
+            jenis_hewan.setError("Jenis Hewan Tidak Boleh Kosong");
+            cek = 1;
+        }
+        else if (jenis_hewan.getText().toString().length() < 3) {
+            jenis_hewan.setError("Panjang Jenis Hewan Minimal 3 Karakter");
+            cek = 1;
+        }
+
+        else if (!jenis_hewan.getText().toString().matches("[a-zA-Z ]+")) {
+            jenis_hewan.setError("Format Jenis Hewan Salah");
+            cek = 1;
+        }
+
+        return cek == 0;
     }
 }

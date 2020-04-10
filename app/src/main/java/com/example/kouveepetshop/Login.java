@@ -17,7 +17,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -28,7 +27,6 @@ public class Login extends AppCompatActivity {
 
     private String ip = MainActivity.getIp();
 
-    private String username, password;
     private EditText username_text, password_text;
     private Button login;
 
@@ -46,7 +44,9 @@ public class Login extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userLogin();
+                if (validasi()){
+                    userLogin();
+                }
             }
         });
     }
@@ -77,10 +77,9 @@ public class Login extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
-                            JSONObject massage = jsonObject.getJSONObject("message");
-                            Log.d("Username", jsonObject.getString("error"));
-                            if (jsonObject.getString("error").equals("false")) {
 
+                            if (jsonObject.getString("error").equals("false")) {
+                                JSONObject massage = jsonObject.getJSONObject("message");
 
                                 sharedPrefManager.saveSPString(SharedPrefManager.SP_USERNAME,massage.getString("username"));
                                 sharedPrefManager.saveSPString(SharedPrefManager.SP_ROLE,massage.getString("id_role_pegawai"));
@@ -90,7 +89,7 @@ public class Login extends AppCompatActivity {
                                 startActivity(i);
                             }
                             else {
-                                Toast.makeText(Login.this, jsonObject.getString("massage"), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(Login.this, "Username atau Password Tidak Cocok!", Toast.LENGTH_SHORT).show();
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -116,5 +115,20 @@ public class Login extends AppCompatActivity {
             }
         };
         queue.add(postRequest);
+    }
+
+    private boolean validasi() {
+        int cek = 0;
+        if (username_text.getText().toString().equals("")) {
+            username_text.setError("Username Tidak Boleh Kosong");
+            cek = 1;
+        }
+
+        if (password_text.getText().toString().equals("")) {
+            password_text.setError("Password Tidak Boleh Kosong");
+            cek = 1;
+        }
+
+        return cek == 0;
     }
 }
