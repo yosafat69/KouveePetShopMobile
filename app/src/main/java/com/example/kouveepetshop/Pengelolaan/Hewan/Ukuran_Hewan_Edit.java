@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -18,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kouveepetshop.MainActivity;
+import com.example.kouveepetshop.Pengelolaan.Layanan.Jenis_layanan_Edit;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
 
@@ -34,6 +36,8 @@ public class Ukuran_Hewan_Edit extends AppCompatActivity {
     private String ip = MainActivity.getIp();
     private SharedPrefManager sharedPrefManager;
 
+    private boolean doubleClickDelete = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,32 +50,47 @@ public class Ukuran_Hewan_Edit extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editJenisHewan();
+                if (validasi()) {
+                    editJenisHewan();
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent returnIntent = new Intent();
-                        setResult(RESULT_OK,returnIntent);
-                        finish();
-                    }
-                }, 500);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 500);
+                }
             }
         });
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteJenisHewan();
+                if (doubleClickDelete) {
+                    deleteJenisHewan();
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent returnIntent = new Intent();
-                        setResult(RESULT_OK,returnIntent);
-                        finish();
-                    }
-                }, 500);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 500);
+                } else {
+                    doubleClickDelete = true;
+                    Toast.makeText(Ukuran_Hewan_Edit.this, "Tekan Lagi Untuk Delete", Toast.LENGTH_SHORT).show();
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            doubleClickDelete = false;
+                        }
+                    }, 2000);
+                }
             }
         });
     }
@@ -164,5 +183,23 @@ public class Ukuran_Hewan_Edit extends AppCompatActivity {
         delete = findViewById(R.id.ukuran_hewan_delete);
         sharedPrefManager = new SharedPrefManager(this);
     }
+    private boolean validasi() {
+        int cek = 0;
 
+        if (ukuran_hewan_text.getText().toString().equals("")) {
+            ukuran_hewan_text.setError("Jenis Layanan Tidak Boleh Kosong");
+            cek = 1;
+        }
+        else if (ukuran_hewan_text.getText().toString().length() < 3) {
+            ukuran_hewan_text.setError("Panjang Jenis Layanan Minimal 3 Karakter");
+            cek = 1;
+        }
+
+        else if (!ukuran_hewan_text.getText().toString().matches("[a-zA-Z ]+")) {
+            ukuran_hewan_text.setError("Format Jenis Layanan Salah");
+            cek = 1;
+        }
+
+        return cek == 0;
+    }
 }

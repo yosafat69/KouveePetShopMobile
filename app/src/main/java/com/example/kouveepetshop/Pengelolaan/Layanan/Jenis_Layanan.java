@@ -2,6 +2,7 @@ package com.example.kouveepetshop.Pengelolaan.Layanan;
 
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -50,6 +51,7 @@ public class Jenis_Layanan extends AppCompatActivity {
     private Button tambah;
     private SharedPrefManager sharedPrefManager;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,9 +70,16 @@ public class Jenis_Layanan extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (sharedPrefManager.getSpRole().equals("Owner")) {
-                    addjenislayanan();
-                    ambilData();
-                    mAdapter.notifyDataSetChanged();
+                    if (validasi()) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                addjenislayanan();
+                                ambilData();
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        }, 500);
+                    }
                 }
 
                 else {
@@ -192,5 +201,25 @@ public class Jenis_Layanan extends AppCompatActivity {
         tambah = findViewById(R.id.jenis_layanan_add);
         cari = findViewById(R.id.jenis_layanan_search);
         sharedPrefManager = new SharedPrefManager(this);
+    }
+
+    private boolean validasi() {
+        int cek = 0;
+
+        if (jenis_layanan.getText().toString().equals("")) {
+            jenis_layanan.setError("Jenis Layanan Tidak Boleh Kosong");
+            cek = 1;
+        }
+        else if (jenis_layanan.getText().toString().length() < 3) {
+            jenis_layanan.setError("Panjang Jenis Layanan Minimal 3 Karakter");
+            cek = 1;
+        }
+
+        else if (!jenis_layanan.getText().toString().matches("[a-zA-Z ]+")) {
+            jenis_layanan.setError("Format Jenis Layanan Salah");
+            cek = 1;
+        }
+
+        return cek == 0;
     }
 }

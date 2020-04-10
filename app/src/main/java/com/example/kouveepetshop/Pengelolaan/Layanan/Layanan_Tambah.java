@@ -26,6 +26,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cottacush.android.currencyedittext.CurrencyEditText;
 import com.example.kouveepetshop.API.AppHelper;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.API.VolleyMultipartRequest;
@@ -49,7 +50,8 @@ import java.util.Map;
 public class Layanan_Tambah extends AppCompatActivity {
 
 
-    private Integer harga,id_ukuran,id_nama;
+    private Integer id_ukuran,id_nama;
+    private double harga;
     private final String id_pegawai = "Yosafat9204";
     private ArrayList<String> mItems = new ArrayList<>();
     private ArrayList<String> mUkuran = new ArrayList<>();
@@ -58,6 +60,7 @@ public class Layanan_Tambah extends AppCompatActivity {
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
     private Spinner nama_spinner,ukuran_spinner;
+    private CurrencyEditText harga_text;
     private ArrayList<KeteranganDAO> nama_layanan;
     private ArrayList<KeteranganDAO> ukuran_layanan;
     private ImageView gambar;
@@ -78,10 +81,12 @@ public class Layanan_Tambah extends AppCompatActivity {
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addLayanan();
-                Intent returnIntent = new Intent();
-                setResult(RESULT_OK,returnIntent);
-                finish();
+                if (validasi()) {
+                    addLayanan();
+                    Intent returnIntent = new Intent();
+                    setResult(RESULT_OK, returnIntent);
+                    finish();
+                }
             }
         });
 
@@ -226,7 +231,6 @@ public class Layanan_Tambah extends AppCompatActivity {
     }
 
     private void getValue(){
-        EditText harga_text = findViewById(R.id.layanan_tambah_harga);
         String Nama = nama_spinner.getSelectedItem().toString();
         String Ukuran = ukuran_spinner.getSelectedItem().toString();
         KeteranganDAO nama = new KeteranganDAO();
@@ -245,8 +249,7 @@ public class Layanan_Tambah extends AppCompatActivity {
         }
         id_nama= nama.getId();
         id_ukuran= ukuran.getId();
-        harga = Integer.parseInt(harga_text.getText().toString());
-
+        harga = harga_text.getNumericValue();
     }
 
     private void init ()
@@ -256,10 +259,8 @@ public class Layanan_Tambah extends AppCompatActivity {
         mUkuran = new ArrayList<>();
         nama_layanan = new ArrayList<>();
         ukuran_layanan = new ArrayList<>();
-
+        harga_text = findViewById(R.id.layanan_tambah_harga);
         tambah = findViewById(R.id.layanan_tambah_add);
-
-
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,mItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         adapterUkuran = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,mUkuran);
@@ -318,5 +319,15 @@ public class Layanan_Tambah extends AppCompatActivity {
             width = (int) (height * bitmapRatio);
         }
         return Bitmap.createScaledBitmap(image, width, height, true);
+    }
+
+    private boolean validasi() {
+        int cek = 0;
+
+        if (harga_text.getNumericValue() == 0){
+            harga_text.setError("Harga Tidak Boleh Kosong");
+            cek = 1;
+        }
+        return cek == 0;
     }
 }

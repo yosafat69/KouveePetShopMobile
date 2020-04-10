@@ -67,14 +67,16 @@ public class Ukuran_Hewan extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (sharedPrefManager.getSpRole().equals("Owner")) {
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            addUkuran();
-                            ambilData();
-                            mAdapter.notifyDataSetChanged();
-                        }
-                    }, 500);
+                    if (validasi()) {
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                addUkuran();
+                                ambilData();
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        }, 500);
+                    }
                 }
 
                 else {
@@ -203,6 +205,26 @@ public class Ukuran_Hewan extends AppCompatActivity {
             ambilData();
             mAdapter.notifyDataSetChanged();
         }
+    }
+
+    private boolean validasi() {
+        int cek = 0;
+
+        if (ukuran_hewan.getText().toString().equals("")) {
+            ukuran_hewan.setError("Jenis Layanan Tidak Boleh Kosong");
+            cek = 1;
+        }
+        else if (ukuran_hewan.getText().toString().length() < 3) {
+            ukuran_hewan.setError("Panjang Jenis Layanan Minimal 3 Karakter");
+            cek = 1;
+        }
+
+        else if (!ukuran_hewan.getText().toString().matches("[a-zA-Z ]+")) {
+            ukuran_hewan.setError("Format Jenis Layanan Salah");
+            cek = 1;
+        }
+
+        return cek == 0;
     }
 }
 

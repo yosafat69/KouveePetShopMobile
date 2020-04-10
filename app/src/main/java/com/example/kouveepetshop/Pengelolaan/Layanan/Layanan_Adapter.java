@@ -20,7 +20,9 @@ import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
 import com.squareup.picasso.Picasso;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewProcessHolder> {
     Context context;
@@ -45,11 +47,14 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
         String link = "http://"+ip+"/rest_api-kouvee-pet-shop-master/";
+
+        Locale localeID = new Locale("in", "ID");
+        NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
         final LayananDAO data = itemFilterd.get(position);
         holder.id = data.id;
         holder.nama.setText(data.keterangan);
         holder.ukuran.setText(data.ukuran);
-        holder.harga.setText(Integer.toString(data.harga));
+        holder.harga.setText(formatRupiah.format(data.harga));
 
         final String url_gambar = link + data.gambar;
         Picasso.get().load(url_gambar).into(holder.gambar);

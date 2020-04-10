@@ -1,10 +1,11 @@
 package com.example.kouveepetshop.Pengelolaan.Layanan;
 
 public class LayananDAO {
-    public Integer id, harga;
+    public Integer id;
+    public double harga;
     public String keterangan, ukuran, gambar;
 
-    public Integer getHarga() {
+    public double getHarga() {
         return harga;
     }
 
@@ -24,9 +25,7 @@ public class LayananDAO {
         return ukuran;
     }
 
-    public void setHarga(Integer harga) {
-        this.harga = harga;
-    }
+    public void setHarga(double harga) { this.harga = harga; }
 
     public void setId(Integer id) {
         this.id = id;

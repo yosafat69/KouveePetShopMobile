@@ -1,17 +1,18 @@
 package com.example.kouveepetshop.Pengelolaan.Layanan;
 
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -26,6 +27,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.cottacush.android.currencyedittext.CurrencyEditText;
 import com.example.kouveepetshop.API.AppHelper;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.API.VolleyMultipartRequest;
@@ -42,19 +44,19 @@ import org.json.JSONObject;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Layanan_Edit extends AppCompatActivity {
 
-    String nama,ukuran;
-    Integer harga,id_nama,id,id_ukuran;
-    EditText harga_text;
+    Integer id_nama,id,id_ukuran;
+    private double harga;
     Spinner nama_spinner,ukuran_spinner;
     private ImageView gambar;
     Button edit, delete;
-
+    private CurrencyEditText harga_text;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
 
@@ -64,6 +66,8 @@ public class Layanan_Edit extends AppCompatActivity {
     private ArrayList<KeteranganDAO> ukuran_layanan;
     private ArrayAdapter<String> adapter;
     private ArrayAdapter<String> adapterUkuran;
+
+    private boolean doubleClickDelete = false;
 
     private int PICK_IMAGE_REQUEST = 1;
     private int bitmap_size = 60; // range 1 - 100
@@ -82,23 +86,48 @@ public class Layanan_Edit extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editlayanan();
+                if (validasi()) {
+                    editlayanan();
 
-                //Supaya dia balik ke halaman sebelumnya kalau udah selesai edit
-                Intent returnIntent = new Intent();
-                setResult(RESULT_OK,returnIntent);
-                finish();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 1000);
+                }
             }
         });
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deletlayanan();
+                if (doubleClickDelete) {
+                    deletlayanan();
 
-                Intent returnIntent = new Intent();
-                setResult(RESULT_OK,returnIntent);
-                finish();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 1000);
+                }
+                else {
+                    doubleClickDelete = true;
+                    Toast.makeText(Layanan_Edit.this, "Tekan Lagi Untuk Delete", Toast.LENGTH_SHORT).show();
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            doubleClickDelete = false;
+                        }
+                    }, 2000);
+                }
             }
         });
 
@@ -218,7 +247,8 @@ public class Layanan_Edit extends AppCompatActivity {
         if (getIntent().hasExtra("nama")) {
             id = getIntent().getIntExtra("id", -1);
             Log.d("ID", String.valueOf(id));
-            harga_text.setText(String.valueOf(getIntent().getIntExtra("harga", 0)));
+            DecimalFormat precision = new DecimalFormat("0");
+            harga_text.setText(precision.format(getIntent().getDoubleExtra("harga", 0)));
             Picasso.get().load(getIntent().getStringExtra("url_gambar")).into(gambar);
             Log.d("volley", getIntent().getStringExtra("url_gambar"));
         }
@@ -244,6 +274,7 @@ public class Layanan_Edit extends AppCompatActivity {
         edit = findViewById(R.id.layanan_edit_edit);
         delete = findViewById(R.id.layanan_edit_delete);
         gambar = findViewById(R.id.layanan_edit_gambar);
+        harga_text.setCurrencySymbol("Rp", true);
     }
 
     //Ngambil Data dari Edit Text
@@ -269,14 +300,13 @@ public class Layanan_Edit extends AppCompatActivity {
         }
         id_ukuran= keterangan.getId();
         gambar = findViewById(R.id.layanan_edit_gambar);
-        harga = Integer.parseInt(harga_text.getText().toString());
+        harga = harga_text.getNumericValue();
 
     }
 
     private void editlayanan(){
         getValue();
 
-        RequestQueue queue = Volley.newRequestQueue(this);
         String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Layanan/"+ id;
         VolleyMultipartRequest postRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>()
         {
@@ -406,5 +436,19 @@ public class Layanan_Edit extends AppCompatActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+    }
+
+    private boolean validasi() {
+        int cek = 0;
+
+
+        if (harga_text.getNumericValue() == 0){
+            harga_text.setError("Harga Tidak Boleh Kosong");
+            cek = 1;
+        }
+
+
+
+        return cek == 0;
     }
 }

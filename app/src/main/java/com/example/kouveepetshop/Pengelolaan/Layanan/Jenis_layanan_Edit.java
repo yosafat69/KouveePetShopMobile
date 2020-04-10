@@ -3,10 +3,12 @@ package com.example.kouveepetshop.Pengelolaan.Layanan;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,6 +19,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kouveepetshop.MainActivity;
+import com.example.kouveepetshop.Pengelolaan.Hewan.Jenis_Hewan_Edit;
 import com.example.kouveepetshop.R;
 
 import java.util.HashMap;
@@ -32,6 +35,8 @@ public class Jenis_layanan_Edit extends AppCompatActivity {
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
 
+    private boolean doubleClickDelete = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,25 +49,49 @@ public class Jenis_layanan_Edit extends AppCompatActivity {
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editJenisLayanan();
-
-                Intent returnIntent = new Intent();
-                setResult(RESULT_OK,returnIntent);
-                finish();
+                if (validasi()) {
+                    editJenisLayanan();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 500);
+                }
             }
         });
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteJenisLayanan();
+                if (doubleClickDelete) {
+                    deleteJenisLayanan();
 
-                Intent returnIntent = new Intent();
-                setResult(RESULT_OK,returnIntent);
-                finish();
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 500);
+                } else {
+                    doubleClickDelete = true;
+                    Toast.makeText(Jenis_layanan_Edit.this, "Tekan Lagi Untuk Delete", Toast.LENGTH_SHORT).show();
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            doubleClickDelete = false;
+                        }
+                    }, 2000);
+                }
             }
         });
-    }
+        }
 
     private void editJenisLayanan(){
         jenis_layanan = jenis_layanan_text.getText().toString();
@@ -150,5 +179,25 @@ public class Jenis_layanan_Edit extends AppCompatActivity {
         jenis_layanan_text = findViewById(R.id.jenis_layanan_edit_jenis);
         edit = findViewById(R.id.jenis_layanan_edit);
         delete = findViewById(R.id.jenis_layanan_delete);
+    }
+
+    private boolean validasi() {
+        int cek = 0;
+
+        if (jenis_layanan_text.getText().toString().equals("")) {
+            jenis_layanan_text.setError("Jenis Layanan Tidak Boleh Kosong");
+            cek = 1;
+        }
+        else if (jenis_layanan_text.getText().toString().length() < 3) {
+            jenis_layanan_text.setError("Panjang Jenis Layanan Minimal 3 Karakter");
+            cek = 1;
+        }
+
+        else if (!jenis_layanan_text.getText().toString().matches("[a-zA-Z ]+")) {
+            jenis_layanan_text.setError("Format Jenis Layanan Salah");
+            cek = 1;
+        }
+
+        return cek == 0;
     }
 }
