@@ -35,6 +35,7 @@ import com.example.kouveepetshop.API.VolleySingleton;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.R;
+import com.example.kouveepetshop.SharedPrefManager;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -48,7 +49,6 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class Produk_Edit extends AppCompatActivity {
     private String nama, satuan;
@@ -64,6 +64,7 @@ public class Produk_Edit extends AppCompatActivity {
 
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
 
     private ArrayList<String> mItems = new ArrayList<>();
     private ArrayList<KeteranganDAO> kategori_produk;
@@ -72,6 +73,8 @@ public class Produk_Edit extends AppCompatActivity {
     private int PICK_IMAGE_REQUEST = 1;
 
     private boolean doubleClickDelete = false;
+
+    private SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +90,6 @@ public class Produk_Edit extends AppCompatActivity {
             public void onClick(View v) {
                 if (validasi()) {
                     editProduk();
-
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -142,7 +144,7 @@ public class Produk_Edit extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/KategoriProduk/";
+        String url = ip + this.url + "index.php/KategoriProduk/";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -229,6 +231,7 @@ public class Produk_Edit extends AppCompatActivity {
         gambar.setTag("0");
 
         harga_text.setCurrencySymbol("Rp", true);
+        sharedPrefManager = new SharedPrefManager(this);
     }
 
     private void getValue(){
@@ -253,7 +256,7 @@ public class Produk_Edit extends AppCompatActivity {
     private void editProduk(){
         getValue();
 
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Produk/"+ id;
+        String url = ip + this.url + "index.php/Produk/"+ id;
         VolleyMultipartRequest postRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>()
                 {
                     @Override
@@ -293,15 +296,20 @@ public class Produk_Edit extends AppCompatActivity {
                 request.put("satuan", String.valueOf(satuan));
                 request.put("jmlh", String.valueOf(jmlh));
                 request.put("jmlh_min", String.valueOf(jmlh_min));
-                request.put("updated_by", "Yosafat9204");
+                request.put("updated_by", sharedPrefManager.getSpUsername());
                 return request;
             }
 
             @Override
             protected Map<String, DataPart> getByteData() {
-                Map<String, DataPart> request = new HashMap<>();
-                request.put("link_gambar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), gambar.getDrawable()), "image/jpeg"));
-                return request;
+                if (gambar.getTag().equals("Updated")) {
+                    Map<String, DataPart> request = new HashMap<>();
+                    request.put("link_gambar", new DataPart("file_avatar.jpg", AppHelper.getFileDataFromDrawable(getBaseContext(), gambar.getDrawable()), "image/jpeg"));
+                    return request;
+                }
+                else {
+                    return null;
+                }
             }
         };
         VolleySingleton.getInstance(getBaseContext()).addToRequestQueue(postRequest);
@@ -309,7 +317,7 @@ public class Produk_Edit extends AppCompatActivity {
 
     private void deleteProduk(){
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Produk/delete/"+ id;
+        String url = ip + this.url + "index.php/Produk/delete/"+ id;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -331,7 +339,7 @@ public class Produk_Edit extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String>  request = new HashMap<>();
-                request.put("updated_by", "Yosafat9204");
+                request.put("updated_by", sharedPrefManager.getSpUsername());
                 return request;
             }
         };

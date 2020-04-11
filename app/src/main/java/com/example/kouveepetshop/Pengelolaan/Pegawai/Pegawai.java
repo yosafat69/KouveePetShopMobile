@@ -1,21 +1,22 @@
-package com.example.kouveepetshop.Pengelolaan.Layanan;
+package com.example.kouveepetshop.Pengelolaan.Pegawai;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -26,11 +27,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.MainActivity;
-import com.example.kouveepetshop.Pengelolaan.Produk.Produk;
-import com.example.kouveepetshop.Pengelolaan.Produk.Produk_Adapter;
-import com.example.kouveepetshop.Pengelolaan.Produk.Produk_Tambah;
 import com.example.kouveepetshop.R;
-import com.example.kouveepetshop.SharedPrefManager;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -38,54 +35,43 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class Layanan extends AppCompatActivity {
+public class Pegawai extends AppCompatActivity{
+    private EditText cari;
+    private ImageView tambah;
 
-    private Layanan_Adapter mAdapter;
-    private ArrayList<LayananDAO> mItems;
+    private Pegawai_Adapter mAdapter;
+    private ArrayList<PegawaiDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
-    RecyclerView mRecyclerView;
-    RecyclerView.LayoutManager mManager;
-    ImageView tambah;
-    private EditText cari;
-    private SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layanan);
-        final PullRefreshLayout layout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        setContentView(R.layout.pegawai);
+        final PullRefreshLayout layout = findViewById(R.id.swipeRefreshLayout);
 
         init();
 
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (sharedPrefManager.getSpRole().equals("Owner")) {
-                    Intent i = new Intent(Layanan.this, Layanan_Tambah.class);
-                    startActivityForResult(i,1);
-                }
-
-                else {
-                    Toast.makeText(Layanan.this, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
-                }
-
+                Intent i = new Intent(Pegawai.this, Pegawai_Tambah.class);
+                startActivityForResult(i,1);
             }
         });
-
 
         layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mItems.clear();
                 cari.setText("");
-                loadjson();
+                GetData();
                 layout.setRefreshing(false);
             }
         });
 
-        loadjson();
+        GetData();
 
         cari.addTextChangedListener(new TextWatcher() {
             @Override
@@ -95,30 +81,18 @@ public class Layanan extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start, int before, int count) {}
 
             @Override
-            public void afterTextChanged(Editable s) { mAdapter.getFilter().filter(s); }
+            public void afterTextChanged(Editable s) {
+                mAdapter.getFilter().filter(s);
+            }
         });
-
     }
 
-    private void init(){
-        pd = new ProgressDialog(this);
-        mRecyclerView = findViewById(R.id.recycle_layanan);
-        mItems = new ArrayList<>();
-        mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mManager);
-        mAdapter = new Layanan_Adapter(this,mItems);
-        mRecyclerView.setAdapter(mAdapter);
-        tambah = findViewById(R.id.layanan_add);
-        cari = findViewById(R.id.layanan_search);
-        sharedPrefManager = new SharedPrefManager(this);
-    }
-
-    private void loadjson(){
+    private void GetData(){
         mItems.clear();
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = ip+ this.url+ "index.php/Layanan/";
+        String url = ip + this.url + "index.php/Pegawai/";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -127,22 +101,23 @@ public class Layanan extends AppCompatActivity {
 
                 try {
                     JSONArray massage = response.getJSONArray("message");
-
                     for (int i = massage.length()-1; i > -1 ; i--){
                         JSONObject massageDetail = massage.getJSONObject(i);
-                        LayananDAO layanan = new LayananDAO();
-                        layanan.setId(massageDetail.getInt("id"));
-                        layanan.setKeterangan(massageDetail.getString("id_layanan"));
-                        layanan.setUkuran(massageDetail.getString("id_ukuran_hewan"));
-                        layanan.setHarga(massageDetail.getInt("harga"));
-                        layanan.setGambar(massageDetail.getString("url_gambar"));
-                        mItems.add(layanan);
+                        PegawaiDAO pegawai = new PegawaiDAO();
+                        pegawai.setId(massageDetail.getInt("id"));
+                        pegawai.setNama(massageDetail.getString("nama"));
+                        pegawai.setNo_telp(massageDetail.getString("no_telp"));
+                        pegawai.setAlamat(massageDetail.getString("alamat"));
+                        pegawai.setTanggal_lahir(massageDetail.getString("tanggal_lahir"));
+                        pegawai.setRole(massageDetail.getString("id_role_pegawai"));
+                        pegawai.setUsername(massageDetail.getString("username"));
+                        mItems.add(pegawai);
                     }
-                    pd.cancel();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 mAdapter.notifyDataSetChanged();
+                pd.cancel();
             }
         }, new Response.ErrorListener(){
 
@@ -154,9 +129,24 @@ public class Layanan extends AppCompatActivity {
         });
         Rest_API.getInstance(this).addToRequestQueue(arrayRequest);
     }
+
+    private void init(){
+        pd = new ProgressDialog(this);
+        RecyclerView mRecyclerView = findViewById(R.id.recycle_pegawai);
+        mItems = new ArrayList<>();
+        RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mManager);
+        mAdapter = new Pegawai_Adapter(this, mItems);
+        mRecyclerView.setAdapter(mAdapter);
+        tambah = findViewById(R.id.pegawai_add);
+        cari = findViewById(R.id.pegawai_search);
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        loadjson();
-        mAdapter.notifyDataSetChanged();
+        if (resultCode == RESULT_OK) {
+            GetData();
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

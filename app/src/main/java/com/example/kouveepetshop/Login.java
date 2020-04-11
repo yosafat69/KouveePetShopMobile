@@ -26,6 +26,7 @@ import java.util.Map;
 public class Login extends AppCompatActivity {
 
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
 
     private EditText username_text, password_text;
     private Button login;
@@ -69,7 +70,7 @@ public class Login extends AppCompatActivity {
         final String username = username_text.getText().toString();
         final String password = password_text.getText().toString();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Pegawai/login";
+        String url = ip + this.url +"index.php/Pegawai/login";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {

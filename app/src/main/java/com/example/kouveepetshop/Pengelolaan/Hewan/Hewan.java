@@ -29,6 +29,7 @@ public class Hewan extends AppCompatActivity {
     private ArrayList<HewanDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +62,7 @@ public class Hewan extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://"+ip+"/rest_api-kouvee-pet-shop-master/index.php/Hewan/";
+        String url = ip + this.url + "index.php/Hewan/";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

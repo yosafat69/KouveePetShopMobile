@@ -58,7 +58,9 @@ public class Layanan_Edit extends AppCompatActivity {
     Button edit, delete;
     private CurrencyEditText harga_text;
     private ProgressDialog pd;
+
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
 
     private ArrayList<String> mItems = new ArrayList<>();
     private ArrayList<String> mUkuran = new ArrayList<>();
@@ -144,7 +146,7 @@ public class Layanan_Edit extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan/";
+        String url = ip + this.url + "index.php/jenislayanan/";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -195,7 +197,7 @@ public class Layanan_Edit extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/ukuranhewan/";
+        String url = ip + this.url + "index.php/ukuranhewan/";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -307,7 +309,7 @@ public class Layanan_Edit extends AppCompatActivity {
     private void editlayanan(){
         getValue();
 
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Layanan/"+ id;
+        String url = ip + this.url + "index.php/Layanan/"+ id;
         VolleyMultipartRequest postRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>()
         {
             @Override
@@ -359,7 +361,7 @@ public class Layanan_Edit extends AppCompatActivity {
 
     private void deletlayanan(){
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Layanan/delete/"+ id;
+        String url = ip + this.url + "index.php/Layanan/delete/"+ id;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {

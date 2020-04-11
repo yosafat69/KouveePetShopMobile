@@ -110,5 +110,14 @@ public class Pengelolaan extends AppCompatActivity {
                 startActivity(i);
             }
         });
+
+        ImageView Pegawai = findViewById(R.id.menu_pegawai);
+        Pegawai.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(Pengelolaan.this, com.example.kouveepetshop.Pengelolaan.Pegawai.Pegawai.class);
+                startActivity(i);
+            }
+        });
     }
 }

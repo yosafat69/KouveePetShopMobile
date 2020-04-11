@@ -30,6 +30,7 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
     private Context mContext;
     private SharedPrefManager sharedPrefManager;
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
 
     public Layanan_Adapter(Context context, ArrayList<LayananDAO> item) {
         this.context = context;
@@ -46,7 +47,7 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
 
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
-        String link = "http://"+ip+"/rest_api-kouvee-pet-shop-master/";
+        String link = ip + this.url;
 
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);

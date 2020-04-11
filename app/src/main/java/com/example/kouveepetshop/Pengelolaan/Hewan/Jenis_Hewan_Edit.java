@@ -33,6 +33,7 @@ public class Jenis_Hewan_Edit extends AppCompatActivity {
 
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
     private SharedPrefManager sharedPrefManager;
 
     private boolean doubleClickDelete = false;
@@ -98,7 +99,7 @@ public class Jenis_Hewan_Edit extends AppCompatActivity {
     private void editJenisHewan(){
         jenis_hewan = jenis_hewan_text.getText().toString();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/JenisHewan/"+ id;
+        String url = ip + this.url + "index.php/JenisHewan/"+ id;
 
         Log.d("URL", url);
         Log.d("ID", String.valueOf(id));
@@ -135,7 +136,7 @@ public class Jenis_Hewan_Edit extends AppCompatActivity {
 
     private void deleteJenisHewan(){
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/JenisHewan/delete/"+ id;
+        String url = ip + this.url + "index.php/JenisHewan/delete/"+ id;
 
         Log.d("URL", url);
         Log.d("ID", String.valueOf(id));

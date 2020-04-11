@@ -28,6 +28,7 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
     private ArrayList<ProdukDAO> item, itemFilterd;
     private Context mContext;
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
 
     public Produk_Adapter(Context context, ArrayList<ProdukDAO> item) {
         this.context = context;
@@ -44,7 +45,7 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
 
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
-        String link = "http://"+ip+"/rest_api-kouvee-pet-shop-master/";
+        String link = ip + url;
 
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
@@ -94,7 +95,7 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
                 } else {
                     ArrayList<ProdukDAO> filteredList = new ArrayList<>();
                     for (ProdukDAO row : item) {
-                        if (row.getNama().toLowerCase().contains(charString.toLowerCase()) || row.getKategori().contains(charSequence)) {
+                        if (row.getNama().toLowerCase().contains(charString.toLowerCase()) || row.getKategori().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }

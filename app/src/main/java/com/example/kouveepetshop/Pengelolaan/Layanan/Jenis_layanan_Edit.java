@@ -34,6 +34,7 @@ public class Jenis_layanan_Edit extends AppCompatActivity {
 
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
 
     private boolean doubleClickDelete = false;
 
@@ -96,7 +97,7 @@ public class Jenis_layanan_Edit extends AppCompatActivity {
     private void editJenisLayanan(){
         jenis_layanan = jenis_layanan_text.getText().toString();
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan/"+ id;
+        String url = ip + this.url + "index.php/jenislayanan/"+ id;
 
         Log.d("URL", url);
         Log.d("ID", String.valueOf(id));
@@ -133,7 +134,7 @@ public class Jenis_layanan_Edit extends AppCompatActivity {
 
     private void deleteJenisLayanan(){
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan/delete/"+ id;
+        String url = ip + this.url + "index.php/jenislayanan/delete/"+ id;
 
         Log.d("URL", url);
         Log.d("ID", String.valueOf(id));

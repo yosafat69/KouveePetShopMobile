@@ -44,6 +44,7 @@ public class Ukuran_Hewan extends AppCompatActivity {
     private ArrayList<KeteranganDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
     private RecyclerView.LayoutManager mManager;
     private RecyclerView mRecyclerView;
     private EditText ukuran_hewan, cari;
@@ -114,7 +115,7 @@ public class Ukuran_Hewan extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Ukuranhewan";
+        String url = ip + this.url + "index.php/Ukuranhewan";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -152,7 +153,7 @@ public class Ukuran_Hewan extends AppCompatActivity {
         final String ukuran = ukuran_hewan.getText().toString();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Ukuranhewan";
+        String url = ip + this.url + "index.php/Ukuranhewan";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {

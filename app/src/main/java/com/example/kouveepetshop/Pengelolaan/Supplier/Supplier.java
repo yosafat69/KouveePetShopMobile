@@ -36,10 +36,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class Supplier extends AppCompatActivity{
-    private String nama, no_telp, alamat, kota;
     private EditText cari;
     private ImageView tambah;
-    private SearchView searchView;
 
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mManager;
@@ -47,6 +45,7 @@ public class Supplier extends AppCompatActivity{
     private ArrayList<SupplierDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,7 +94,7 @@ public class Supplier extends AppCompatActivity{
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://"+ip+"/rest_api-kouvee-pet-shop-master/index.php/Supplier/";
+        String url = ip + this.url + "index.php/Supplier/";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

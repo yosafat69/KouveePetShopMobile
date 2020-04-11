@@ -32,6 +32,7 @@ public class Supplier_Edit extends AppCompatActivity {
     private String nama, no_telp, alamat, kota;
 
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
 
     private SharedPrefManager sharedPrefManager;
 
@@ -41,7 +42,7 @@ public class Supplier_Edit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.supplier_edit);
-        sharedPrefManager = new SharedPrefManager(this);
+
         init();
 
         setText();
@@ -99,7 +100,7 @@ public class Supplier_Edit extends AppCompatActivity {
         getValue();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Supplier/"+ id;
+        String url = ip + this.url +"index.php/Supplier/"+ id;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -135,7 +136,7 @@ public class Supplier_Edit extends AppCompatActivity {
 
     private void deleteSupplier(){
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Supplier/delete/"+ id;
+        String url = ip + this.url +"index.php/Supplier/delete/"+ id;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -183,6 +184,7 @@ public class Supplier_Edit extends AppCompatActivity {
     }
 
     private void init() {
+        sharedPrefManager = new SharedPrefManager(this);
         nama_text       = findViewById(R.id.supplier_edit_nama);
         no_telp_text    = findViewById(R.id.supplier_edit_no_telp);
         alamat_text     = findViewById(R.id.supplier_edit_alamat);

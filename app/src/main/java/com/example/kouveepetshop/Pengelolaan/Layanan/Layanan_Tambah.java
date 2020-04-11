@@ -59,6 +59,7 @@ public class Layanan_Tambah extends AppCompatActivity {
     private ArrayAdapter<String> adapterUkuran;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
     private Spinner nama_spinner,ukuran_spinner;
     private CurrencyEditText harga_text;
     private ArrayList<KeteranganDAO> nama_layanan;
@@ -102,7 +103,7 @@ public class Layanan_Tambah extends AppCompatActivity {
         getValue();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Layanan";
+        String url = ip + this.url + "index.php/Layanan";
         VolleyMultipartRequest postRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
@@ -152,7 +153,7 @@ public class Layanan_Tambah extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/jenislayanan";
+        String url = ip + this.url + "index.php/jenislayanan";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -193,7 +194,7 @@ public class Layanan_Tambah extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Ukuranhewan";
+        String url = ip + this.url + "index.php/Ukuranhewan";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

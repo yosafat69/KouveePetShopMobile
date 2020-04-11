@@ -28,6 +28,7 @@ public class Supplier_Tambah extends AppCompatActivity {
 
     private String nama, no_telp, alamat, kota;
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
     private Button tambah;
     private SharedPrefManager sharedPrefManager;
     private EditText nama_text, no_telp_text, alamat_text, kota_text;
@@ -62,7 +63,7 @@ public class Supplier_Tambah extends AppCompatActivity {
         getValue();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Supplier";
+        String url = ip + this.url +"index.php/Supplier";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {

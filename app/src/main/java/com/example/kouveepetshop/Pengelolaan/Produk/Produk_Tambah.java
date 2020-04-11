@@ -53,7 +53,10 @@ public class Produk_Tambah extends AppCompatActivity {
     private ArrayList<String> mItems = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private ProgressDialog pd;
+
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
+
     private Spinner kategori_spinner;
     private Button tambah;
     private ArrayList<KeteranganDAO> kategori_produk;
@@ -101,7 +104,7 @@ public class Produk_Tambah extends AppCompatActivity {
     private void addProduk(){
         getValue();
 
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/Produk/";
+        String url = ip + this.url +"index.php/Produk/";
         VolleyMultipartRequest postRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>()
         {
             @Override
@@ -164,7 +167,7 @@ public class Produk_Tambah extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/KategoriProduk/";
+        String url = ip + this.url +"index.php/KategoriProduk/";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override

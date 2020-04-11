@@ -45,6 +45,7 @@ public class Jenis_Layanan extends AppCompatActivity {
     private ArrayList<KeteranganDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
+    private String url = MainActivity.getUrl();
     private RecyclerView.LayoutManager mManager;
     private RecyclerView mRecyclerView;
     private EditText jenis_layanan, cari;
@@ -117,7 +118,7 @@ public class Jenis_Layanan extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/JenisLayanan";
+        String url = ip + this.url + "index.php/JenisLayanan";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -155,7 +156,7 @@ public class Jenis_Layanan extends AppCompatActivity {
         final String layanan = jenis_layanan.getText().toString();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = "http://" + ip + "/rest_api-kouvee-pet-shop-master/index.php/JenisLayanan";
+        String url = ip + this.url + "index.php/JenisLayanan";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
