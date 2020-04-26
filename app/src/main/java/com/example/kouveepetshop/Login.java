@@ -124,9 +124,16 @@ public class Login extends AppCompatActivity {
             username_text.setError("Username Tidak Boleh Kosong");
             cek = 1;
         }
-
+        else if (username_text.getText().toString().length() < 6) {
+            username_text.setError("Panjang Username Minimal 6 Karekter");
+            cek = 1;
+        }
         if (password_text.getText().toString().equals("")) {
             password_text.setError("Password Tidak Boleh Kosong");
+            cek = 1;
+        }
+        else if (password_text.getText().toString().length() < 6) {
+            password_text.setError("Panjang Username Minimal 6 Karekter");
             cek = 1;
         }
 

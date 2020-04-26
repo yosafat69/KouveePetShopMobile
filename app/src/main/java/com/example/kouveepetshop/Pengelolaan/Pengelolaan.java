@@ -115,8 +115,13 @@ public class Pengelolaan extends AppCompatActivity {
         Pegawai.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(Pengelolaan.this, com.example.kouveepetshop.Pengelolaan.Pegawai.Pegawai.class);
-                startActivity(i);
+                if (sharedPrefManager.getSpRole().equals("Owner")) {
+                    Intent i = new Intent(Pengelolaan.this, com.example.kouveepetshop.Pengelolaan.Pegawai.Pegawai.class);
+                    startActivity(i);
+                }
+                else {
+                    Toast.makeText(Pengelolaan.this, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }

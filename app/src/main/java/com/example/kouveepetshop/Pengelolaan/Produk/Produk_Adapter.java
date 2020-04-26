@@ -3,6 +3,7 @@ package com.example.kouveepetshop.Pengelolaan.Produk;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +47,7 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
         String link = ip + url;
+        String substring;
 
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
@@ -59,7 +61,8 @@ public class Produk_Adapter extends RecyclerView.Adapter<Produk_Adapter.ViewProc
         holder.jmlh.setText(String.format("%,d",data.jmlh));
         holder.jmlh_min.setText(String.format("%,d",data.jmlh_min));
 
-        final String link_gambar = link + data.link_gambar;
+        substring = data.link_gambar.substring(47);
+        final String link_gambar = link + substring;
         Picasso.get().load(link_gambar).into(holder.gambar);
 
         holder.itemList.setOnClickListener(new View.OnClickListener() {

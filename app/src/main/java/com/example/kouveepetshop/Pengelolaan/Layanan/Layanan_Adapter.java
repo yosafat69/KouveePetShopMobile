@@ -48,6 +48,7 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
     @Override
     public void onBindViewHolder(@NonNull ViewProcessHolder holder, final int position) {
         String link = ip + this.url;
+        String substring;
 
         Locale localeID = new Locale("in", "ID");
         NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
@@ -57,7 +58,8 @@ public class Layanan_Adapter extends RecyclerView.Adapter<Layanan_Adapter.ViewPr
         holder.ukuran.setText(data.ukuran);
         holder.harga.setText(formatRupiah.format(data.harga));
 
-        final String url_gambar = link + data.gambar;
+        substring = data.gambar.substring(47);
+        final String url_gambar = link + substring;
         Picasso.get().load(url_gambar).into(holder.gambar);
 
         holder.itemList.setOnClickListener(new View.OnClickListener() {

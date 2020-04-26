@@ -58,6 +58,7 @@ public class Pegawai_Tambah extends AppCompatActivity {
     private Spinner role_spinner;
     private ArrayList<KeteranganDAO> kategori_role;
     private ProgressDialog pd;
+    private boolean usernameUnique = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,9 +76,14 @@ public class Pegawai_Tambah extends AppCompatActivity {
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            Intent returnIntent = new Intent();
-                            setResult(RESULT_OK, returnIntent);
-                            finish();
+                            if (usernameUnique) {
+                                Intent returnIntent = new Intent();
+                                setResult(RESULT_OK, returnIntent);
+                                finish();
+                            }
+                            else {
+                                username_text.setError("Username Sudah Dipakai");
+                            }
                         }
                     }, 500);
                 }
@@ -123,6 +129,16 @@ public class Pegawai_Tambah extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         // response
+                        JSONObject jsonObject;
+                        try {
+                            jsonObject = new JSONObject(response);
+                            if (!jsonObject.getString("error").equals("true")) {
+                                usernameUnique = true;
+                            }
+                            Log.d("Response", jsonObject.getString("message"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         Log.d("Response", response);
                     }
                 },
