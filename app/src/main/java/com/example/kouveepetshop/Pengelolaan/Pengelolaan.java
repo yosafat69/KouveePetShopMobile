@@ -124,5 +124,19 @@ public class Pengelolaan extends AppCompatActivity {
                 }
             }
         });
+
+        ImageView Member = findViewById(R.id.menu_member);
+        Member.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (sharedPrefManager.getSpRole().equals("Owner")) {
+                    Intent i = new Intent(Pengelolaan.this, com.example.kouveepetshop.Pengelolaan.Member.Member.class);
+                    startActivity(i);
+                }
+                else {
+                    Toast.makeText(Pengelolaan.this, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

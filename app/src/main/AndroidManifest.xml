@@ -89,6 +89,16 @@
             android:name=".Pengelolaan.Pegawai.Pegawai_Tambah"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
+        <activity
+            android:name=".Pengelolaan.Member.Member"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".Pengelolaan.Member.Member_Edit"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".Pengelolaan.Member.Member_Tambah"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
