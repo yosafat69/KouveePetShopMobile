@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kouveepetshop.MainActivity;
+import com.example.kouveepetshop.Pengelolaan.Produk.Produk_Edit;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
 
@@ -38,14 +40,16 @@ import java.util.Objects;
 public class Member_Edit extends AppCompatActivity {
 
     private String nama, no_telp, alamat, tanggal_lahir;
+    private Integer id;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
-    private Button edit;
+    private Button edit, delete;
     private SharedPrefManager sharedPrefManager;
     private EditText nama_text, no_telp_text, alamat_text;
     private TextView tanggal_lahir_text;
     private DatePickerDialog.OnDateSetListener onDateSetListener;
     private boolean no_telpUnique = false;
+    private boolean doubleClickDelete = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,13 +57,13 @@ public class Member_Edit extends AppCompatActivity {
         setContentView(R.layout.member_edit);
 
         init();
+        setText();
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (validasi()) {
-                    editMember
-                            ();
+                    editMember();
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -73,6 +77,36 @@ public class Member_Edit extends AppCompatActivity {
                             }
                         }
                     }, 500);
+                }
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (doubleClickDelete) {
+                    deleteMember();
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 1000);
+                }
+                else {
+                    doubleClickDelete = true;
+                    Toast.makeText(Member_Edit.this, "Tekan Lagi Untuk Delete", Toast.LENGTH_SHORT).show();
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            doubleClickDelete = false;
+                        }
+                    }, 2000);
                 }
             }
         });
@@ -109,7 +143,7 @@ public class Member_Edit extends AppCompatActivity {
         getValue();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = ip + this.url + "index.php/Member";
+        String url = ip + this.url + "index.php/Member/"+id;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -153,14 +187,56 @@ public class Member_Edit extends AppCompatActivity {
         queue.add(postRequest);
     }
 
+    private void deleteMember(){
+        RequestQueue queue = Volley.newRequestQueue(this);
+        String url = ip + this.url + "index.php/Member/delete/"+id;
+        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String>  request = new HashMap<>();
+                request.put("updated_by", sharedPrefManager.getSpUsername());
+                return request;
+            }
+        };
+        queue.add(postRequest);
+    }
+
     private void init(){
         sharedPrefManager = new SharedPrefManager(this);
         edit = findViewById(R.id.member_edit_edit);
+        delete = findViewById(R.id.member_edit_delete);
         nama_text = findViewById(R.id.member_edit_nama);
         no_telp_text = findViewById(R.id.member_edit_no_telp);
         alamat_text = findViewById(R.id.member_edit_alamat);
         tanggal_lahir_text = findViewById(R.id.member_edit_tanggal_lahir);
+    }
 
+    private void setText(){
+        if (getIntent().hasExtra("nama")) {
+            id = getIntent().getIntExtra("id", -1);
+            nama_text.setText(getIntent().getStringExtra("nama"));
+            no_telp_text.setText(getIntent().getStringExtra("no_telp"));
+            alamat_text.setText(getIntent().getStringExtra("alamat"));
+            tanggal_lahir_text.setText(getIntent().getStringExtra("tanggal_lahir"));
+        }
     }
 
     private void getValue(){

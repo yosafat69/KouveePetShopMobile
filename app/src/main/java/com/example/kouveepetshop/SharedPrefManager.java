@@ -9,6 +9,8 @@ public class SharedPrefManager {
     public static final String SP_USERNAME = "spUsername";
     public static final String SP_ROLE = "spRole";
 
+    public static final String SP_ID_TRANSAKSI = "spIdTransaksi";
+
     public static final String SP_SUDAH_LOGIN = "spSudahLogin";
 
     SharedPreferences sp;
@@ -40,6 +42,10 @@ public class SharedPrefManager {
 
     public String getSpRole(){
         return sp.getString(SP_ROLE, "");
+    }
+
+    public Integer getSpIdTransaksi(){
+        return sp.getInt(SP_ID_TRANSAKSI, -1);
     }
 
     public Boolean getSPSudahLogin(){
