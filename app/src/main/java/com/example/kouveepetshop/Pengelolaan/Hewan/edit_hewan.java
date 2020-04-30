@@ -1,4 +1,6 @@
-package com.example.kouveepetshop.Pengelolaan.Pegawai;
+package com.example.kouveepetshop.Pengelolaan.Hewan;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
@@ -17,8 +19,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -27,8 +28,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kouveepetshop.API.Rest_API;
+import com.example.kouveepetshop.API.VolleyMultipartRequest;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
+import com.example.kouveepetshop.Pengelolaan.Layanan.Layanan_Edit;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
 
@@ -42,53 +45,46 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+public class edit_hewan extends AppCompatActivity {
 
-public class Pegawai_Edit extends AppCompatActivity {
-
-    private String nama, no_telp, alamat, tanggal_lahir, username;
-    private Integer id_role, id;
+    private String nama, tanggal_lahir,jenis;
+    private Integer id,id_jenis;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
     private Button edit, delete;
     private SharedPrefManager sharedPrefManager;
-    private EditText nama_text, no_telp_text, alamat_text, username_text;
+    private EditText nama_text, jenis_text;
     private TextView tanggal_lahir_text;
     private DatePickerDialog.OnDateSetListener onDateSetListener;
     private ArrayList<String> mItems = new ArrayList<>();
     private ArrayAdapter<String> adapter;
-    private Spinner role_spinner;
-    private ArrayList<KeteranganDAO> kategori_role;
+    private Spinner jenis_spinner;
+    private ArrayList<KeteranganDAO> kategori_jenis;
     private ProgressDialog pd;
     private boolean doubleClickDelete = false;
-    private boolean usernameUnique = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.pegawai_edit);
+        setContentView(R.layout.edit_hewan);
 
         init();
-        ambilRole();
+        ambiljenis();
         setText();
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (validasi()) {
-                    editPegawai();
+                    edithewan();
                     new Handler().postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            if (usernameUnique) {
-                                Intent returnIntent = new Intent();
-                                setResult(RESULT_OK, returnIntent);
-                                finish();
-                            }
-                            else {
-                                username_text.setError("Username Sudah Dipakai");
-                            }
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
                         }
-                    }, 500);
+                    }, 1000);
                 }
             }
         });
@@ -97,7 +93,7 @@ public class Pegawai_Edit extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (doubleClickDelete) {
-                    deletePegawai();
+                    deletehewan();
 
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -110,7 +106,7 @@ public class Pegawai_Edit extends AppCompatActivity {
                 }
                 else {
                     doubleClickDelete = true;
-                    Toast.makeText(Pegawai_Edit.this, "Tekan Lagi Untuk Delete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(edit_hewan.this, "Tekan Lagi Untuk Delete", Toast.LENGTH_SHORT).show();
 
                     new Handler().postDelayed(new Runnable() {
 
@@ -145,7 +141,7 @@ public class Pegawai_Edit extends AppCompatActivity {
         int year = cal.get(Calendar.YEAR);
         int month =  cal.get(Calendar.MONTH);
         int day = cal.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog dialog = new DatePickerDialog(Pegawai_Edit.this, android.R.style.Theme_Holo_Dialog_MinWidth,onDateSetListener,year,month,day);
+        DatePickerDialog dialog = new DatePickerDialog(edit_hewan.this, android.R.style.Theme_Holo_Dialog_MinWidth,onDateSetListener,year,month,day);
         Objects.requireNonNull(dialog.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.show();
     }
@@ -155,37 +151,34 @@ public class Pegawai_Edit extends AppCompatActivity {
             id = getIntent().getIntExtra("id", -1);
             nama_text.setText(getIntent().getStringExtra("nama"));
             tanggal_lahir_text.setText(getIntent().getStringExtra("tanggal_lahir"));
-            alamat_text.setText(getIntent().getStringExtra("alamat"));
-            no_telp_text.setText(getIntent().getStringExtra("no_telp"));
-            username_text.setText(getIntent().getStringExtra("username"));
         }
     }
 
-    private void editPegawai(){
+    private void edithewan(){
         getValue();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = ip + this.url + "index.php/Pegawai/"+id;
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        JSONObject jsonObject;
-                        try {
-                            jsonObject = new JSONObject(response);
-                            if (!jsonObject.getString("message").equals("Username must be unique")) {
-                                usernameUnique = true;
-                                Log.d("AAAAAAAA", "Masuk");
-                            }
-                            Log.d("Response", jsonObject.getString("message"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("Response", response);
+        String url = ip + this.url + "index.php/Hewan/"+id;
+        VolleyMultipartRequest postRequest = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>()
+        {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                // response
+                String resultResponse = new String(response.data);
+                try {
+                    JSONObject jsonObject = new JSONObject(resultResponse);
+                    if (jsonObject.getString("error").equals("false")) {
+                        Toast.makeText(edit_hewan.this, "Refresh Halaman", Toast.LENGTH_SHORT).show();
                     }
-                },
+                    else {
+                        Toast.makeText(edit_hewan.this, "Error", Toast.LENGTH_SHORT).show();
+                        Log.i("Error", jsonObject.getString("message"));
+                    }
+                }catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        },
                 new Response.ErrorListener()
                 {
                     @Override
@@ -200,12 +193,8 @@ public class Pegawai_Edit extends AppCompatActivity {
             {
                 Map<String, String>  request = new HashMap<>();
                 request.put("nama", nama);
-                request.put("no_telp",  String.valueOf(no_telp));
-                request.put("id_role_pegawai",  String.valueOf(id_role));
-                request.put("alamat", String.valueOf(alamat));
+                request.put("id_jenis_hewan",  String.valueOf(id_jenis));
                 request.put("tanggal_lahir", String.valueOf(tanggal_lahir));
-                request.put("username", String.valueOf(username));
-                request.put("password", "Test");
                 request.put("updated_by", sharedPrefManager.getSpUsername());
                 return request;
             }
@@ -213,11 +202,11 @@ public class Pegawai_Edit extends AppCompatActivity {
         queue.add(postRequest);
     }
 
-    private void deletePegawai(){
+    private void deletehewan(){
         getValue();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = ip + this.url + "index.php/Pegawai/delete/"+id;
+        String url = ip + this.url + "index.php/hewan/delete/"+id;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -247,11 +236,11 @@ public class Pegawai_Edit extends AppCompatActivity {
         queue.add(postRequest);
     }
 
-    private void ambilRole() {
+    private void ambiljenis() {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = ip + this.url + "index.php/RolePegawai/";
+        String url = ip + this.url + "index.php/JenisHewan/";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -269,15 +258,15 @@ public class Pegawai_Edit extends AppCompatActivity {
                         KeteranganDAO keterangan = new KeteranganDAO();
                         keterangan.setId(massageDetail.getInt("id"));
                         keterangan.setKeterangan(massageDetail.getString("keterangan"));
-                        kategori_role.add(keterangan);
+                        kategori_jenis.add(keterangan);
 
                         adapter.notifyDataSetChanged();
                     }
 
-                    String role = getIntent().getStringExtra("role");
+                    String jenis = getIntent().getStringExtra("jenis");
                     for (int i = 0 ; i < mItems.size(); i++) {
-                        if(mItems.get(i).equals(role)){
-                            role_spinner.setSelection(i);
+                        if(mItems.get(i).equals(jenis)){
+                            jenis_spinner.setSelection(i);
                             break;
                         }
                     }
@@ -300,41 +289,33 @@ public class Pegawai_Edit extends AppCompatActivity {
 
     private void init(){
         sharedPrefManager = new SharedPrefManager(this);
-        edit = findViewById(R.id.pegawai_edit_edit);
-        delete = findViewById(R.id.pegawai_edit_delete);
-        nama_text = findViewById(R.id.pegawai_edit_nama);
-        no_telp_text = findViewById(R.id.pegawai_edit_no_telp);
-        alamat_text = findViewById(R.id.pegawai_edit_alamat);
-        tanggal_lahir_text = findViewById(R.id.pegawai_edit_tanggal_lahir);
-        username_text = findViewById(R.id.pegawai_edit_username);
-
+        edit = findViewById(R.id.hewan_edit_edit);
+        delete = findViewById(R.id.hewan_edit_delete);
+        nama_text = findViewById(R.id.hewan_edit_nama);
+        tanggal_lahir_text = findViewById(R.id.hewan_edit_tanggal_lahir);
         mItems = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,mItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        role_spinner = findViewById(R.id.pegawai_edit_spinner);
-        role_spinner.setAdapter(adapter);
+        jenis_spinner = findViewById(R.id.hewan_edit_spinner);
+        jenis_spinner.setAdapter(adapter);
 
         pd = new ProgressDialog(this);
-        kategori_role = new ArrayList<>();
+        kategori_jenis = new ArrayList<>();
     }
 
     private void getValue(){
         nama = nama_text.getText().toString();
-        no_telp = no_telp_text.getText().toString();
-        alamat = alamat_text.getText().toString();
         tanggal_lahir = tanggal_lahir_text.getText().toString();
-        username = username_text.getText().toString();
-
-        String role = role_spinner.getSelectedItem().toString();
+        String jenis = jenis_spinner.getSelectedItem().toString();
         KeteranganDAO keterangan = new KeteranganDAO();
 
-        for (int i = 0 ; i < kategori_role.size(); i++) {
-            keterangan = kategori_role.get(i);
-            if(keterangan.getKeterangan().equals(role)){
+        for (int i = 0 ; i < kategori_jenis.size(); i++) {
+            keterangan = kategori_jenis.get(i);
+            if(keterangan.getKeterangan().equals(jenis)){
                 break;
             }
         }
-        id_role = keterangan.getId();
+        id_jenis = keterangan.getId();
     }
 
     private boolean validasi() {
@@ -353,44 +334,13 @@ public class Pegawai_Edit extends AppCompatActivity {
             cek = 1;
         }
 
-        if (no_telp_text.getText().toString().equals("")) {
-            no_telp_text.setError("Nomor Telepon Tidak Boleh Kosong");
-            cek = 1;
-        }
-        else if (no_telp_text.getText().toString().length() < 10 || no_telp_text.getText().toString().length() > 13 ) {
-            no_telp_text.setError("Nomor Telepon 10 - 13 Karakter");
-            cek = 1;
-        }
-
-        else if (!String.valueOf(no_telp_text.getText().toString().charAt(0)).equals("0") && !String.valueOf(no_telp_text.getText().toString().charAt(1)).equals("8")) {
-            no_telp_text.setError("Format Nomor Telepon Salah");
-            cek = 1;
-        }
-
-        if (alamat_text.getText().toString().equals("")) {
-            alamat_text.setError("Alamat Tidak Boleh Kosong");
-            cek = 1;
-        }
-        else if (alamat_text.getText().toString().length() < 3) {
-            alamat_text.setError("Panjang Alamat Minimal 3 Karekter");
-            cek = 1;
-        }
-
         if (tanggal_lahir_text.getText().toString().equals("Tanggal Lahir")) {
             tanggal_lahir_text.setError("Kota Tidak Boleh Kosong");
             cek = 1;
         }
-
-        if (username_text.getText().toString().equals("")) {
-            username_text.setError("Username Tidak Boleh Kosong");
-            cek = 1;
-        }
-        else if (username_text.getText().toString().length() < 6) {
-            username_text.setError("Panjang Username Minimal 6 Karekter");
-            cek = 1;
-        }
-
         return cek == 0;
     }
 
 }
+
+

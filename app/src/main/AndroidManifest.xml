@@ -22,6 +22,8 @@
         <activity
             android:name=".MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity android:name=".Pengelolaan.Hewan.edit_hewan"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
         <activity
             android:name=".Pengelolaan.Pengelolaan"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -69,7 +71,7 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Pengelolaan.Produk.kategori_produk_edit"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Pengelolaan.Supplier.Supplier"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -88,7 +90,6 @@
         <activity
             android:name=".Pengelolaan.Pegawai.Pegawai_Tambah"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-
         <activity
             android:name=".Pengelolaan.Member.Member"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -98,7 +99,6 @@
         <activity
             android:name=".Pengelolaan.Member.Member_Tambah"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-
         <activity
             android:name=".CS_MainActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
@@ -131,10 +131,10 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
 </manifest>

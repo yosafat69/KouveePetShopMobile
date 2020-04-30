@@ -1,8 +1,14 @@
 package com.example.kouveepetshop.Pengelolaan.Hewan;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.View;
+import android.widget.EditText;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,7 +31,8 @@ import java.util.ArrayList;
 
 public class Hewan extends AppCompatActivity {
 
-    private RecyclerView.Adapter mAdapter;
+    private EditText cari;
+    private Hewan_Adapter mAdapter;
     private ArrayList<HewanDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
@@ -35,30 +42,39 @@ public class Hewan extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.hewan);
+        final PullRefreshLayout layout = findViewById(R.id.swipeRefreshLayout);
 
-        pd = new ProgressDialog(this);
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.recycle_hewan);
-        mItems = new ArrayList<>();
-        RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        mRecyclerView.setLayoutManager(mManager);
-        mAdapter = new Hewan_Adapter(this, mItems);
-        mRecyclerView.setAdapter(mAdapter);
+        init();
 
-        loadjson();
-
-        final PullRefreshLayout layout = (PullRefreshLayout) findViewById(R.id.swipeRefreshLayout);
 
         layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
                 mItems.clear();
-                loadjson();
+                cari.setText("");
+                GetData();
                 layout.setRefreshing(false);
+            }
+        });
+
+        GetData();
+
+        cari.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mAdapter.getFilter().filter(s);
             }
         });
     }
 
-    private void loadjson(){
+    private void GetData(){
+        mItems.clear();
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
@@ -71,13 +87,14 @@ public class Hewan extends AppCompatActivity {
 
                 try {
                     JSONArray massage = response.getJSONArray("message");
-
-                    for (int i=0; i < massage.length(); i++){
+                    for (int i = massage.length()-1; i > -1 ; i--){
                         JSONObject massageDetail = massage.getJSONObject(i);
                         HewanDAO hewan = new HewanDAO();
+                        hewan.setId(massageDetail.getInt("id"));
                         hewan.setNama(massageDetail.getString("nama"));
-                        hewan.setJenis(massageDetail.getString("id_kategori_hewan"));
                         hewan.setTanggal_lahir(massageDetail.getString("tanggal_lahir"));
+                        hewan.setJenis(massageDetail.getString("id_jenis_hewan"));
+
                         mItems.add(hewan);
                     }
                 } catch (JSONException e) {
@@ -95,5 +112,24 @@ public class Hewan extends AppCompatActivity {
             }
         });
         Rest_API.getInstance(this).addToRequestQueue(arrayRequest);
+    }
+
+    private void init(){
+        pd = new ProgressDialog(this);
+        RecyclerView mRecyclerView = findViewById(R.id.recycle_hewan);
+        mItems = new ArrayList<>();
+        RecyclerView.LayoutManager mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mManager);
+        mAdapter = new Hewan_Adapter(this,mItems);
+        mRecyclerView.setAdapter(mAdapter);
+        cari = findViewById(R.id.hewan_search);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            GetData();
+            mAdapter.notifyDataSetChanged();
+        }
     }
 }

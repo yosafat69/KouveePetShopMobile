@@ -212,16 +212,16 @@ public class Ukuran_Hewan extends AppCompatActivity {
         int cek = 0;
 
         if (ukuran_hewan.getText().toString().equals("")) {
-            ukuran_hewan.setError("Jenis Layanan Tidak Boleh Kosong");
+            ukuran_hewan.setError("Ukuran Hewan Tidak Boleh Kosong");
             cek = 1;
         }
         else if (ukuran_hewan.getText().toString().length() < 3) {
-            ukuran_hewan.setError("Panjang Jenis Layanan Minimal 3 Karakter");
+            ukuran_hewan.setError("Panjang Ukuran Hewan Minimal 3 Karakter");
             cek = 1;
         }
 
         else if (!ukuran_hewan.getText().toString().matches("[a-zA-Z ]+")) {
-            ukuran_hewan.setError("Format Jenis Layanan Salah");
+            ukuran_hewan.setError("Format Ukuran Hewan Salah");
             cek = 1;
         }
 
