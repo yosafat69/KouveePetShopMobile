@@ -90,6 +90,7 @@ public class Pengadaan_Edit extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (doubleClickDelete) {
+
                     deletePengadaan();
 
                     new Handler().postDelayed(new Runnable() {
@@ -103,7 +104,7 @@ public class Pengadaan_Edit extends AppCompatActivity {
                 }
                 else {
                     doubleClickDelete = true;
-                    Toast.makeText(Pengadaan_Edit.this, "Tekan Lagi Untuk Delete", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Pengadaan_Edit.this, "Tekan Lagi Untuk MemBatalkan", Toast.LENGTH_SHORT).show();
 
                     new Handler().postDelayed(new Runnable() {
 
@@ -120,7 +121,7 @@ public class Pengadaan_Edit extends AppCompatActivity {
 
 
     private void setText(){
-        if (getIntent().hasExtra("nama")) {
+        if (getIntent().hasExtra("no_PO")) {
             id = getIntent().getIntExtra("id", -1);
             no_pemesanan_text.setText(getIntent().getStringExtra("no_PO"));
             status_text.setText(getIntent().getStringExtra("status"));
@@ -178,7 +179,7 @@ public class Pengadaan_Edit extends AppCompatActivity {
         getValue();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = ip + this.url + "index.php/pemesanan/delete/"+id;
+        String url = ip + this.url + "index.php/Pemesanan/Cancel/"+id;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -264,8 +265,8 @@ public class Pengadaan_Edit extends AppCompatActivity {
         edit = findViewById(R.id.pengadaan_edit_edit);
         delete = findViewById(R.id.pengadaan_edit_delete);
         no_pemesanan_text = findViewById(R.id.text_nomor_pemesanan);
-        tanggal_pemesanan_text = findViewById(R.id.text_tanggal_pemesanan);
-        status_text = findViewById(R.id.text_pemesanan_status);
+        tanggal_pemesanan_text = findViewById(R.id.text_edit_tanggal_pemesanan);
+        status_text = findViewById(R.id.text_status);
         mItems = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,mItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);

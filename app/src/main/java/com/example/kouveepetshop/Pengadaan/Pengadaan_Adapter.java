@@ -87,6 +87,10 @@ public class Pengadaan_Adapter extends RecyclerView.Adapter<Pengadaan_Adapter.Vi
         {
             holder.status.setTextColor(Color.YELLOW);
         }
+        else if (data.status.equals("dibatalkan"))
+        {
+            holder.status.setTextColor(Color.GRAY);
+        }
         else {
             holder.status.setTextColor(Color.GREEN);
         }

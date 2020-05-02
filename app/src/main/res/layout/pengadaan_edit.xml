@@ -132,7 +132,22 @@
         android:layout_marginEnd="40dp"
         android:background="#FF0000"
         android:fontFamily="@font/baloo"
-        android:text="Hapus"
+        android:text="Batal Pesan"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/DetilPemesanan"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pengadaan_edit_delete"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="132dp"
+        android:background="#4CAF50"
+        android:fontFamily="@font/baloo"
+        android:text="Detil Pemesanan"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
         android:textStyle="bold" />

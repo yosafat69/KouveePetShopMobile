@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -21,7 +22,9 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.MainActivity;
+import com.example.kouveepetshop.Pengelolaan.Layanan.Layanan;
 import com.example.kouveepetshop.Pengelolaan.Layanan.Layanan_Adapter;
+import com.example.kouveepetshop.Pengelolaan.Layanan.Layanan_Tambah;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
 
@@ -51,6 +54,13 @@ public class Pengadaan extends AppCompatActivity {
 
         init();
 
+        tambah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent k = new Intent(Pengadaan.this, Pengadaan_tambah.class);
+                startActivity(k);
+            }
+        });
 
         layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
@@ -128,6 +138,7 @@ public class Pengadaan extends AppCompatActivity {
         mAdapter = new Pengadaan_Adapter(this,mItems);
         mRecyclerView.setAdapter(mAdapter);
         cari = findViewById(R.id.pemesanan_search);
+        tambah = findViewById(R.id.pengadaan_add);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

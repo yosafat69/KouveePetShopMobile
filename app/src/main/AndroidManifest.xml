@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".Pengadaan.Pengadaan_tambah"></activity>
         <activity
             android:name=".Login"
             android:theme="@style/Theme.AppCompat.NoActionBar">
@@ -131,17 +131,18 @@
         <activity
             android:name=".Pengadaan.Pengadaan"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
-        <activity android:name=".Pengadaan.Pengadaan_Edit"
-            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".Pengadaan.Pengadaan_Edit"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
     </application>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
 </manifest>
