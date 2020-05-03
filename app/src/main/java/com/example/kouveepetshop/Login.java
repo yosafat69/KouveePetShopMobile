@@ -70,17 +70,22 @@ public class Login extends AppCompatActivity {
 
     private void isLogin() {
         if (sharedPrefManager.getSPSudahLogin()) {
-            if (sharedPrefManager.getSpRole().equals("Owner")) {
-                Intent i = new Intent(Login.this, MainActivity.class);
-                startActivity(i);
-            }
-            else if (sharedPrefManager.getSpRole().equals("Customer Service")){
-                Intent i = new Intent(Login.this, CS_MainActivity.class);
-                startActivity(i);
-            }
-            else if (sharedPrefManager.getSpRole().equals("Cashier")){
-                Intent i = new Intent(Login.this, Cashier_MainActivity.class);
-                startActivity(i);
+            switch (sharedPrefManager.getSpRole()) {
+                case "Owner": {
+                    Intent i = new Intent(Login.this, MainActivity.class);
+                    startActivity(i);
+                    break;
+                }
+                case "Customer Service": {
+                    Intent i = new Intent(Login.this, CS_MainActivity.class);
+                    startActivity(i);
+                    break;
+                }
+                case "Cashier": {
+                    Intent i = new Intent(Login.this, Cashier_MainActivity.class);
+                    startActivity(i);
+                    break;
+                }
             }
         }
     }
@@ -112,17 +117,22 @@ public class Login extends AppCompatActivity {
                                 sharedPrefManager.saveSPString(SharedPrefManager.SP_ROLE,massage.getString("id_role_pegawai"));
                                 sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_SUDAH_LOGIN, true);
 
-                                if (sharedPrefManager.getSpRole().equals("Owner")) {
-                                    Intent i = new Intent(Login.this, MainActivity.class);
-                                    startActivity(i);
-                                }
-                                else if (sharedPrefManager.getSpRole().equals("Customer Service")) {
-                                    Intent i = new Intent(Login.this, CS_MainActivity.class);
-                                    startActivity(i);
-                                }
-                                else if (sharedPrefManager.getSpRole().equals("Cashier")) {
-                                    Intent i = new Intent(Login.this, Cashier_MainActivity.class);
-                                    startActivity(i);
+                                switch (sharedPrefManager.getSpRole()) {
+                                    case "Owner": {
+                                        Intent i = new Intent(Login.this, MainActivity.class);
+                                        startActivity(i);
+                                        break;
+                                    }
+                                    case "Customer Service": {
+                                        Intent i = new Intent(Login.this, CS_MainActivity.class);
+                                        startActivity(i);
+                                        break;
+                                    }
+                                    case "Cashier": {
+                                        Intent i = new Intent(Login.this, Cashier_MainActivity.class);
+                                        startActivity(i);
+                                        break;
+                                    }
                                 }
                             }
                             else {

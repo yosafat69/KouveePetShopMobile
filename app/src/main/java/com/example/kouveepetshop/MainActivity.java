@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.kouveepetshop.Pengadaan.Pengadaan;
+import com.example.kouveepetshop.Pengelolaan.AdminTransaksi;
 import com.example.kouveepetshop.Pengelolaan.Pengelolaan;
 
 public class MainActivity extends AppCompatActivity {
@@ -49,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent k = new Intent(MainActivity.this, Pengadaan.class);
                 startActivity(k);
+            }
+        });
+
+        transaksi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AdminTransaksi.class);
+                startActivity(intent);
             }
         });
 

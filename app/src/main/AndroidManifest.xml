@@ -28,6 +28,9 @@
             android:name=".Pengelolaan.Pengelolaan"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
+            android:name=".Pengelolaan.AdminTransaksi"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
             android:name=".Pengelolaan.Hewan.Ukuran_Hewan_Edit"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
@@ -127,10 +130,28 @@
             android:name=".CS_Transaksi.TransaksiLayananKeranjang_Tambah"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
+            android:name=".Cashier_MainActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".Cashier_Transaksi.Cashier_Pembayaran"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".Cashier_Transaksi.Nota"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".Cashier_Transaksi.Cashier_DetailPembayaranLayanan"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".Cashier_Transaksi.Cashier_DetailPembayaranPenjualan"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
             android:name=".Pengadaan.Pengadaan"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
         <activity
             android:name=".Pengadaan.Pengadaan_Edit"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".Pengadaan.Pengadaan_tambah"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <meta-data

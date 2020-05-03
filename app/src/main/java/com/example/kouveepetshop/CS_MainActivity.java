@@ -50,7 +50,8 @@ public class CS_MainActivity extends AppCompatActivity {
                 sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_SUDAH_LOGIN,false);
                 sharedPrefManager.saveSPString(SharedPrefManager.SP_USERNAME,"");
                 sharedPrefManager.saveSPString(SharedPrefManager.SP_ROLE,"");
-                finish();
+                Intent intent = new Intent(CS_MainActivity.this, Login.class);
+                startActivity(intent);
             }
         });
 
