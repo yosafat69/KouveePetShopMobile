@@ -78,9 +78,9 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter <DetilPengadaanA
         b.putInt("id", id);
         b.putInt("isKeranjang", 0);
 
-        Dialog_Pengadaan dialog_transaksi_penjualan = new Dialog_Pengadaan();
-        dialog_transaksi_penjualan.setArguments(b);
-        dialog_transaksi_penjualan.show(fragmentManager, "mTag");
+        Dialog_Pengadaan dialogPengadaan = new Dialog_Pengadaan();
+        dialogPengadaan.setArguments(b);
+        dialogPengadaan.show(fragmentManager, "mTag");
     }
 
     @Override

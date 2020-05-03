@@ -153,6 +153,12 @@
         <activity
             android:name=".Pengadaan.Pengadaan_tambah"
             android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name=".Pengadaan.DetilPengadaan_Keranjang_Tambah"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".Pengadaan.detilpengadaan_tambah"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
         <meta-data
             android:name="preloaded_fonts"

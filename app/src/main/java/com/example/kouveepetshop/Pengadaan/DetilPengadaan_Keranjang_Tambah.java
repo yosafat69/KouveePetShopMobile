@@ -25,8 +25,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.kouveepetshop.API.Rest_API;
-import com.example.kouveepetshop.CS_Transaksi.Transaksi;
-import com.example.kouveepetshop.CS_Transaksi.TransaksiLayananKeranjang;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
@@ -81,7 +79,7 @@ public class DetilPengadaan_Keranjang_Tambah  extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(DetilPengadaan_Keranjang_Tambah.this, detilpengadaan_tambah.class);
                 intent.putExtra("isTambah", 1);
-                intent.putExtra("id_pemesanan", sharedPrefManager.getSpIdTransaksi());
+                intent.putExtra("id_pemesanan", sharedPrefManager.getSpIdPemesanan());
                 startActivityForResult(intent,1);
             }
         });
@@ -258,7 +256,7 @@ public class DetilPengadaan_Keranjang_Tambah  extends AppCompatActivity {
                         DetilPengadaanDAO produk = new DetilPengadaanDAO();
                         produk.setId(massageDetail.getInt("id"));
                         produk.setid_produk(massageDetail.getString("id_produk"));
-                        produk.setid_pemesanan(massageDetail.getString("id_pemesanan"));
+                        produk.setid_pemesanan(massageDetail.getInt("id_pemesanan"));
                         produk.setNama(massageDetail.getString("nama"));
                         produk.setJumlah(massageDetail.getInt("jumlah"));
                         produk.setGambar(massageDetail.getString("link_gambar"));

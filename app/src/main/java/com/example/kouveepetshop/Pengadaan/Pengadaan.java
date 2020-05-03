@@ -40,6 +40,7 @@ public class Pengadaan extends AppCompatActivity {
     private ImageView tambah;
     private Pengadaan_Adapter mAdapter;
     private ArrayList<PengadaanDAO> mItems;
+    private Integer id_pemesanan;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();

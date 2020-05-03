@@ -13,6 +13,8 @@ public class SharedPrefManager {
 
     public static final String SP_SUDAH_LOGIN = "spSudahLogin";
 
+    public static final String SP_ID_PEMESANAN = "spIdPemesanan";
+
     SharedPreferences sp;
     SharedPreferences.Editor spEditor;
 
@@ -36,6 +38,8 @@ public class SharedPrefManager {
         spEditor.commit();
     }
 
+
+
     public String getSpUsername(){
         return sp.getString(SP_USERNAME, "");
     }
@@ -50,5 +54,9 @@ public class SharedPrefManager {
 
     public Boolean getSPSudahLogin(){
         return sp.getBoolean(SP_SUDAH_LOGIN, false);
+    }
+
+    public Integer getSpIdPemesanan(){
+        return sp.getInt(SP_ID_PEMESANAN, -1);
     }
 }

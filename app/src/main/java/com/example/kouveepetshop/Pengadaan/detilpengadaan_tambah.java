@@ -21,8 +21,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.kouveepetshop.API.Rest_API;
 
-import com.example.kouveepetshop.CS_Transaksi.TransaksiPenjualanKeranjang;
-import com.example.kouveepetshop.CS_Transaksi.TransaksiPenjualan_Adapter;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.Pengelolaan.Produk.ProdukDAO;
 import com.example.kouveepetshop.R;
@@ -73,7 +71,7 @@ public class detilpengadaan_tambah extends AppCompatActivity
         get();
 
         id_pemesanan = getIntent().getIntExtra("id_pemesanan", -1);
-        sharedPrefManager.saveSPInt("spIdTransaksi", id_pemesanan);
+        sharedPrefManager.saveSPInt("spIdPemesanan", id_pemesanan);
 
         keranjang.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -23,7 +23,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kouveepetshop.API.Rest_API;
-import com.example.kouveepetshop.CS_Transaksi.Dialog_Transaksi_penjualan;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
@@ -40,7 +39,7 @@ public class Dialog_Pengadaan extends AppCompatDialogFragment {
     private TextView nama, tersedia, jumlah;
     private ImageView gambar, add, inc;
     private Button selesai;
-    private Integer id, id_produk = 0, isKeranjang, jumlah_produk = 0, jumlah_tersedia, no_PO;
+    private Integer id, id_produk = 0, isKeranjang, jumlah_produk = 0, jumlah_tersedia, id_pemesanan;
 
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
@@ -59,12 +58,12 @@ public class Dialog_Pengadaan extends AppCompatDialogFragment {
         tersedia = view.findViewById(R.id.dialog_detilpengadaan_tersedia);
         gambar = view.findViewById(R.id.dialog_detilpengadaan_gambar);
         jumlah = view.findViewById(R.id.dialog_detilpengadaan_jumlah);
-        add = view.findViewById(R.id.dialog_detilpengadaan_jumlah_dec);
-        inc = view.findViewById(R.id.dialog_detilpengadaan_inc);
+        add = view.findViewById(R.id.dialog_detilpengadaan_jumlah_inc);
+        inc = view.findViewById(R.id.dialog_detilpengadaan_jumlah_dec);
         selesai = view.findViewById(R.id.dialog_detilpengadaan_selesai);
         isKeranjang = this.getArguments().getInt("isKeranjang");
 
-        no_PO = sharedPrefManager.getSpIdTransaksi();
+        id_pemesanan = sharedPrefManager.getSpIdPemesanan();
         if (isKeranjang == 0) {
             id_produk = this.getArguments().getInt("id");
             loadjson();
@@ -160,7 +159,7 @@ public class Dialog_Pengadaan extends AppCompatDialogFragment {
             {
                 Map<String, String>  request = new HashMap<>();
                 request.put("id_produk", String.valueOf(id_produk));
-                request.put("id_pemesanan",  String.valueOf(no_PO));
+                request.put("id_pemesanan",  String.valueOf(id_pemesanan));
                 request.put("jumlah", String.valueOf(jumlah_produk));
                 request.put("pegawai", sharedPrefManager.getSpUsername());
                 return request;
@@ -174,7 +173,7 @@ public class Dialog_Pengadaan extends AppCompatDialogFragment {
         String url = ip + this.url + "index.php/DetilPemesanan/"+id;
         Log.d("Link : ", url);
         Log.d("id_produk : ", String.valueOf(id_produk));
-        Log.d("id_pemesanan : ", String.valueOf(no_PO));
+        Log.d("id_pemesanan : ", String.valueOf(id_pemesanan));
         Log.d("jumlah : ", String.valueOf(jumlah_produk));
         Log.d("Pegawai : ", sharedPrefManager.getSpUsername());
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
@@ -210,7 +209,7 @@ public class Dialog_Pengadaan extends AppCompatDialogFragment {
             {
                 Map<String, String>  request = new HashMap<>();
                 request.put("id_produk", String.valueOf(id_produk));
-                request.put("id_pemesanan",  String.valueOf(no_PO));
+                request.put("id_pemesanan",  String.valueOf(id_pemesanan));
                 request.put("jumlah", String.valueOf(jumlah_produk));
                 request.put("pegawai", sharedPrefManager.getSpUsername());
                 return request;

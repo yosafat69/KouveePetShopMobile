@@ -2,8 +2,8 @@ package com.example.kouveepetshop.Pengadaan;
 
 public class DetilPengadaanDAO
 {
-    public int id,jumlah;
-    public String nama,id_pemesanan,id_produk,gambar;
+    public int id,jumlah,id_pemesanan;
+    public String nama,id_produk,gambar;
 
     public int getid() { return id; }
 
@@ -19,11 +19,11 @@ public class DetilPengadaanDAO
         this.jumlah = jumlah;
     }
 
-    public String getid_pemesanan() {
+    public int getid_pemesanan() {
         return id_pemesanan;
     }
 
-    public void setid_pemesanan(String id_pemesanan) {
+    public void setid_pemesanan(int id_pemesanan) {
         this.id_pemesanan = id_pemesanan;
     }
 

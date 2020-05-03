@@ -27,9 +27,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kouveepetshop.API.Rest_API;
-import com.example.kouveepetshop.CS_Transaksi.TransaksiLayanan;
-import com.example.kouveepetshop.CS_Transaksi.TransaksiPenjualan;
-import com.example.kouveepetshop.CS_Transaksi.Transaksi_Tambah;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.Pengelolaan.Member.Member_Tambah;
@@ -51,7 +48,7 @@ import java.util.Objects;
 public class Pengadaan_tambah extends AppCompatActivity
 {
     private Button tambah;
-    private int id_supplier;
+    private Integer id_supplier,id_pemesanan;
     private String detil_pengadaan_tanggal;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
@@ -78,6 +75,7 @@ public class Pengadaan_tambah extends AppCompatActivity
                 if (validasi()){
                     TambahDetilPengadaan();
                     Intent intent = new Intent(Pengadaan_tambah.this, detilpengadaan_tambah.class);
+                    intent.putExtra("id_pemesanan",id_pemesanan);
                     startActivity(intent);
                 }
 
@@ -127,6 +125,7 @@ public class Pengadaan_tambah extends AppCompatActivity
                         try {
                             jsonObject = new JSONObject(response);
                             if (!jsonObject.getString("error").equals("true")) {
+                                id_pemesanan = Integer.parseInt(jsonObject.getString("message"));
                             }
                             Log.d("Response", jsonObject.getString("message"));
                         } catch (JSONException e) {

@@ -17,8 +17,6 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.kouveepetshop.CS_Transaksi.Dialog_Transaksi_penjualan;
-import com.example.kouveepetshop.CS_Transaksi.TransaksiLayananKeranjang_Edit;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.R;
 import com.squareup.picasso.Picasso;
@@ -44,7 +42,7 @@ public class DetilPengadaan_Keranjang_Adapter extends RecyclerView.Adapter <Deti
 
     @Override
     public DetilPengadaan_Keranjang_Adapter.ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_detilpengadaan, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_detilpengadaan_keranjang, parent, false);
         return new ViewProcessHolder(view);
     }
 
@@ -81,9 +79,9 @@ public class DetilPengadaan_Keranjang_Adapter extends RecyclerView.Adapter <Deti
         b.putInt("id", id);
         b.putInt("isKeranjang", 1);
 
-        Dialog_Transaksi_penjualan dialog_transaksi_penjualan = new Dialog_Transaksi_penjualan();
-        dialog_transaksi_penjualan.setArguments(b);
-        dialog_transaksi_penjualan.show(fragmentManager, "mTag");
+        Dialog_Pengadaan dialogPengadaan = new Dialog_Pengadaan();
+        dialogPengadaan.setArguments(b);
+        dialogPengadaan.show(fragmentManager, "mTag");
     }
     @Override
     public Filter getFilter() {
@@ -128,10 +126,10 @@ public class DetilPengadaan_Keranjang_Adapter extends RecyclerView.Adapter <Deti
             super(itemView);
 
             context = itemView.getContext();
-            nama = itemView.findViewById(R.id.list_detilpengadaan_id_produk);
-            jumlah = itemView.findViewById(R.id.list_detilpengadaan_jumlah);
-            itemList = itemView.findViewById(R.id.list_detilpengadaan_id);
-            gambar = itemView.findViewById(R.id.list_detilpengadaan_gambar);
+            nama = itemView.findViewById(R.id.list_detilpengadaan_keranjang_id_produk);
+            jumlah = itemView.findViewById(R.id.list_detilpengadaan_keranjang_jumlah);
+            itemList = itemView.findViewById(R.id.list_detilpengadaan_keranjang_id);
+            gambar = itemView.findViewById(R.id.list_detilpengadaan_keranjang_gambar);
         }
     }
 }
