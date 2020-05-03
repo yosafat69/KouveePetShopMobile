@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.kouveepetshop.Pengadaan.Pengadaan;
+import com.example.kouveepetshop.Pengelolaan.AdminTransaksi;
 import com.example.kouveepetshop.Pengelolaan.Pengelolaan;
 
 public class MainActivity extends AppCompatActivity {
@@ -52,6 +53,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        transaksi.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, AdminTransaksi.class);
+                startActivity(intent);
+            }
+        });
+
         Toast.makeText(this, sharedPrefManager.getSpUsername() + " " + sharedPrefManager.getSpRole(), Toast.LENGTH_LONG).show();
     }
 
@@ -84,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static String getIp(){ return "http://192.168.1.9"; }
+    public static String getIp(){ return "http://192.168.43.202"; }
 
     public static String getUrl() {
         return "/rest_api-kouvee-pet-shop/";
