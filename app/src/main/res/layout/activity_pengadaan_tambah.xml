@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/menu_background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/baloo"
+        android:text="Pengadaan Produk"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="30dp" />
+
+    <ImageView
+        android:id="@+id/pengadaan_produk_gambar"
+        android:layout_width="164dp"
+        android:layout_height="166dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="92dp"
+        app:srcCompat="@mipmap/ic_menu_pengadaan" />
+
+
+    <LinearLayout
+        android:id = "@+id/detil_pengadaan_spinner_layout"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/pengadaan_produk_gambar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:gravity = "center"
+        android:orientation = "vertical">
+        <Spinner
+            android:id = "@+id/detil_pengadaan_spinner"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/detil_pengadaan_tanggal"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/detil_pengadaan_spinner_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:fontFamily="@font/baloo"
+        android:gravity="left|center"
+        android:text="Tanggal Lahir"
+        android:textSize="18dp"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="#FFFFFF"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textStyle="bold"/>
+
+    <Button
+        android:id="@+id/detilpengadaan_tambah"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/detil_pengadaan_tanggal"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="132dp"
+        android:layout_marginTop="56dp"
+        android:background="#4CAF50"
+        android:fontFamily="@font/baloo"
+        android:text="Tambah"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

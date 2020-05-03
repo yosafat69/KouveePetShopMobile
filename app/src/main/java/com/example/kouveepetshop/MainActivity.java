@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.kouveepetshop.Pengadaan.Pengadaan;
 import com.example.kouveepetshop.Pengelolaan.Pengelolaan;
 
 public class MainActivity extends AppCompatActivity {
@@ -40,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
                 sharedPrefManager.saveSPString(SharedPrefManager.SP_USERNAME,"");
                 sharedPrefManager.saveSPString(SharedPrefManager.SP_ROLE,"");
                 finish();
+            }
+        });
+
+        pengadaan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent k = new Intent(MainActivity.this, Pengadaan.class);
+                startActivity(k);
             }
         });
 

@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/menu_background">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/baloo"
+        android:text="Edit Pengadaan"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:textSize="30dp" />
+
+    <ImageView
+        android:id="@+id/icon_pemesanan"
+        android:layout_width="164dp"
+        android:layout_height="166dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="92dp"
+        app:srcCompat="@mipmap/ic_menu_pengadaan" />
+
+    <TextView
+        android:id="@+id/text_nomor_pemesanan"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/icon_pemesanan"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:fontFamily="@font/baloo"
+        android:hint="Nomor Pemesanan"
+        android:inputType="textPersonName"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="#FFFFFF"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textStyle="bold" />
+
+
+    <LinearLayout
+        android:id = "@+id/supplier_edit_spinner_layout"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/text_nomor_pemesanan"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="30dp"
+        android:gravity = "center"
+        android:orientation = "vertical">
+        <Spinner
+            android:id = "@+id/supplier_edit_spinner"
+            android:layout_width = "match_parent"
+            android:layout_height = "match_parent"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/text_edit_tanggal_pemesanan"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/supplier_edit_spinner_layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:fontFamily="@font/baloo"
+        android:gravity="left|center"
+        android:text="Tanggal Pemesanan"
+        android:textSize="18dp"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="#FFFFFF"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/text_status"
+        android:layout_width="300dp"
+        android:layout_height="45dp"
+        android:layout_below="@+id/text_edit_tanggal_pemesanan"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:fontFamily="@font/baloo"
+        android:hint="Status"
+        android:inputType="textPersonName"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="#FFFFFF"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textStyle="bold" />
+
+
+
+    <Button
+        android:id="@+id/pengadaan_edit_edit"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_status"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="60dp"
+        android:background="#0000FF"
+        android:fontFamily="@font/baloo"
+        android:text="Edit"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/pengadaan_edit_delete"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_status"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="40dp"
+        android:background="#FF0000"
+        android:fontFamily="@font/baloo"
+        android:text="Batal Pesan"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/DetilPemesanan"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pengadaan_edit_delete"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="132dp"
+        android:background="#4CAF50"
+        android:fontFamily="@font/baloo"
+        android:text="Detil Pemesanan"
+        android:textColor="#FFFFFF"
+        android:textSize="20dp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>
