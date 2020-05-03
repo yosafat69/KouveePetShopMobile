@@ -77,10 +77,10 @@ public class Pengadaan_tambah extends AppCompatActivity
             public void onClick(View v) {
                 if (validasi()){
                     TambahDetilPengadaan();
-                    Intent returnIntent = new Intent();
-                    setResult(RESULT_OK, returnIntent);
-                    finish();
+                    Intent intent = new Intent(Pengadaan_tambah.this, detilpengadaan_tambah.class);
+                    startActivity(intent);
                 }
+
             }
         });
         detil_pengadaan_tanggal_text.setOnClickListener(new View.OnClickListener() {

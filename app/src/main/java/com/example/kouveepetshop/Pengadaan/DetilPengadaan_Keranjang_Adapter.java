@@ -17,12 +17,9 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.kouveepetshop.CS_Transaksi.DetilTransaksiLayananDAO;
 import com.example.kouveepetshop.CS_Transaksi.Dialog_Transaksi_penjualan;
-import com.example.kouveepetshop.CS_Transaksi.TransaksiLayananKeranjang_Adapter;
 import com.example.kouveepetshop.CS_Transaksi.TransaksiLayananKeranjang_Edit;
 import com.example.kouveepetshop.MainActivity;
-import com.example.kouveepetshop.Pengelolaan.Produk.ProdukDAO;
 import com.example.kouveepetshop.R;
 import com.squareup.picasso.Picasso;
 
@@ -30,15 +27,15 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class DetilPengadaanAdapter extends RecyclerView.Adapter <DetilPengadaanAdapter.ViewProcessHolder> implements Filterable {
+public class DetilPengadaan_Keranjang_Adapter extends RecyclerView.Adapter <DetilPengadaan_Keranjang_Adapter.ViewProcessHolder> implements Filterable {
     private Context context;
-    private ArrayList<ProdukDAO> item, itemFilterd;
+    private ArrayList<DetilPengadaanDAO> item, itemFilterd;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
     private Dialog mDialog;
-    private FragmentManager fragmentManager;
+    FragmentManager fragmentManager;
 
-    public DetilPengadaanAdapter(Context context, ArrayList<ProdukDAO> item, FragmentManager fragmentManager) {
+    public DetilPengadaan_Keranjang_Adapter(Context context, ArrayList<DetilPengadaanDAO> item, FragmentManager fragmentManager) {
         this.context = context;
         this.item = item;
         this.itemFilterd = item;
@@ -46,7 +43,7 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter <DetilPengadaanA
     }
 
     @Override
-    public ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public DetilPengadaan_Keranjang_Adapter.ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_detilpengadaan, parent, false);
         return new ViewProcessHolder(view);
     }
@@ -56,12 +53,13 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter <DetilPengadaanA
         String link = ip + url;
         String substring;
 
-        final ProdukDAO data = itemFilterd.get(position);
+
+        final DetilPengadaanDAO data = itemFilterd.get(position);
         holder.id = data.id;
         holder.nama.setText(data.nama);
-        holder.jumlah.setText(String.valueOf(data.jmlh));
+        holder.jumlah.setText(String.valueOf(data.jumlah));
 
-        substring = data.link_gambar.substring(47);
+        substring = data.gambar.substring(47);
         final String link_gambar = link + substring;
         Picasso.get().load(link_gambar).into(holder.gambar);
 
@@ -73,21 +71,20 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter <DetilPengadaanA
         });
     }
 
-    private void openDialog(Integer id){
-        Bundle b = new Bundle();
-        b.putInt("id", id);
-        b.putInt("isKeranjang", 0);
-
-        Dialog_Pengadaan dialog_transaksi_penjualan = new Dialog_Pengadaan();
-        dialog_transaksi_penjualan.setArguments(b);
-        dialog_transaksi_penjualan.show(fragmentManager, "mTag");
-    }
-
     @Override
     public int getItemCount() {
         return itemFilterd.size();
     }
 
+    private void openDialog(Integer id){
+        Bundle b = new Bundle();
+        b.putInt("id", id);
+        b.putInt("isKeranjang", 1);
+
+        Dialog_Transaksi_penjualan dialog_transaksi_penjualan = new Dialog_Transaksi_penjualan();
+        dialog_transaksi_penjualan.setArguments(b);
+        dialog_transaksi_penjualan.show(fragmentManager, "mTag");
+    }
     @Override
     public Filter getFilter() {
         return new Filter() {
@@ -97,8 +94,8 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter <DetilPengadaanA
                 if (charString.isEmpty()) {
                     itemFilterd = item;
                 } else {
-                    ArrayList<ProdukDAO> filteredList = new ArrayList<>();
-                    for (ProdukDAO row : item) {
+                    ArrayList<DetilPengadaanDAO> filteredList = new ArrayList<>();
+                    for (DetilPengadaanDAO row : item) {
                         if (row.getNama().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
@@ -114,7 +111,7 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter <DetilPengadaanA
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                itemFilterd = (ArrayList<ProdukDAO>) filterResults.values;
+                itemFilterd = (ArrayList<DetilPengadaanDAO>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -138,5 +135,3 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter <DetilPengadaanA
         }
     }
 }
-
-

@@ -11,13 +11,13 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
         <ImageView
-            android:id="@+id/dialog_detilpengadaan"
+            android:id="@+id/dialog_detilpengadaan_gambar"
             android:src="@mipmap/ic_produk"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:contentDescription="@string/app_name" />
         <TextView
-            android:id="@+id/dialog_detilpengadaan_produk"
+            android:id="@+id/dialog_detilpengadaan_nama"
             android:background="@android:color/holo_orange_dark"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

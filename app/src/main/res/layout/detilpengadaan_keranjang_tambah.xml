@@ -18,10 +18,10 @@
         android:layout_marginBottom="10dp"
         app:refreshType="water_drop">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recycle_detilpengadaan_produk"
+            android:id="@+id/recycle_detilpengadaan_keranjang_tambah"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/detilpengadaan_add"
+            android:layout_above="@+id/_detilpengadaan_keranjang_tambah_add"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="60dp"
@@ -29,7 +29,7 @@
     </com.baoyz.widget.PullRefreshLayout>
 
     <EditText
-        android:id="@+id/detilpengadaan_produk_cari"
+        android:id="@+id/detilpengadaan_keranjang_tambah_search"
         android:layout_width="200dp"
         android:layout_height="45dp"
         android:layout_alignParentTop="true"
@@ -53,7 +53,6 @@
         app:actionViewClass="android.support.v7.widget.SearchView"/>
 
     <TextView
-        android:id="@+id/detil_pengadaan_judul"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -61,7 +60,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/baloo"
-        android:text="Produk"
+        android:text="Keranjang"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="30dp" />
@@ -77,13 +76,28 @@
         fab:menu_labels_ellipsize="end"
         fab:menu_labels_singleLine="true">
 
-
-
         <com.github.clans.fab.FloatingActionButton
-            android:id="@+id/detil_pengadaan_keranjang"
+            android:id="@+id/detilpengadaan_keranjang_tambah_delete"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_keranjang"
+            android:src="@drawable/ic_delete"
+            fab:fab_label="@string/keranjang"
+            fab:fab_size="mini"
+            app:fab_colorNormal="#FFFFFF"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/detilpengadaan_keranjang_tambah_selesai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_done"
+            fab:fab_label="@string/keranjang"
+            fab:fab_size="mini" />
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/detilpengadaan_keranjang_tambah_tambah"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_add"
             fab:fab_label="@string/keranjang"
             fab:fab_size="mini" />
 

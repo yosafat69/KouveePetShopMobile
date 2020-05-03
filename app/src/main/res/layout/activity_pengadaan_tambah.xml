@@ -54,7 +54,7 @@
         android:ems="10"
         android:fontFamily="@font/baloo"
         android:gravity="left|center"
-        android:text="Tanggal Lahir"
+        android:text="Tanggal Pemesanan"
         android:textSize="18dp"
         android:outlineAmbientShadowColor="#FFFFFF"
         android:outlineSpotShadowColor="#FFFFFF"
