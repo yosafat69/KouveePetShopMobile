@@ -2,6 +2,7 @@ package com.example.kouveepetshop;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -14,7 +15,7 @@ import com.example.kouveepetshop.Pengelolaan.Member.Member;
 
 public class CS_MainActivity extends AppCompatActivity {
     private boolean doubleBackToExitPressedOnce = false;
-    private SharedPrefManager sharedPrefManager;;
+    private SharedPrefManager sharedPrefManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,5 +55,26 @@ public class CS_MainActivity extends AppCompatActivity {
         });
 
         Toast.makeText(this, sharedPrefManager.getSpUsername() + " " + sharedPrefManager.getSpRole(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (sharedPrefManager.getSPSudahLogin()){
+            if (doubleBackToExitPressedOnce) {
+                super.onBackPressed();
+                System.exit(0);
+            }
+
+            this.doubleBackToExitPressedOnce = true;
+            Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    doubleBackToExitPressedOnce=false;
+                }
+            }, 2000);
+        }
     }
 }

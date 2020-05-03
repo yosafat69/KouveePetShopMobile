@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "340506386984",
+    "firebase_url": "https://kouveepetshop-2ce6e.firebaseio.com",
+    "project_id": "kouveepetshop-2ce6e",
+    "storage_bucket": "kouveepetshop-2ce6e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:340506386984:android:e1492a53ceaedcfd600b1d",
+        "android_client_info": {
+          "package_name": "com.example.kouveepetshop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "340506386984-7akkptj94douj2njhn6kkvnld3j716sb.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.kouveepetshop",
+            "certificate_hash": "cdb6c5bd472c07e755da2242449156f10a0dbfdb"
+          }
+        },
+        {
+          "client_id": "340506386984-gotktbp2kr8jdodgdt6stg0ggluqb59m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPQtLcA2uXbDiaLXzRnDcrMWaH0w5Q2FU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "340506386984-gotktbp2kr8jdodgdt6stg0ggluqb59m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

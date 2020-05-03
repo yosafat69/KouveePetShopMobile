@@ -2,8 +2,11 @@ package com.example.kouveepetshop;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -16,6 +19,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,6 +42,8 @@ public class Login extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.login);
 
         init();
@@ -50,6 +58,14 @@ public class Login extends AppCompatActivity {
                 }
             }
         });
+
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( Login.this,  new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                String newToken = instanceIdResult.getToken();
+                Log.e("newToken",newToken);
+            }
+        });
     }
 
     private void isLogin() {
@@ -60,6 +76,10 @@ public class Login extends AppCompatActivity {
             }
             else if (sharedPrefManager.getSpRole().equals("Customer Service")){
                 Intent i = new Intent(Login.this, CS_MainActivity.class);
+                startActivity(i);
+            }
+            else if (sharedPrefManager.getSpRole().equals("Cashier")){
+                Intent i = new Intent(Login.this, Cashier_MainActivity.class);
                 startActivity(i);
             }
         }
@@ -98,6 +118,10 @@ public class Login extends AppCompatActivity {
                                 }
                                 else if (sharedPrefManager.getSpRole().equals("Customer Service")) {
                                     Intent i = new Intent(Login.this, CS_MainActivity.class);
+                                    startActivity(i);
+                                }
+                                else if (sharedPrefManager.getSpRole().equals("Cashier")) {
+                                    Intent i = new Intent(Login.this, Cashier_MainActivity.class);
                                     startActivity(i);
                                 }
                             }
@@ -150,5 +174,11 @@ public class Login extends AppCompatActivity {
         }
 
         return cek == 0;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        System.exit(0);
     }
 }
