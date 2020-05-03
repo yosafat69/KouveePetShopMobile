@@ -56,7 +56,5 @@ public class SharedPrefManager {
         return sp.getBoolean(SP_SUDAH_LOGIN, false);
     }
 
-    public Integer getSpIdPemesanan(){
-        return sp.getInt(SP_ID_PEMESANAN, -1);
-    }
+    public Integer getSpIdPemesanan(){ return sp.getInt(SP_ID_PEMESANAN, -1);}
 }

@@ -24,6 +24,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 
+import com.example.kouveepetshop.CS_Transaksi.TransaksiPenjualanKeranjang;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.Pengelolaan.Hewan.edit_hewan;
 import com.example.kouveepetshop.R;
@@ -50,7 +51,7 @@ public class Pengadaan_Adapter extends RecyclerView.Adapter<Pengadaan_Adapter.Vi
     }
 
     @Override
-    public Pengadaan_Adapter.ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_pengadaan, parent, false);
         return new ViewProcessHolder(view);
     }
@@ -72,6 +73,8 @@ public class Pengadaan_Adapter extends RecyclerView.Adapter<Pengadaan_Adapter.Vi
                 intent.putExtra("tgl_pemesanan", data.getTgl_pemesanan());
                 intent.putExtra("status", data.getStatus());
                 intent.putExtra("id_supplier",data.getId_supplier());
+                sharedPrefManager = new SharedPrefManager(mContext);
+                sharedPrefManager.saveSPInt("spIdPemesanan", data.id);
                 ((Activity) mContext).startActivityForResult (intent, 1);
             }
         });
@@ -112,6 +115,7 @@ public class Pengadaan_Adapter extends RecyclerView.Adapter<Pengadaan_Adapter.Vi
             id_supplier = itemView.findViewById(R.id.pemesanan_id_supplier);
             status = itemView.findViewById(R.id.pemesanan_status);
             itemList = itemView.findViewById(R.id.list_pemesanan_id);
+            sharedPrefManager = new SharedPrefManager(mContext);
         }
     }
 

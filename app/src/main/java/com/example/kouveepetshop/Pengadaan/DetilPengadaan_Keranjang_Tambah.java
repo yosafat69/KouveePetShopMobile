@@ -255,7 +255,7 @@ public class DetilPengadaan_Keranjang_Tambah  extends AppCompatActivity {
                         JSONObject massageDetail = massage.getJSONObject(i);
                         DetilPengadaanDAO produk = new DetilPengadaanDAO();
                         produk.setId(massageDetail.getInt("id"));
-                        produk.setid_produk(massageDetail.getString("id_produk"));
+                        produk.setid_produk(massageDetail.getInt("id_produk"));
                         produk.setid_pemesanan(massageDetail.getInt("id_pemesanan"));
                         produk.setNama(massageDetail.getString("nama"));
                         produk.setJumlah(massageDetail.getInt("jumlah"));

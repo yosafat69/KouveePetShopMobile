@@ -17,10 +17,6 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.kouveepetshop.CS_Transaksi.DetilTransaksiLayananDAO;
-import com.example.kouveepetshop.CS_Transaksi.Dialog_Transaksi_penjualan;
-import com.example.kouveepetshop.CS_Transaksi.TransaksiLayananKeranjang_Adapter;
-import com.example.kouveepetshop.CS_Transaksi.TransaksiLayananKeranjang_Edit;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.Pengelolaan.Produk.ProdukDAO;
 import com.example.kouveepetshop.R;
@@ -78,9 +74,9 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter <DetilPengadaanA
         b.putInt("id", id);
         b.putInt("isKeranjang", 0);
 
-        Dialog_Pengadaan dialogPengadaan = new Dialog_Pengadaan();
-        dialogPengadaan.setArguments(b);
-        dialogPengadaan.show(fragmentManager, "mTag");
+        Dialog_Pengadaan dialog_pengadaan = new Dialog_Pengadaan();
+        dialog_pengadaan.setArguments(b);
+        dialog_pengadaan.show(fragmentManager, "mTag");
     }
 
     @Override
