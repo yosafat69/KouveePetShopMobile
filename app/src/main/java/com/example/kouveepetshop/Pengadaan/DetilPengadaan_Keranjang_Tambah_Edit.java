@@ -1,8 +1,5 @@
 package com.example.kouveepetshop.Pengadaan;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,16 +7,11 @@ import android.os.Handler;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDialogFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -33,12 +25,10 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.kouveepetshop.API.Rest_API;
-import com.example.kouveepetshop.CS_Transaksi.Dialog_Transaksi_penjualan;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
 import com.github.clans.fab.FloatingActionButton;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,7 +38,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DetilPengadaan_edit extends AppCompatActivity {
+public class DetilPengadaan_Keranjang_Tambah_Edit  extends AppCompatActivity {
 
     private EditText cari;
     private DetilPengadaan_Keranjang_Adapter mAdapter;
@@ -56,7 +46,7 @@ public class DetilPengadaan_edit extends AppCompatActivity {
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
-    private int id;
+    private int id,id_pemesanan;
     private FloatingActionButton tambah, delete, done;
     private SharedPrefManager sharedPrefManager;
     private boolean deleteDoubleTap = false;
@@ -84,6 +74,43 @@ public class DetilPengadaan_edit extends AppCompatActivity {
 
         getPenjualan();
 
+        tambah.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DetilPengadaan_Keranjang_Tambah_Edit.this, detilpengadaan_tambah.class);
+                startActivityForResult(intent,1);
+            }
+        });
+
+        delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (deleteDoubleTap) {
+                    delete();
+
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            Intent returnIntent = new Intent();
+                            setResult(RESULT_OK, returnIntent);
+                            finish();
+                        }
+                    }, 1000);
+                }
+                else {
+                    deleteDoubleTap = true;
+                    Toast.makeText(DetilPengadaan_Keranjang_Tambah_Edit.this, "Tekan Lagi Untuk Delete", Toast.LENGTH_SHORT).show();
+
+                    new Handler().postDelayed(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            deleteDoubleTap = false;
+                        }
+                    }, 2000);
+                }
+            }
+        });
 
         done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +119,7 @@ public class DetilPengadaan_edit extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(DetilPengadaan_edit.this, Pengadaan.class);
+                        Intent intent = new Intent(DetilPengadaan_Keranjang_Tambah_Edit.this, Pengadaan.class);
                         startActivity(intent);
                     }
                 }, 500);
@@ -128,6 +155,7 @@ public class DetilPengadaan_edit extends AppCompatActivity {
         sharedPrefManager = new SharedPrefManager(this);
         delete = findViewById(R.id.detilpengadaan_keranjang_tambah_delete);
         done = findViewById(R.id.detilpengadaan_keranjang_tambah_selesai);
+        id_pemesanan = sharedPrefManager.getSpIdPemesanan();
     }
 
     private void delete(){
@@ -213,7 +241,7 @@ public class DetilPengadaan_edit extends AppCompatActivity {
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = ip + this.url + "index.php/Detilpemesanan/detail/"+id;
+        String url = ip + this.url + "index.php/Detilpemesanan/"+id;
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -258,7 +286,5 @@ public class DetilPengadaan_edit extends AppCompatActivity {
         }
     }
 }
-
-
 
 

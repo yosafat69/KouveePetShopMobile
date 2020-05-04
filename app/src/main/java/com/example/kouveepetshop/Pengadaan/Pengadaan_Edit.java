@@ -33,24 +33,27 @@ import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.Pengelolaan.Supplier.SupplierDAO;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 
 public class Pengadaan_Edit extends AppCompatActivity {
 
     private String  tanggal_pemesanan,status,no_pemesanan;
-    private Integer id,id_supplier;
+    private Integer id,id_supplier,id_pemesanan;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
-    private Button edit, delete;
+    private Button edit, delete,Detail;
     private SharedPrefManager sharedPrefManager;
     private TextView tanggal_pemesanan_text,status_text, no_pemesanan_text;
     private ArrayList<String> mItems = new ArrayList<>();
@@ -66,13 +69,16 @@ public class Pengadaan_Edit extends AppCompatActivity {
         setContentView(R.layout.pengadaan_edit);
 
         init();
+
         ambilsupplier();
         setText();
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                if (validasi()) {
+            public void onClick(View v)
+            {
+                if(validasi())
+                {
                     editPengadaan();
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -83,28 +89,49 @@ public class Pengadaan_Edit extends AppCompatActivity {
                         }
                     }, 1000);
                 }
+                else
+                {
+                    Toast.makeText(Pengadaan_Edit.this, "Tidak Dapat Diedit", Toast.LENGTH_SHORT).show();
+                }
             }
+
+
         });
 
         delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (doubleClickDelete) {
+                if(validasi()){
+                   if (doubleClickDelete)
+                    {
+                        deletePengadaan();
 
-                    deletePengadaan();
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent returnIntent = new Intent();
+                                setResult(RESULT_OK, returnIntent);
+                                finish();
+                            }
+                        }, 500);
+                    }
 
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent returnIntent = new Intent();
-                            setResult(RESULT_OK, returnIntent);
-                            finish();
-                        }
-                    }, 500);
+                   else {
+                       doubleClickDelete = true;
+                       Toast.makeText(Pengadaan_Edit.this, "Tekan Lagi Untuk MemBatalkan", Toast.LENGTH_SHORT).show();
+
+                       new Handler().postDelayed(new Runnable() {
+
+                           @Override
+                           public void run() {
+                               doubleClickDelete = false;
+                           }
+                       }, 2000);
+                   }
+
                 }
                 else {
-                    doubleClickDelete = true;
-                    Toast.makeText(Pengadaan_Edit.this, "Tekan Lagi Untuk MemBatalkan", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(Pengadaan_Edit.this, "Tidak Dapat Dibatalkan", Toast.LENGTH_SHORT).show();
 
                     new Handler().postDelayed(new Runnable() {
 
@@ -117,16 +144,47 @@ public class Pengadaan_Edit extends AppCompatActivity {
             }
         });
 
+        Detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent k = new Intent(Pengadaan_Edit.this, DetilPengadaan_edit.class);
+
+                startActivity(k);
+            }
+        });
+
     }
 
 
     private void setText(){
-        if (getIntent().hasExtra("no_PO")) {
-            id = getIntent().getIntExtra("id", -1);
-            no_pemesanan_text.setText(getIntent().getStringExtra("no_PO"));
-            status_text.setText(getIntent().getStringExtra("status"));
-            tanggal_pemesanan_text.setText(getIntent().getStringExtra("tgl_pemesanan"));
-        }
+        String url = ip + this.url + "index.php/Pemesanan/"+id;
+
+
+        JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                String substring;
+
+                Log.d("volley", "response : " + response);
+                try {
+                    JSONArray massage = response.getJSONArray("message");
+                    JSONObject massageDetail = massage.getJSONObject(0);
+                    no_pemesanan_text.setText(massageDetail.getString("no_PO"));
+                    status_text.setText(massageDetail.getString("status"));
+                    tanggal_pemesanan_text.setText(massageDetail.getString("tgl_pemesanan"));
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener(){
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("volley", "error : " + error.getMessage());
+            }
+        });
+        Rest_API.getInstance(this).addToRequestQueue(arrayRequest);
     }
 
     private void editPengadaan(){
@@ -272,9 +330,10 @@ public class Pengadaan_Edit extends AppCompatActivity {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         supplier_spinner = findViewById(R.id.supplier_edit_spinner);
         supplier_spinner.setAdapter(adapter);
-
+        Detail = findViewById(R.id.DetilPemesanan);
         pd = new ProgressDialog(this);
         kategori_supplier = new ArrayList<>();
+        id = sharedPrefManager.getSpIdPemesanan();
     }
 
     private void getValue(){
@@ -295,8 +354,8 @@ public class Pengadaan_Edit extends AppCompatActivity {
 
     private boolean validasi() {
         int cek = 0;
-        if (no_pemesanan_text.getText().toString().equals("")) {
-            no_pemesanan_text.setError("Nama Tidak Boleh Kosong");
+        if (status_text.getText().toString().equals("diterima") || status_text.getText().toString().equals("tercetak")) {
+            status_text.setError("Status tidak dapat dibatalkan");
             cek = 1;
         }
 

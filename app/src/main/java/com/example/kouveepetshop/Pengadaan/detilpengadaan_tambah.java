@@ -41,7 +41,7 @@ public class detilpengadaan_tambah extends AppCompatActivity
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
-    private int id_pemesanan;
+    private int id_pemesanan,id;
     private SharedPrefManager sharedPrefManager;
 
     private RecyclerView mRecyclerView;
@@ -70,14 +70,13 @@ public class detilpengadaan_tambah extends AppCompatActivity
 
         get();
 
-        id_pemesanan = getIntent().getIntExtra("id_pemesanan", -1);
-        sharedPrefManager.saveSPInt("spIdPemesanan", id_pemesanan);
+
 
         keranjang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(detilpengadaan_tambah.this, DetilPengadaan_Keranjang_Tambah.class);
-                intent.putExtra("id", id_pemesanan);
+                Intent intent = new Intent(detilpengadaan_tambah.this, DetilPengadaan_Keranjang_Tambah_Edit.class);
+                intent.putExtra("id", id);
                 startActivity(intent);
             }
         });
@@ -108,6 +107,7 @@ public class detilpengadaan_tambah extends AppCompatActivity
         cari = findViewById(R.id.detilpengadaan_produk_cari);
         sharedPrefManager = new SharedPrefManager(this);
         keranjang = findViewById(R.id.detil_pengadaan_keranjang);
+        id= sharedPrefManager.getSpIdPemesanan();
     }
 
     private void get(){

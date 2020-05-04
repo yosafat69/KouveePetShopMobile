@@ -77,9 +77,7 @@ public class DetilPengadaan_Keranjang_Tambah  extends AppCompatActivity {
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetilPengadaan_Keranjang_Tambah.this, detilpengadaan_tambah.class);
-                intent.putExtra("isTambah", 1);
-                intent.putExtra("id_pemesanan", sharedPrefManager.getSpIdPemesanan());
+                Intent intent = new Intent(DetilPengadaan_Keranjang_Tambah.this, Pengadaan_Edit.class);
                 startActivityForResult(intent,1);
             }
         });
@@ -157,6 +155,7 @@ public class DetilPengadaan_Keranjang_Tambah  extends AppCompatActivity {
         sharedPrefManager = new SharedPrefManager(this);
         delete = findViewById(R.id.detilpengadaan_keranjang_tambah_delete);
         done = findViewById(R.id.detilpengadaan_keranjang_tambah_selesai);
+        id = sharedPrefManager.getSpIdPemesanan();
     }
 
     private void delete(){

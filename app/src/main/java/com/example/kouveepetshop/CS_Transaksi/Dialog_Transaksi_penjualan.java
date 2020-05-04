@@ -127,7 +127,7 @@ public class Dialog_Transaksi_penjualan extends AppCompatDialogFragment {
 
     private void post(){
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = ip + this.url + "index.php/DetilTransaksiPenjualan";
+        String url = ip + this.url + "index.php/DetilTransaksiPenjualan" ;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {

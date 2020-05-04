@@ -1,24 +1,17 @@
-package com.example.kouveepetshop.Pengadaan;
+package com.example.kouveepetshop.Pengelolaan.Produk;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -29,9 +22,9 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.MainActivity;
-import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
-import com.example.kouveepetshop.Pengelolaan.Member.Member_Tambah;
-import com.example.kouveepetshop.Pengelolaan.Pegawai.Pegawai_Tambah;
+import com.example.kouveepetshop.Pengadaan.PengadaanDAO;
+import com.example.kouveepetshop.Pengadaan.Pengadaan_tambah;
+import com.example.kouveepetshop.Pengadaan.detilpengadaan_tambah;
 import com.example.kouveepetshop.Pengelolaan.Supplier.SupplierDAO;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
@@ -41,44 +34,37 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
-public class Pengadaan_tambah extends AppCompatActivity
+public class ProdukMasuk extends AppCompatActivity
 {
     private Button tambah;
-    private Integer id,id_supplier,id_pemesanan;
-    private String detil_pengadaan_tanggal;
+    private Integer id_supplier,id_pemesanan;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
     private SharedPrefManager sharedPrefManager;
-    private TextView detil_pengadaan_tanggal_text;
-    private DatePickerDialog.OnDateSetListener onDateSetListener;
     private ArrayList<String> mItems = new ArrayList<>();
     private ArrayAdapter<String> adapter;
     private Spinner supplier_spinner;
-    private ArrayList<SupplierDAO> kategori_supplier;
+    private ArrayList<PengadaanDAO> kategori_supplier;
     private ProgressDialog pd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_pengadaan_tambah);
+        setContentView(R.layout.produkmasuk);
 
         init();
         ambilsupplier();
-
 
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (validasi()){
                     TambahDetilPengadaan();
-                    Intent intent = new Intent(Pengadaan_tambah.this, detilpengadaan_tambah.class);
-
-                    intent.putExtra("id",id);
+                    Intent intent = new Intent(ProdukMasuk.this, detilpengadaan_tambah.class);
+                    intent.putExtra("id_pemesanan",id_pemesanan);
                     startActivity(intent);
                 }
 
@@ -106,8 +92,7 @@ public class Pengadaan_tambah extends AppCompatActivity
                         try {
                             jsonObject = new JSONObject(response);
                             if (!jsonObject.getString("error").equals("true")) {
-                                id = Integer.parseInt(jsonObject.getString("message"));
-
+                                id_pemesanan = Integer.parseInt(jsonObject.getString("message"));
                             }
                             Log.d("Response", jsonObject.getString("message"));
                         } catch (JSONException e) {
@@ -142,7 +127,7 @@ public class Pengadaan_tambah extends AppCompatActivity
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
-        String url = ip + this.url + "index.php/Supplier/";
+        String url = ip + this.url + "index.php/Pemesanan/";
 
         JsonObjectRequest arrayRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
             @Override
@@ -157,9 +142,9 @@ public class Pengadaan_tambah extends AppCompatActivity
 
                         mItems.add(massageDetail.getString("nama"));
 
-                        SupplierDAO nama = new SupplierDAO();
+                        PengadaanDAO nama = new PengadaanDAO();
                         nama.setId(massageDetail.getInt("id"));
-                        nama.setNama(massageDetail.getString("nama"));
+                        nama.setNo_pemesanan(massageDetail.getString("nama"));
                         kategori_supplier.add(nama);
 
                         adapter.notifyDataSetChanged();
@@ -183,11 +168,11 @@ public class Pengadaan_tambah extends AppCompatActivity
     private void getValue(){
 
         String supplier = supplier_spinner.getSelectedItem().toString();
-        SupplierDAO nama = new SupplierDAO();
+        PengadaanDAO nama = new PengadaanDAO();
 
         for (int i = 0 ; i < kategori_supplier.size(); i++) {
             nama = kategori_supplier.get(i);
-            if(nama.getNama().equals(supplier)){
+            if(nama.getNo_pemesanan().equals(supplier)){
                 break;
             }
         }
@@ -212,8 +197,6 @@ public class Pengadaan_tambah extends AppCompatActivity
 
         pd = new ProgressDialog(this);
         kategori_supplier = new ArrayList<>();
-
-
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -223,5 +206,4 @@ public class Pengadaan_tambah extends AppCompatActivity
         }
     }
 }
-
 

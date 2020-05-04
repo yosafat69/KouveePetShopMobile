@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public static String getIp(){ return "http://192.168.1.9"; }
+    public static String getIp(){ return "http://192.168.1.5"; }
 
     public static String getUrl() {
         return "/rest_api-kouvee-pet-shop/";

@@ -14,7 +14,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/baloo"
-        android:text="Pengadaan Produk"
+        android:text="Produk Masuk"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="30dp" />

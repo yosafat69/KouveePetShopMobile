@@ -41,7 +41,7 @@ public class DetilPengadaan_Keranjang_Adapter extends RecyclerView.Adapter <Deti
     }
 
     @Override
-    public DetilPengadaan_Keranjang_Adapter.ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_detilpengadaan_keranjang, parent, false);
         return new ViewProcessHolder(view);
     }

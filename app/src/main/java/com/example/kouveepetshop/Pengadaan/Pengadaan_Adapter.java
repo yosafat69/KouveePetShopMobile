@@ -67,7 +67,7 @@ public class Pengadaan_Adapter extends RecyclerView.Adapter<Pengadaan_Adapter.Vi
         holder.itemList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, Pengadaan_Edit.class);
+                Intent intent = new Intent(mContext, DetilPengadaan_Keranjang_Tambah.class);
                 intent.putExtra("id", data.getId());
                 intent.putExtra("no_PO", data.getNo_pemesanan());
                 intent.putExtra("tgl_pemesanan", data.getTgl_pemesanan());

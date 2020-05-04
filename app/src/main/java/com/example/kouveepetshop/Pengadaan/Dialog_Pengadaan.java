@@ -137,6 +137,10 @@ public class Dialog_Pengadaan extends AppCompatDialogFragment {
                             jsonObject = new JSONObject(response);
                             if (!jsonObject.getString("error").equals("true")) {
                                 Log.d("Status: ", "Tertambah");
+                                Log.d("id_produk", String.valueOf(id_produk));
+                                Log.d("id_pemesanan",  String.valueOf(id_pemesanan));
+                                Log.d("jumlah", String.valueOf(jumlah_produk));
+                                Log.d("pegawai", sharedPrefManager.getSpUsername());
                             }
                             Log.d("Response", jsonObject.getString("message"));
                         } catch (JSONException e) {

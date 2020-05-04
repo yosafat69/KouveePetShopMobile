@@ -64,6 +64,7 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter <DetilPengadaanA
         holder.itemList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 openDialog(data.id);
             }
         });
@@ -131,6 +132,7 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter <DetilPengadaanA
             jumlah = itemView.findViewById(R.id.list_detilpengadaan_jumlah);
             itemList = itemView.findViewById(R.id.list_detilpengadaan_id);
             gambar = itemView.findViewById(R.id.list_detilpengadaan_gambar);
+
         }
     }
 }
