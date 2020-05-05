@@ -1,50 +1,37 @@
-package com.example.kouveepetshop.Pengadaan;
+package com.example.kouveepetshop.Pengelolaan.Produk;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
-
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.example.kouveepetshop.CS_Transaksi.TransaksiPenjualanKeranjang;
-import com.example.kouveepetshop.MainActivity;
-import com.example.kouveepetshop.Pengelolaan.Hewan.edit_hewan;
+import com.example.kouveepetshop.Pengadaan.DetilPengadaan_Keranjang_Tambah;
+import com.example.kouveepetshop.Pengadaan.PengadaanDAO;
+import com.example.kouveepetshop.Pengadaan.Pengadaan_Adapter;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
-public class Pengadaan_Adapter extends RecyclerView.Adapter<Pengadaan_Adapter.ViewProcessHolder> implements Filterable {
+public class ProdukMasuk_Adapter extends RecyclerView.Adapter<ProdukMasuk_Adapter.ViewProcessHolder> implements Filterable
+{
     private ArrayList<PengadaanDAO> item;
     private ArrayList<PengadaanDAO> itemFilterd;
     private Context mContext;
     private SharedPrefManager sharedPrefManager;
 
-    public Pengadaan_Adapter(Context context, ArrayList<PengadaanDAO> item) {
+    public ProdukMasuk_Adapter(Context context, ArrayList<PengadaanDAO> item) {
         this.item = item;
         this.itemFilterd = item;
         mContext = context;
@@ -67,15 +54,23 @@ public class Pengadaan_Adapter extends RecyclerView.Adapter<Pengadaan_Adapter.Vi
         holder.itemList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(mContext, DetilPengadaan_Keranjang_Tambah_Edit.class);
-                intent.putExtra("id", data.getId());
-                intent.putExtra("no_PO", data.getNo_pemesanan());
-                intent.putExtra("tgl_pemesanan", data.getTgl_pemesanan());
-                intent.putExtra("status", data.getStatus());
-                intent.putExtra("id_supplier",data.getId_supplier());
-                sharedPrefManager = new SharedPrefManager(mContext);
-                sharedPrefManager.saveSPInt("spIdPemesanan", data.getId());
-                ((Activity) mContext).startActivityForResult (intent, 1);
+                if(data.status.equals("belum tercetak") || data.status.equals("dibatalkan") || data.status.equals("diterima") )
+                {
+                    Toast.makeText(mContext, "Status Harus Tercetak", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    Intent intent = new Intent(mContext, ProdukMasuk_Keranjang.class);
+                    intent.putExtra("id", data.getId());
+                    intent.putExtra("no_PO", data.getNo_pemesanan());
+                    intent.putExtra("tgl_pemesanan", data.getTgl_pemesanan());
+                    intent.putExtra("status", data.getStatus());
+                    intent.putExtra("id_supplier",data.getId_supplier());
+                    sharedPrefManager = new SharedPrefManager(mContext);
+                    sharedPrefManager.saveSPInt("spIdPemesanan", data.id);
+                    ((Activity) mContext).startActivityForResult (intent, 1);
+                }
+
             }
         });
         holder.status.setText(data.status);
@@ -93,6 +88,7 @@ public class Pengadaan_Adapter extends RecyclerView.Adapter<Pengadaan_Adapter.Vi
         else {
             holder.status.setTextColor(Color.GREEN);
         }
+
 
     }
 

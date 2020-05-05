@@ -72,12 +72,18 @@ public class detilpengadaan_tambah extends AppCompatActivity
 
 
 
+        id = getIntent().getIntExtra("id", -1);
+        sharedPrefManager.saveSPInt("spIdPemesanan", id);
+        Log.d("id",String.valueOf(id));
+
         keranjang.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(detilpengadaan_tambah.this, DetilPengadaan_Keranjang_Tambah_Edit.class);
                 intent.putExtra("id", id);
+                Log.d("id",String.valueOf(id));
                 startActivity(intent);
+
             }
         });
 
@@ -107,7 +113,7 @@ public class detilpengadaan_tambah extends AppCompatActivity
         cari = findViewById(R.id.detilpengadaan_produk_cari);
         sharedPrefManager = new SharedPrefManager(this);
         keranjang = findViewById(R.id.detil_pengadaan_keranjang);
-        id= sharedPrefManager.getSpIdPemesanan();
+        id = sharedPrefManager.getSpIdPemesanan();
     }
 
     private void get(){

@@ -4,14 +4,20 @@ import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -20,12 +26,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.baoyz.widget.PullRefreshLayout;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.MainActivity;
+
 import com.example.kouveepetshop.Pengadaan.PengadaanDAO;
 import com.example.kouveepetshop.Pengadaan.Pengadaan_tambah;
-import com.example.kouveepetshop.Pengadaan.detilpengadaan_tambah;
-import com.example.kouveepetshop.Pengelolaan.Supplier.SupplierDAO;
+
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
 
@@ -39,91 +46,54 @@ import java.util.Map;
 
 public class ProdukMasuk extends AppCompatActivity
 {
-    private Button tambah;
-    private Integer id_supplier,id_pemesanan;
+    private EditText cari;
+    private ImageView tambah;
+    private ProdukMasuk_Adapter mAdapter;
+    private ArrayList<PengadaanDAO> mItems;
+    private Integer id_pemesanan;
+    private ProgressDialog pd;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
-    private SharedPrefManager sharedPrefManager;
-    private ArrayList<String> mItems = new ArrayList<>();
-    private ArrayAdapter<String> adapter;
-    private Spinner supplier_spinner;
-    private ArrayList<PengadaanDAO> kategori_supplier;
-    private ProgressDialog pd;
+    RecyclerView mRecyclerView;
+    RecyclerView.LayoutManager mManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.produkmasuk);
+        setContentView(R.layout.pengadaan);
+        final PullRefreshLayout layout = findViewById(R.id.swipeRefreshLayout);
 
         init();
-        ambilsupplier();
 
-        tambah.setOnClickListener(new View.OnClickListener() {
+
+        layout.setOnRefreshListener(new PullRefreshLayout.OnRefreshListener() {
             @Override
-            public void onClick(View v) {
-                if (validasi()){
-                    TambahDetilPengadaan();
-                    Intent intent = new Intent(ProdukMasuk.this, detilpengadaan_tambah.class);
-                    intent.putExtra("id_pemesanan",id_pemesanan);
-                    startActivity(intent);
-                }
-
+            public void onRefresh() {
+                mItems.clear();
+                cari.setText("");
+                GetData();
+                layout.setRefreshing(false);
             }
         });
 
+        GetData();
 
-
-    }
-
-
-
-    private void TambahDetilPengadaan(){
-
-        getValue();
-        RequestQueue queue = Volley.newRequestQueue(this);
-        String url = ip + this.url + "index.php/Pemesanan";
-        StringRequest postRequest = new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        JSONObject jsonObject;
-                        try {
-                            jsonObject = new JSONObject(response);
-                            if (!jsonObject.getString("error").equals("true")) {
-                                id_pemesanan = Integer.parseInt(jsonObject.getString("message"));
-                            }
-                            Log.d("Response", jsonObject.getString("message"));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        Log.d("Response", response);
-                    }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                        Log.d("Error.Response", error.toString());
-                    }
-                }
-        ) {
+        cari.addTextChangedListener(new TextWatcher() {
             @Override
-            protected Map<String, String> getParams()
-            {
-                Map<String, String>  request = new HashMap<>();
-                request.put("id_supplier", String.valueOf(id_supplier));
-                request.put("created_by", sharedPrefManager.getSpUsername());
-                request.put("updated_by", sharedPrefManager.getSpUsername());
-                return request;
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mAdapter.getFilter().filter(s);
             }
-        };
-        queue.add(postRequest);
+        });
     }
 
-    private void ambilsupplier() {
+    private void GetData(){
+        mItems.clear();
         pd.setMessage("Mengambil Data");
         pd.setCancelable(false);
         pd.show();
@@ -136,25 +106,23 @@ public class ProdukMasuk extends AppCompatActivity
 
                 try {
                     JSONArray massage = response.getJSONArray("message");
-
-                    for (int i = 0; i < massage.length(); i++) {
+                    for (int i = 0; i < massage.length() ; i++){
                         JSONObject massageDetail = massage.getJSONObject(i);
-
-                        mItems.add(massageDetail.getString("nama"));
-
-                        PengadaanDAO nama = new PengadaanDAO();
-                        nama.setId(massageDetail.getInt("id"));
-                        nama.setNo_pemesanan(massageDetail.getString("nama"));
-                        kategori_supplier.add(nama);
-
-                        adapter.notifyDataSetChanged();
+                        PengadaanDAO pengadaan = new PengadaanDAO();
+                        pengadaan.setId(massageDetail.getInt("id"));
+                        pengadaan.setNo_pemesanan(massageDetail.getString("no_PO"));
+                        pengadaan.setId_supplier(massageDetail.getString("id_supplier"));
+                        pengadaan.setTgl_pemesanan(massageDetail.getString("tgl_pemesanan"));
+                        pengadaan.setStatus(massageDetail.getString("status"));
+                        mItems.add(pengadaan);
                     }
                     pd.cancel();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+                mAdapter.notifyDataSetChanged();
             }
-        }, new Response.ErrorListener() {
+        }, new Response.ErrorListener(){
 
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -165,44 +133,23 @@ public class ProdukMasuk extends AppCompatActivity
         Rest_API.getInstance(this).addToRequestQueue(arrayRequest);
     }
 
-    private void getValue(){
-
-        String supplier = supplier_spinner.getSelectedItem().toString();
-        PengadaanDAO nama = new PengadaanDAO();
-
-        for (int i = 0 ; i < kategori_supplier.size(); i++) {
-            nama = kategori_supplier.get(i);
-            if(nama.getNo_pemesanan().equals(supplier)){
-                break;
-            }
-        }
-        id_supplier = nama.getId();
-    }
-
-    private boolean validasi(){
-        int cek = 0;
-
-
-        return cek == 0;
-    }
-
     private void init(){
-        sharedPrefManager = new SharedPrefManager(this);
-        tambah = findViewById(R.id.detilpengadaan_tambah);
-        mItems = new ArrayList<>();
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,mItems);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        supplier_spinner = findViewById(R.id.detil_pengadaan_spinner);
-        supplier_spinner.setAdapter(adapter);
-
         pd = new ProgressDialog(this);
-        kategori_supplier = new ArrayList<>();
+        mRecyclerView = findViewById(R.id.recycle_pengadaan);
+        mItems = new ArrayList<>();
+        mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(mManager);
+        mAdapter = new ProdukMasuk_Adapter(this,mItems);
+        mRecyclerView.setAdapter(mAdapter);
+        cari = findViewById(R.id.pemesanan_search);
+        tambah = findViewById(R.id.pengadaan_add);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
-            finish();
+            GetData();
+            mAdapter.notifyDataSetChanged();
         }
     }
 }

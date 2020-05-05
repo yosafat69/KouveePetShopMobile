@@ -6,58 +6,72 @@
     android:layout_height="match_parent"
     android:background="@drawable/menu_background">
 
+    <EditText
+        android:id="@+id/pemesanan_search"
+        android:layout_width="200dp"
+        android:layout_height="45dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:ems="10"
+        android:fontFamily="@font/baloo"
+        android:hint="No.Pengadaan "
+        android:gravity="right"
+        android:inputType="textPersonName"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="#FFFFFF"
+        android:shadowColor="#FFFFFF"
+        android:textColor="#FFFFFF"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF"
+        android:textStyle="bold"
+        app:showAsAction="always"
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
+
+    <com.baoyz.widget.PullRefreshLayout
+        android:id="@+id/swipeRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="583dp"
+        android:layout_above="@+id/pengadaan_add"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="60dp"
+        android:layout_marginBottom="10dp"
+        app:refreshType="water_drop">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycle_pengadaan"
+            android:layout_width="match_parent"
+            android:layout_height="583dp"
+            android:layout_above="@+id/pengadaan_add"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="60dp"
+            android:layout_marginBottom="10dp" />
+    </com.baoyz.widget.PullRefreshLayout>
+
+    <ImageView
+        android:id="@+id/pengadaan_add"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="8dp"
+        app:srcCompat="@mipmap/ic_add" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="-3dp"
         android:fontFamily="@font/baloo"
-        android:text="Produk Masuk"
+        android:text="Pengadaan"
         android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        android:textSize="30dp" />
-
-    <ImageView
-        android:id="@+id/pengadaan_produk_gambar"
-        android:layout_width="164dp"
-        android:layout_height="166dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="92dp"
-        app:srcCompat="@mipmap/ic_menu_pengadaan" />
-
-
-    <LinearLayout
-        android:id = "@+id/detil_pengadaan_spinner_layout"
-        android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/pengadaan_produk_gambar"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:gravity = "center"
-        android:orientation = "vertical">
-        <Spinner
-            android:id = "@+id/detil_pengadaan_spinner"
-            android:layout_width = "match_parent"
-            android:layout_height = "match_parent"/>
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/detilpengadaan_tambah"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/detil_pengadaan_spinner_layout"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="132dp"
-        android:layout_marginTop="56dp"
-        android:background="#4CAF50"
-        android:fontFamily="@font/baloo"
-        android:text="Tambah"
-        android:textColor="#FFFFFF"
-        android:textSize="20dp"
+        android:textSize="30dp"
         android:textStyle="bold" />
-
 
 </RelativeLayout>

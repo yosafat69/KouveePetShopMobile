@@ -77,7 +77,7 @@ public class DetilPengadaan_Keranjang_Tambah_Edit  extends AppCompatActivity {
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(DetilPengadaan_Keranjang_Tambah_Edit.this, detilpengadaan_tambah.class);
+                Intent intent = new Intent(DetilPengadaan_Keranjang_Tambah_Edit.this, Pengadaan_Edit.class);
                 startActivityForResult(intent,1);
             }
         });
@@ -150,12 +150,11 @@ public class DetilPengadaan_Keranjang_Tambah_Edit  extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
         mRecyclerView.setAdapter(mAdapter);
         cari = findViewById(R.id.detilpengadaan_keranjang_tambah_search);
-        id = getIntent().getIntExtra("id", -1);
         tambah = findViewById(R.id.detilpengadaan_keranjang_tambah_tambah);
         sharedPrefManager = new SharedPrefManager(this);
         delete = findViewById(R.id.detilpengadaan_keranjang_tambah_delete);
         done = findViewById(R.id.detilpengadaan_keranjang_tambah_selesai);
-        id_pemesanan = sharedPrefManager.getSpIdPemesanan();
+        id = getIntent().getIntExtra("id", -1);
     }
 
     private void delete(){

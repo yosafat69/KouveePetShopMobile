@@ -1,4 +1,4 @@
-package com.example.kouveepetshop.Pengadaan;
+package com.example.kouveepetshop.Pengelolaan.Produk;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -26,6 +26,11 @@ import com.android.volley.toolbox.Volley;
 import com.baoyz.widget.PullRefreshLayout;
 import com.example.kouveepetshop.API.Rest_API;
 import com.example.kouveepetshop.MainActivity;
+import com.example.kouveepetshop.Pengadaan.DetilPengadaanDAO;
+import com.example.kouveepetshop.Pengadaan.DetilPengadaan_Keranjang_Adapter;
+import com.example.kouveepetshop.Pengadaan.DetilPengadaan_Keranjang_Tambah;
+import com.example.kouveepetshop.Pengadaan.Pengadaan;
+import com.example.kouveepetshop.Pengadaan.Pengadaan_Edit;
 import com.example.kouveepetshop.R;
 import com.example.kouveepetshop.SharedPrefManager;
 import com.github.clans.fab.FloatingActionButton;
@@ -38,16 +43,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-public class DetilPengadaan_Keranjang_Tambah  extends AppCompatActivity {
-
+public class ProdukMasuk_Keranjang extends AppCompatActivity
+{
     private EditText cari;
-    private DetilPengadaan_Keranjang_Adapter mAdapter;
+    private ProdukMasuk_Keranjang_Adapter mAdapter;
     private ArrayList<DetilPengadaanDAO> mItems;
     private ProgressDialog pd;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
     private int id;
-    private FloatingActionButton tambah, delete, done;
+    private FloatingActionButton  done;
     private SharedPrefManager sharedPrefManager;
     private boolean deleteDoubleTap = false;
 
@@ -57,7 +62,7 @@ public class DetilPengadaan_Keranjang_Tambah  extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.detilpengadaan_keranjang_tambah);
+        setContentView(R.layout.produkmasuk_keranjang);
         final PullRefreshLayout layout = findViewById(R.id.swipeRefreshLayout);
 
         init();
@@ -74,43 +79,6 @@ public class DetilPengadaan_Keranjang_Tambah  extends AppCompatActivity {
 
         getPenjualan();
 
-        tambah.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DetilPengadaan_Keranjang_Tambah.this, Pengadaan_Edit.class);
-                startActivityForResult(intent,1);
-            }
-        });
-
-        delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (deleteDoubleTap) {
-                    delete();
-
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            Intent returnIntent = new Intent();
-                            setResult(RESULT_OK, returnIntent);
-                            finish();
-                        }
-                    }, 1000);
-                }
-                else {
-                    deleteDoubleTap = true;
-                    Toast.makeText(DetilPengadaan_Keranjang_Tambah.this, "Tekan Lagi Untuk Delete", Toast.LENGTH_SHORT).show();
-
-                    new Handler().postDelayed(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            deleteDoubleTap = false;
-                        }
-                    }, 2000);
-                }
-            }
-        });
 
         done.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,7 +87,7 @@ public class DetilPengadaan_Keranjang_Tambah  extends AppCompatActivity {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        Intent intent = new Intent(DetilPengadaan_Keranjang_Tambah.this, Pengadaan.class);
+                        Intent intent = new Intent(ProdukMasuk_Keranjang.this, ProdukMasuk.class);
                         startActivity(intent);
                     }
                 }, 500);
@@ -146,13 +114,12 @@ public class DetilPengadaan_Keranjang_Tambah  extends AppCompatActivity {
         mItems = new ArrayList<>();
         mManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(mManager);
-        mAdapter = new DetilPengadaan_Keranjang_Adapter(this, mItems, this.getSupportFragmentManager());
+        mAdapter = new ProdukMasuk_Keranjang_Adapter(this, mItems, this.getSupportFragmentManager());
         mRecyclerView.setLayoutManager(new GridLayoutManager(this,2));
         mRecyclerView.setAdapter(mAdapter);
         cari = findViewById(R.id.detilpengadaan_keranjang_tambah_search);
-        tambah = findViewById(R.id.detilpengadaan_keranjang_tambah_tambah);
+        id = getIntent().getIntExtra("id", -1);
         sharedPrefManager = new SharedPrefManager(this);
-        delete = findViewById(R.id.detilpengadaan_keranjang_tambah_delete);
         done = findViewById(R.id.detilpengadaan_keranjang_tambah_selesai);
         id = sharedPrefManager.getSpIdPemesanan();
     }
@@ -198,7 +165,7 @@ public class DetilPengadaan_Keranjang_Tambah  extends AppCompatActivity {
 
     private void selesai(){
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = ip + this.url + "index.php/Pemesanan/done/"+id;
+        String url = ip + this.url + "index.php/Pemesanan/received/"+id;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -285,5 +252,4 @@ public class DetilPengadaan_Keranjang_Tambah  extends AppCompatActivity {
         }
     }
 }
-
 

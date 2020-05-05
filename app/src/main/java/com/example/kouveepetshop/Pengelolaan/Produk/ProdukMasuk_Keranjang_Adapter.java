@@ -1,9 +1,11 @@
-package com.example.kouveepetshop.Pengadaan;
+package com.example.kouveepetshop.Pengelolaan.Produk;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,24 +20,25 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.kouveepetshop.MainActivity;
-import com.example.kouveepetshop.Pengelolaan.Produk.ProdukDAO;
+import com.example.kouveepetshop.Pengadaan.DetilPengadaanDAO;
+import com.example.kouveepetshop.Pengadaan.DetilPengadaan_Keranjang_Adapter;
+import com.example.kouveepetshop.Pengadaan.Dialog_Pengadaan;
 import com.example.kouveepetshop.R;
+import com.example.kouveepetshop.SharedPrefManager;
 import com.squareup.picasso.Picasso;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Locale;
 
-public class DetilPengadaanAdapter extends RecyclerView.Adapter<DetilPengadaanAdapter.ViewProcessHolder> implements Filterable {
-    private Context context;
-    private ArrayList<ProdukDAO> item, itemFilterd;
+public class ProdukMasuk_Keranjang_Adapter extends RecyclerView.Adapter <ProdukMasuk_Keranjang_Adapter.ViewProcessHolder> implements Filterable {
+    private Context mContext;
+    private ArrayList<DetilPengadaanDAO> item, itemFilterd;
     private String ip = MainActivity.getIp();
     private String url = MainActivity.getUrl();
     private Dialog mDialog;
-    private FragmentManager fragmentManager;
+    FragmentManager fragmentManager;
+    private SharedPrefManager sharedPrefManager;
 
-    public DetilPengadaanAdapter(Context context, ArrayList<ProdukDAO> item, FragmentManager fragmentManager) {
-        this.context = context;
+    public ProdukMasuk_Keranjang_Adapter(Context context, ArrayList<DetilPengadaanDAO> item, FragmentManager fragmentManager) {
         this.item = item;
         this.itemFilterd = item;
         this.fragmentManager = fragmentManager;
@@ -43,7 +46,7 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter<DetilPengadaanAd
 
     @Override
     public ViewProcessHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_detilpengadaan, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_detilpengadaan_keranjang, parent, false);
         return new ViewProcessHolder(view);
     }
 
@@ -52,32 +55,26 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter<DetilPengadaanAd
         String link = ip + url;
         String substring;
 
-        final ProdukDAO data = itemFilterd.get(position);
+
+        final DetilPengadaanDAO data = itemFilterd.get(position);
         holder.id = data.id;
         holder.nama.setText(data.nama);
-        holder.jumlah.setText(String.format("%,d",data.jmlh));
+        holder.jumlah.setText(String.valueOf(data.jumlah));
 
-        substring = data.link_gambar.substring(47);
+        substring = data.gambar.substring(47);
         final String link_gambar = link + substring;
         Picasso.get().load(link_gambar).into(holder.gambar);
 
         holder.itemList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(mContext, ProdukMasuk_Input.class);
+                intent.putExtra("id", data.id_produk);
+                Log.d("id",String.valueOf(data.id_produk));
 
-                openDialog(data.id);
+                mContext.startActivity(intent);
             }
         });
-    }
-
-    private void openDialog(Integer id){
-        Bundle b = new Bundle();
-        b.putInt("id", id);
-        b.putInt("isKeranjang", 0);
-
-        Dialog_Pengadaan dialog_pengadaan = new Dialog_Pengadaan();
-        dialog_pengadaan.setArguments(b);
-        dialog_pengadaan.show(fragmentManager, "mTag");
     }
 
     @Override
@@ -94,8 +91,8 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter<DetilPengadaanAd
                 if (charString.isEmpty()) {
                     itemFilterd = item;
                 } else {
-                    ArrayList<ProdukDAO> filteredList = new ArrayList<>();
-                    for (ProdukDAO row : item) {
+                    ArrayList<DetilPengadaanDAO> filteredList = new ArrayList<>();
+                    for (DetilPengadaanDAO row : item) {
                         if (row.getNama().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
@@ -111,7 +108,7 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter<DetilPengadaanAd
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                itemFilterd = (ArrayList<ProdukDAO>) filterResults.values;
+                itemFilterd = (ArrayList<DetilPengadaanDAO>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
@@ -127,14 +124,11 @@ public class DetilPengadaanAdapter extends RecyclerView.Adapter<DetilPengadaanAd
         public ViewProcessHolder(@NonNull final View itemView) {
             super(itemView);
 
-            context = itemView.getContext();
-            nama = itemView.findViewById(R.id.list_detilpengadaan_id_produk);
-            jumlah = itemView.findViewById(R.id.list_detilpengadaan_jumlah);
-            itemList = itemView.findViewById(R.id.list_detilpengadaan_id);
-            gambar = itemView.findViewById(R.id.list_detilpengadaan_gambar);
-
+            mContext = itemView.getContext();
+            nama = itemView.findViewById(R.id.list_detilpengadaan_keranjang_id_produk);
+            jumlah = itemView.findViewById(R.id.list_detilpengadaan_keranjang_jumlah);
+            itemList = itemView.findViewById(R.id.list_detilpengadaan_keranjang_id);
+            gambar = itemView.findViewById(R.id.list_detilpengadaan_keranjang_gambar);
         }
     }
 }
-
-

@@ -28,6 +28,8 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.kouveepetshop.API.Rest_API;
+import com.example.kouveepetshop.CS_Transaksi.TransaksiLayanan;
+import com.example.kouveepetshop.CS_Transaksi.Transaksi_Tambah;
 import com.example.kouveepetshop.MainActivity;
 import com.example.kouveepetshop.Pengelolaan.KeteranganDAO;
 import com.example.kouveepetshop.Pengelolaan.Member.Member_Tambah;
@@ -74,21 +76,22 @@ public class Pengadaan_tambah extends AppCompatActivity
         tambah.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (validasi()){
+                if (validasi()) {
                     TambahDetilPengadaan();
-                    Intent intent = new Intent(Pengadaan_tambah.this, detilpengadaan_tambah.class);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
 
-                    intent.putExtra("id",id);
-                    startActivity(intent);
+                            Intent intent = new Intent(Pengadaan_tambah.this, detilpengadaan_tambah.class);
+                            intent.putExtra("id", id);
+                            startActivity(intent);
+                        }
+
+                    }, 500);
                 }
-
             }
         });
-
-
-
     }
-
 
 
     private void TambahDetilPengadaan(){
@@ -107,7 +110,7 @@ public class Pengadaan_tambah extends AppCompatActivity
                             jsonObject = new JSONObject(response);
                             if (!jsonObject.getString("error").equals("true")) {
                                 id = Integer.parseInt(jsonObject.getString("message"));
-
+                                Log.d("id",String.valueOf(id));
                             }
                             Log.d("Response", jsonObject.getString("message"));
                         } catch (JSONException e) {

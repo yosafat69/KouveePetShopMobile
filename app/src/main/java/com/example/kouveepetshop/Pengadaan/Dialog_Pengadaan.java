@@ -86,6 +86,7 @@ public class Dialog_Pengadaan extends AppCompatDialogFragment {
                 if (jumlah_produk < jumlah_tersedia) {
                     jumlah_produk = jumlah_produk + 1;
                     jumlah.setText(String.valueOf(jumlah_produk));
+                    Log.d("id",String.valueOf(id));
                 }
             }
         });
@@ -96,6 +97,7 @@ public class Dialog_Pengadaan extends AppCompatDialogFragment {
                 if (jumlah_produk != 0) {
                     jumlah_produk = jumlah_produk - 1;
                     jumlah.setText(String.valueOf(jumlah_produk));
+                    Log.d("id",String.valueOf(id));
                 }
             }
         });
@@ -105,6 +107,7 @@ public class Dialog_Pengadaan extends AppCompatDialogFragment {
             public void onClick(View v) {
                 if (isKeranjang == 0) {
                     post();
+                    Log.d("id",String.valueOf(id));
                 }
                 else if (isKeranjang == 1){
                     if (jumlah_produk == 0) {
@@ -125,7 +128,7 @@ public class Dialog_Pengadaan extends AppCompatDialogFragment {
 
     private void post(){
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = ip + this.url + "index.php/DetilPemesanan";
+        String url = ip + this.url + "index.php/Detilpemesanan";
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -136,6 +139,7 @@ public class Dialog_Pengadaan extends AppCompatDialogFragment {
                         try {
                             jsonObject = new JSONObject(response);
                             if (!jsonObject.getString("error").equals("true")) {
+                                Log.d("id",String.valueOf(id));
                                 Log.d("Status: ", "Tertambah");
                                 Log.d("id_produk", String.valueOf(id_produk));
                                 Log.d("id_pemesanan",  String.valueOf(id_pemesanan));
@@ -143,6 +147,7 @@ public class Dialog_Pengadaan extends AppCompatDialogFragment {
                                 Log.d("pegawai", sharedPrefManager.getSpUsername());
                             }
                             Log.d("Response", jsonObject.getString("message"));
+                            Log.d("id",String.valueOf(id));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

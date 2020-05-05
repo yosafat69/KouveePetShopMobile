@@ -144,14 +144,6 @@ public class Pengadaan_Edit extends AppCompatActivity {
             }
         });
 
-        Detail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent k = new Intent(Pengadaan_Edit.this, DetilPengadaan_edit.class);
-
-                startActivity(k);
-            }
-        });
 
     }
 
@@ -323,23 +315,18 @@ public class Pengadaan_Edit extends AppCompatActivity {
         edit = findViewById(R.id.pengadaan_edit_edit);
         delete = findViewById(R.id.pengadaan_edit_delete);
         no_pemesanan_text = findViewById(R.id.text_nomor_pemesanan);
-        tanggal_pemesanan_text = findViewById(R.id.text_edit_tanggal_pemesanan);
-        status_text = findViewById(R.id.text_status);
         mItems = new ArrayList<>();
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item,mItems);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         supplier_spinner = findViewById(R.id.supplier_edit_spinner);
         supplier_spinner.setAdapter(adapter);
-        Detail = findViewById(R.id.DetilPemesanan);
         pd = new ProgressDialog(this);
         kategori_supplier = new ArrayList<>();
         id = sharedPrefManager.getSpIdPemesanan();
     }
 
     private void getValue(){
-        no_pemesanan = no_pemesanan_text.getText().toString();
-        tanggal_pemesanan = tanggal_pemesanan_text.getText().toString();
-        status = status_text.getText().toString();
+
         String jenis = supplier_spinner.getSelectedItem().toString();
         SupplierDAO nama = new SupplierDAO();
 
@@ -354,10 +341,7 @@ public class Pengadaan_Edit extends AppCompatActivity {
 
     private boolean validasi() {
         int cek = 0;
-        if (status_text.getText().toString().equals("diterima") || status_text.getText().toString().equals("tercetak")) {
-            status_text.setError("Status tidak dapat dibatalkan");
-            cek = 1;
-        }
+
 
         return cek == 0;
     }

@@ -79,9 +79,9 @@ public class DetilPengadaan_Keranjang_Adapter extends RecyclerView.Adapter <Deti
         b.putInt("id", id);
         b.putInt("isKeranjang", 1);
 
-        Dialog_Pengadaan dialogPengadaan = new Dialog_Pengadaan();
-        dialogPengadaan.setArguments(b);
-        dialogPengadaan.show(fragmentManager, "mTag");
+        Dialog_Pengadaan dialog_Pengadaan = new Dialog_Pengadaan();
+        dialog_Pengadaan.setArguments(b);
+        dialog_Pengadaan.show(fragmentManager, "mTag");
     }
     @Override
     public Filter getFilter() {

@@ -127,7 +127,7 @@ public class Dialog_Transaksi_penjualan extends AppCompatDialogFragment {
 
     private void post(){
         RequestQueue queue = Volley.newRequestQueue(getContext());
-        String url = ip + this.url + "index.php/DetilTransaksiPenjualan" ;
+        String url = ip + this.url + "index.php/DetilPemesanan" ;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
@@ -139,8 +139,10 @@ public class Dialog_Transaksi_penjualan extends AppCompatDialogFragment {
                             jsonObject = new JSONObject(response);
                             if (!jsonObject.getString("error").equals("true")) {
                                 Log.d("Status: ", "Tertambah");
+                                Log.d("id_transaksi",String.valueOf(id_transaksi));
                             }
                             Log.d("Response", jsonObject.getString("message"));
+                            Log.d("id",String.valueOf(id_transaksi));
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }

@@ -162,6 +162,19 @@
         <activity
             android:name=".Pengadaan.DetilPengadaan_edit"
             android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".Pengelolaan.Produk.ProdukMasuk"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".Pengelolaan.Produk.ProdukMasuk_Keranjang"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".Pengelolaan.Produk.ProdukMasuk_Input"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+        <activity
+            android:name=".Pengadaan.DetilPengadaan_Keranjang_Tambah_Edit"
+            android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
 
 
         <meta-data

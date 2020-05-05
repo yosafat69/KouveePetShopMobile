@@ -138,5 +138,19 @@ public class Pengelolaan extends AppCompatActivity {
                 }
             }
         });
+
+        ImageView ProdukMasuk = findViewById(R.id.menu_transaksi_produk);
+        ProdukMasuk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (sharedPrefManager.getSpRole().equals("Owner")) {
+                    Intent i = new Intent(Pengelolaan.this, com.example.kouveepetshop.Pengelolaan.Produk.ProdukMasuk.class);
+                    startActivity(i);
+                }
+                else {
+                    Toast.makeText(Pengelolaan.this, "Anda Tidak Memiliki Hak Akses!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 }

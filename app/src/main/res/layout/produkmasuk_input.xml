@@ -14,63 +14,52 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/baloo"
-        android:text="Edit Pengadaan"
+        android:text="Edit Produk"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         android:textSize="30dp" />
 
     <ImageView
-        android:id="@+id/icon_pemesanan"
+        android:id="@+id/produk_edit_gambar"
         android:layout_width="164dp"
-        android:layout_height="166dp"
+        android:layout_height="176dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="92dp"
-        app:srcCompat="@mipmap/ic_menu_pengadaan" />
+        app:srcCompat="@mipmap/ic_produk" />
 
 
-    <LinearLayout
-        android:id = "@+id/supplier_edit_spinner_layout"
+    <EditText
+        android:id="@+id/produk_edit_jmlh"
         android:layout_width="300dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/icon_pemesanan"
+        android:layout_height="45dp"
+        android:layout_below="@+id/produk_edit_gambar"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        android:gravity = "center"
-        android:orientation = "vertical">
-        <Spinner
-            android:id = "@+id/supplier_edit_spinner"
-            android:layout_width = "match_parent"
-            android:layout_height = "match_parent"/>
-    </LinearLayout>
-
-
-    <Button
-        android:id="@+id/pengadaan_edit_edit"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/supplier_edit_spinner_layout"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="60dp"
-        android:background="#0000FF"
+        android:layout_marginTop="15dp"
+        android:ems="10"
         android:fontFamily="@font/baloo"
-        android:text="Edit"
+        android:hint="Masukan Jumlah"
+        android:inputType="number"
+        android:outlineAmbientShadowColor="#FFFFFF"
+        android:outlineSpotShadowColor="#FFFFFF"
+        android:shadowColor="#FFFFFF"
         android:textColor="#FFFFFF"
-        android:textSize="20dp"
+        android:textColorHighlight="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        android:textColorLink="#FFFFFF"
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/pengadaan_edit_delete"
+        android:id="@+id/produk_edit_edit"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/supplier_edit_spinner_layout"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="60dp"
-        android:layout_marginEnd="40dp"
-        android:background="#FF0000"
+        android:layout_below="@+id/produk_edit_jmlh"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="138dp"
+        android:layout_marginTop="20dp"
+        android:background="#2EB133"
         android:fontFamily="@font/baloo"
-        android:text="Batal Pesan"
+        android:text="Masukan"
         android:textColor="#FFFFFF"
         android:textSize="20dp"
         android:textStyle="bold" />
