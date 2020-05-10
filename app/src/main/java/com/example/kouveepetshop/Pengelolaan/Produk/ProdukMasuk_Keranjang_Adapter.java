@@ -69,9 +69,6 @@ public class ProdukMasuk_Keranjang_Adapter extends RecyclerView.Adapter <ProdukM
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, ProdukMasuk_Input.class);
-                intent.putExtra("id", data.id_produk);
-                Log.d("id",String.valueOf(data.id_produk));
-
                 mContext.startActivity(intent);
             }
         });

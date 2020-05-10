@@ -57,7 +57,7 @@ import java.util.Map;
 public class ProdukMasuk_Input extends AppCompatActivity
 {
 
-    private Integer jmlh,id_produk;
+    private Integer jumlah,id_produk;
 
     private EditText  satuan_text, jmlh_text, jmlh_min_text;
     private ImageView gambar;
@@ -78,7 +78,7 @@ public class ProdukMasuk_Input extends AppCompatActivity
         setContentView(R.layout.produkmasuk_input);
 
         init();
-
+        Log.d("id_produk",String.valueOf(id_produk));
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,41 +107,28 @@ public class ProdukMasuk_Input extends AppCompatActivity
         jmlh_text = findViewById(R.id.produk_edit_jmlh);
         edit = findViewById(R.id.produk_edit_edit);
         sharedPrefManager = new SharedPrefManager(this);
-        id_produk = getIntent().getIntExtra("id_produk", -1);
+        id_produk = sharedPrefManager.getSpIdPemesanan();
     }
 
     private void getValue()
     {
-        jmlh = Integer.parseInt(jmlh_text.getText().toString());
+        jumlah = Integer.parseInt(jmlh_text.getText().toString());
     }
-
 
 
     private void post(){
         getValue();
 
         RequestQueue queue = Volley.newRequestQueue(this);
-        String url = ip + this.url + "index.php/Produk/stock/" + id_produk ;
+        String url = ip + this.url + "index.php/Produk/stock/" + id_produk;
         StringRequest postRequest = new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>()
                 {
                     @Override
                     public void onResponse(String response) {
                         // response
-                        JSONObject jsonObject;
-                        try {
-                            jsonObject = new JSONObject(response);
-                            if (!jsonObject.getString("error").equals("true")) {
-                                Log.d("Status: ", "Tertambah");
-                                Log.d("id_produk",String.valueOf(id_produk));
-                            }
-                            Log.d("Response", jsonObject.getString("message"));
-                            Log.d("id_produk",String.valueOf(id_produk));
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
                         Log.d("Response", response);
-                    }
+                }
                 },
                 new Response.ErrorListener()
                 {
@@ -151,19 +138,20 @@ public class ProdukMasuk_Input extends AppCompatActivity
                         Log.d("Error.Response", error.toString());
                     }
                 }
-        ) {
+        )
+
+        {
             @Override
             protected Map<String, String> getParams()
             {
-                Map<String, String>  request = new HashMap<>();
-                request.put("jmlh", String.valueOf(jmlh));
+                Map<String, String>  request = new HashMap<String, String>();
+                request.put("jmlh", String.valueOf(jumlah));
                 request.put("updated_by", sharedPrefManager.getSpUsername());
                 return request;
             }
         };
         queue.add(postRequest);
     }
-
 
 
     private boolean validasi() {
